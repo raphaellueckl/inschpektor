@@ -12,13 +12,21 @@
           <a class="navbar-item">
             Dashboard
           </a>
+          <div class="navbar-start">
+            <a class="navbar-item">
+              Manage
+            </a>
+            <a class="navbar-item">
+              Login
+            </a>
+          </div>
+          </div>
+          <div class="navbar-end">
+            <a class="navbar-item">
+              subtangle index / milestone index
+            </a>
+          </div>
         </div>
-        <div class="navbar-end">
-          <a class="navbar-item">
-            subtangle index / milestone index
-          </a>
-        </div>
-      </div>
     </nav>
 
 
