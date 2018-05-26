@@ -2,12 +2,18 @@
   <div id="app">
     <nav class="navbar is-fixed-top" role="navigation" aria-label="main navigation">
       <div class="navbar-brand">
-        <figure class="image is-128x128">
+        <figure class="image is-128x128" style="margin-left: 6px">
           <img src="./assets/logo.png">
         </figure>
+
+        <a role="button" class="navbar-burger" aria-label="menu" aria-expanded="false">
+          <span aria-hidden="true"></span>
+          <span aria-hidden="true"></span>
+          <span aria-hidden="true"></span>
+        </a>
       </div>
 
-      <div class="navbar-menu">
+      <div class="navbar-menu is-active">
         <div class="navbar-start">
           <a class="navbar-item">
             Dashboard
