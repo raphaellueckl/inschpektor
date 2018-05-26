@@ -2,7 +2,7 @@
   <div id="app">
     <nav class="navbar is-fixed-top" role="navigation" aria-label="main navigation">
       <div class="navbar-brand">
-        <figure class="image is-128x128" style="margin-left: 6px">
+        <figure class="image is-128x128" style="margin-left: 6px; margin-right: 6px">
           <img src="./assets/logo.png">
         </figure>
 
