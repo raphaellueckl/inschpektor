@@ -49,27 +49,24 @@
     <router-view />
 
 
-    <section class="hero is-primary">
-      <div class="hero-body">
-        <p class="title">
-          inschpektor
-        </p>
-        <p class="subtitle">
-          Coming soon!
-        </p>
-      </div>
-    </section>
+    <!--<section class="hero is-primary">-->
+      <!--<div class="hero-body">-->
+        <!--<p class="title">-->
+          <!--inschpektor-->
+        <!--</p>-->
+        <!--<p class="subtitle">-->
+          <!--Coming soon!-->
+        <!--</p>-->
+      <!--</div>-->
+    <!--</section>-->
   </div>
 </template>
 
 
 <script>
-import HelloWorld from "./components/Manage.vue";
-
 export default {
-  name: "app",
+  name: 'app',
   components: {
-    HelloWorld
   }
 };
 </script>
