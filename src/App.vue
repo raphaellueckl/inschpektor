@@ -1,12 +1,4 @@
 <template>
-  <!-- <div id="app">
-    <div id="nav">
-      <router-link to="/">Home</router-link> |
-      <router-link to="/about">About</router-link>
-    </div>
-    <router-view/>
-  </div> -->
-
   <div id="app">
     <nav class="navbar" role="navigation" aria-label="main navigation">
       <div class="navbar-brand">
@@ -46,19 +38,10 @@
         </div>
     </nav>
 
-    <router-view />
+    <transition name="fade">
+      <router-view />
+    </transition>
 
-
-    <!--<section class="hero is-primary">-->
-      <!--<div class="hero-body">-->
-        <!--<p class="title">-->
-          <!--inschpektor-->
-        <!--</p>-->
-        <!--<p class="subtitle">-->
-          <!--Coming soon!-->
-        <!--</p>-->
-      <!--</div>-->
-    <!--</section>-->
   </div>
 </template>
 
@@ -91,5 +74,12 @@ export default {
 
 #nav a.router-link-exact-active {
   color: #42b983;
+}
+
+.fade-enter-active {
+  transition: opacity .8s;
+}
+.fade-enter, .fade-leave-to /* .fade-leave-active below version 2.1.8 */ {
+  opacity: 0;
 }
 </style>
