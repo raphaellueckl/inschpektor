@@ -1,11 +1,11 @@
 <template>
-  <div class="has-text-centered">
-    <h1 class="title">
-      Page Not Found
-      <br>
-      <br>
+  <div>
+    <p class="title">
       :(
-    </h1>
+    </p>
+    <p class="subtitle">
+      Page Not Found
+    </p>
   </div>
 </template>
 
