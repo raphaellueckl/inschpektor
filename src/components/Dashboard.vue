@@ -1,5 +1,27 @@
 <template>
-  <p>Dashboard</p>
+  <section class="section">
+    <div class="container">
+
+      <div class="columns is-multiline is-mobile">
+        <div class="column is-one-third">
+          <article>is-one-quarter</article>
+        </div>
+        <div class="column is-one-third">
+          <article>is-one-quarter</article>
+        </div>
+        <div class="column is-one-third">
+          <article>is-one-quarter</article>
+        </div>
+        <div class="column is-one-third">
+          <article>is-one-quarter</article>
+        </div>
+        <div class="column is-one-third">
+          <article>is-one-quarter</article>
+        </div>
+      </div>
+
+    </div>
+  </section>
 </template>
 
 <script>
