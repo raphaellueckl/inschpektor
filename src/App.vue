@@ -27,11 +27,14 @@
             Dashboard
           </router-link>
           <div class="navbar-start">
-            <router-link to="/"  class="navbar-item">
+            <router-link to="/manage"  class="navbar-item">
               Manage
             </router-link>
-            <router-link to="/" class="navbar-item">
+            <router-link to="/login" class="navbar-item">
               Login
+            </router-link>
+            <router-link to="/about" class="navbar-item">
+              About
             </router-link>
           </div>
           </div>
@@ -42,6 +45,8 @@
           </div>
         </div>
     </nav>
+
+    <router-view />
 
 
     <section class="hero is-primary">
@@ -59,7 +64,7 @@
 
 
 <script>
-import HelloWorld from "./components/HelloWorld.vue";
+import HelloWorld from "./components/Manage.vue";
 
 export default {
   name: "app",
