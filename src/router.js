@@ -4,6 +4,7 @@ import About from './components/About.vue'
 import Manage from './components/Manage.vue'
 import Dashboard from './components/Dashboard.vue'
 import Login from './components/Login.vue'
+import NotFound from './components/NotFound.vue'
 
 Vue.use(Router);
 
@@ -29,6 +30,10 @@ export default new Router({
       path: '/about',
       name: 'about',
       component: About
+    },
+    {
+      path: '*',
+      component: NotFound
     }
   ]
 })
