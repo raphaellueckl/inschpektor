@@ -1,18 +1,20 @@
 <template>
   <div>
-    <p>
-      Manage
-    </p>
+    <NeighborTable />
   </div>
 </template>
 
 <script>
+import NeighborTable from './NeighborTable';
+
 export default {
-  name: 'Manage'
+  name: 'Manage',
+  components: {
+    NeighborTable
+  }
 }
 </script>
 
-<!-- Add "scoped" attribute to limit CSS to this component only -->
 <style scoped>
 h3 {
   margin: 40px 0 0;

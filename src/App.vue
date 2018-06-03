@@ -1,12 +1,15 @@
 <template>
   <div id="app">
     <Menu/>
-    <transition name="fade">
-      <router-view/>
-    </transition>
+    <section class="section">
+      <div class="container">
+      <transition name="fade">
+        <router-view/>
+      </transition>
+      </div>
+    </section>
   </div>
 </template>
-
 
 <script>
   import Menu from './components/Menu'
@@ -23,7 +26,6 @@
     }
   };
 </script>
-
 
 <style>
   #app {

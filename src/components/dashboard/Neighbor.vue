@@ -21,7 +21,6 @@
   </article>
 </template>
 
-
 <script>
   export default {
     name: 'Neighbor',
@@ -33,7 +32,6 @@
     }
   }
 </script>
-
 
 <style scoped>
   .align__right {

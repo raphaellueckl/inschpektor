@@ -1,8 +1,8 @@
 import Vue from 'vue'
 import Router from 'vue-router'
 import About from './components/About.vue'
-import Manage from './components/Manage.vue'
-import Dashboard from './components/Dashboard.vue'
+import Manage from './components/manage/Manage.vue'
+import Dashboard from './components/dashboard/Dashboard.vue'
 import Login from './components/Login.vue'
 import NotFound from './components/NotFound.vue'
 
