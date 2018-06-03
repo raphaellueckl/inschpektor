@@ -1,5 +1,6 @@
 <template>
-  <div class="box">
+  <!--<article class="tile is-child notification" :class="colors[id % colors.length]">-->
+  <article class="tile is-child notification" >
     <h1 class="title">123.123.123.123</h1>
     <div class="media-content">
       <div class="content">
@@ -17,13 +18,19 @@
         </p>
       </div>
     </div>
-  </div>
+  </article>
 </template>
 
 
 <script>
   export default {
-    name: 'Neighbor'
+    name: 'Neighbor',
+    props: ['id'],
+    data() {
+      return {
+        colors: ['is-primary', 'is-link', 'is-info', 'is-success', 'is-warning', 'is-danger']
+      }
+    }
   }
 </script>
 
@@ -31,9 +38,5 @@
 <style scoped>
   .align__right {
     float: right
-  }
-  .box {
-    /*margin-right: 10px;*/
-    /*margin-left: 10px;*/
   }
 </style>

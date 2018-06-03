@@ -1,16 +1,9 @@
 <template>
   <div id="app">
-
-    <Menu />
-
-    <!--<section class="hero is-primary">-->
-      <!--<div class="hero-body">-->
-        <transition name="fade">
-          <router-view/>
-        </transition>
-      <!--</div>-->
-    <!--</section>-->
-
+    <Menu/>
+    <transition name="fade">
+      <router-view/>
+    </transition>
   </div>
 </template>
 
@@ -22,6 +15,11 @@
     name: 'app',
     components: {
       Menu
+    },
+    data() {
+      return {
+        neighbors: ['a', 'b', 'c', 'd', 'e', 'f', 'g', 'h', 'i', 'j', 'k'] // Length 11
+      }
     }
   };
 </script>

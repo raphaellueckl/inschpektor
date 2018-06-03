@@ -8,7 +8,7 @@ import NotFound from './components/NotFound.vue'
 
 Vue.use(Router);
 
-export default new Router({
+const router = new Router({
   mode: 'history',
   routes: [
     {
@@ -37,3 +37,14 @@ export default new Router({
     }
   ]
 })
+
+router.beforeEach((to, from, next) => {
+  const token = localStorage.getItem('token');
+  if (!token && to.path !== '/login') {
+    next('/login');
+  }
+  else next();
+});
+
+
+export default router;
