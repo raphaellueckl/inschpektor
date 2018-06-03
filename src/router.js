@@ -19,7 +19,12 @@ const router = new Router({
     {
       path: '/manage',
       name: 'manage',
-      component: Manage
+      component: Manage,
+      beforeEnter: (to, from, next) => {
+        const token = localStorage.getItem('token');
+        if (!token && to.path !== '/login') next('/login');
+        else next();
+      }
     },
     {
       path: '/login',
@@ -37,14 +42,5 @@ const router = new Router({
     }
   ]
 })
-
-router.beforeEach((to, from, next) => {
-  const token = localStorage.getItem('token');
-  if (!token && to.path !== '/login') {
-    next('/login');
-  }
-  else next();
-});
-
 
 export default router;

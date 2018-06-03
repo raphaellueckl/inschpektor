@@ -23,7 +23,7 @@
             </div>
             <div class="field">
               <p class="control">
-                <button class="button is-success">
+                <button class="button is-success" @click="login">
                   Login
                 </button>
               </p>
@@ -38,7 +38,14 @@
 
 <script>
   export default {
-    name: 'Login'
+    name: 'Login',
+    methods: {
+      login() {
+        // this.$store.dispatch('login').then(() => {
+          // this.$router.push({path: '/dashboard'});
+        // });
+      }
+    }
   };
 </script>
 
