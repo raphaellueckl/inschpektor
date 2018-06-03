@@ -4,7 +4,7 @@
       <div class="container">
         <h1 class="title">Authentication</h1>
         <h2 class="subtitle">
-          To view/edit your neighbors, you need to login first.
+          To view / edit your neighbors, you need to login first.
         </h2>
 
         <div class="columns is-mobile">
@@ -12,13 +12,13 @@
             <div class="field">
               <label class="label">Account</label>
               <div class="control">
-                <input class="input" type="text" placeholder="Text input">
+                <input class="input" type="text" placeholder="Username">
               </div>
             </div>
             <div class="field">
               <label class="label">Password</label>
               <div class="control">
-                <input class="input" type="text" placeholder="Text input">
+                <input class="input" type="text" placeholder="Provide your password...">
               </div>
             </div>
             <div class="field">

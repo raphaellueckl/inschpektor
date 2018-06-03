@@ -3,21 +3,12 @@
     <div class="container">
 
       <div class="columns is-multiline is-mobile">
-        <div class="column is-one-third">
-          <article>is-one-quarter</article>
-        </div>
-        <div class="column is-one-third">
-          <article>is-one-quarter</article>
-        </div>
-        <div class="column is-one-third">
-          <article>is-one-quarter</article>
-        </div>
-        <div class="column is-one-third">
-          <article>is-one-quarter</article>
-        </div>
-        <div class="column is-one-third">
-          <article>is-one-quarter</article>
-        </div>
+        <Neighbor class="column is-one-third" />
+        <Neighbor class="column is-one-third" />
+        <Neighbor class="column is-one-third" />
+        <Neighbor class="column is-one-third" />
+        <Neighbor class="column is-one-third" />
+        <Neighbor class="column is-one-third" />
       </div>
 
     </div>
@@ -25,11 +16,15 @@
 </template>
 
 <script>
-  export default {
-    name: 'Dashboard'
-  };
+import Neighbor from './Neighbor.vue'
+
+export default {
+  name: "Dashboard",
+  components: {
+    Neighbor
+  }
+};
 </script>
 
 <style scoped>
-
 </style>
