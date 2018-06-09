@@ -3,6 +3,8 @@
   "version": "0.1.0",
   "private": true,
   "scripts": {
+    "start": "node server.js",
+    "start-dev": "concurrently \"node server.js\" \"npm run serve\"",
     "serve": "vue-cli-service serve",
     "build": "vue-cli-service build"
   },
@@ -12,6 +14,7 @@
     "@fortawesome/fontawesome-free-regular": "^5.0.13",
     "@fortawesome/fontawesome-free-solid": "^5.0.13",
     "axios": "^0.18.0",
+    "express": "^4.16.3",
     "bulma": "^0.7.1",
     "node-sass": "^4.9.0",
     "sass-loader": "^7.0.3",
@@ -21,7 +24,8 @@
   },
   "devDependencies": {
     "@vue/cli-service": "^3.0.0-beta.15",
-    "vue-template-compiler": "^2.5.16"
+    "vue-template-compiler": "^2.5.16",
+    "concurrently": "^3.5.1"
   },
   "postcss": {
     "plugins": {

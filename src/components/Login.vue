@@ -37,10 +37,13 @@
 </template>
 
 <script>
+  import axios from 'axios';
+
   export default {
     name: 'Login',
     methods: {
       login() {
+        axios.post('/api/login').then(response => {console.log(response)});
         // this.$store.dispatch('login').then(() => {
           // this.$router.push({path: '/dashboard'});
         // });
