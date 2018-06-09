@@ -43,7 +43,8 @@
     name: 'Login',
     methods: {
       login() {
-        axios.post('/api/login').then(response => {console.log(response)});
+        axios.get('/api/iri/getNeighbors').then(response => {console.log(response)});
+        // axios.post('/api/login').then(response => {console.log(response)});
         // this.$store.dispatch('login').then(() => {
           // this.$router.push({path: '/dashboard'});
         // });

@@ -4,6 +4,8 @@ const axios = require('axios');
 const history = require('connect-history-api-fallback');
 
 const app = express();
+const iri_ip = '192.168.188.20';
+const iri_port = '14265';
 
 app.set('port', (process.env.PORT || 3000));
 
@@ -29,17 +31,34 @@ app.post('/api/login', (req, res) => {
   ), FAKE_DELAY);
 });
 
-app.get('/api/coins', function(req, res) {
-  console.log('fetching coins...')
+app.get('/api/iri/getNeighbors', (req, res) => {
+  console.log('enter')
+  axios.post(
+    `http://${iri_ip}:${iri_port}`,
+    {'command': 'getNodeInfo'},
+    {
+      headers: {
+        'Content-Type': 'application/json',
+        'X-IOTA-API-Version': '1'
+      }
+    }
+  ).then(response => {
+    console.log('GetNeighbors', response);
+    res.json(response.data);
+  });
+});
+
+app.get('/api/coins', function (req, res) {
+  console.log('fetching coins...');
   axios.get('https://api.coinmarketcap.com/v2/ticker/?limit=100')
-    .then(function(response) {
-      console.log('Success!')
-      res.setHeader('Cache-Control', 'no-cache');
-      res.json(response.data);
-    })
-    .catch(function(error) {
-      console.log('Failed!', error)
-    })
+  .then(function (response) {
+    console.log('Success!');
+    res.setHeader('Cache-Control', 'no-cache');
+    res.json(response.data);
+  })
+  .catch(function (error) {
+    console.log('Failed!', error);
+  });
 });
 
 app.listen(app.get('port'), () => {
