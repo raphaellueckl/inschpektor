@@ -1,29 +1,37 @@
 <template>
   <div class="tile is-ancestor">
     <div class="tile is-parent">
-      <article class="tile is-child notification is-info">
+      <article class="tile is-child notification is-info box">
         <div class="content">
-          username
+          Username
         </div>
       </article>
-      <article class="tile is-child notification is-info">
+    </div>
+    <div class="tile is-parent">
+      <article class="tile is-child notification is-info box">
         <div class="content">
           IP
         </div>
       </article>
-      <article class="tile is-child notification is-info">
+    </div>
+    <div class="tile is-parent">
+      <article class="tile is-child notification is-info box">
         <div class="content">
           Active
         </div>
       </article>
-      <article class="tile is-child notification is-info">
+    </div>
+    <div class="tile is-parent">
+      <article class="tile is-child notification is-info box">
         <div class="content">
           Sync
         </div>
       </article>
-      <article class="tile is-child notification is-info">
+    </div>
+    <div class="tile is-parent">
+      <article class="tile is-child notification is-info box">
         <div class="content">
-          Remove
+          <i class="far fa-trash-alt"></i>
         </div>
       </article>
     </div>

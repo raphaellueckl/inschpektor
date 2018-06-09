@@ -2,24 +2,32 @@
   <div>
     <div class="tile is-ancestor">
       <div class="tile is-parent">
-        <article class="tile is-child notification is-success">
+        <article class="tile is-child notification is-success box">
           <p class="subtitle">Username</p>
         </article>
-        <article class="tile is-child notification is-success">
+      </div>
+      <div class="tile is-parent">
+        <article class="tile is-child notification is-success box">
           <p class="subtitle">IP</p>
         </article>
-        <article class="tile is-child notification is-success">
+      </div>
+      <div class="tile is-parent">
+        <article class="tile is-child notification is-success box">
           <p class="subtitle">Active</p>
         </article>
-        <article class="tile is-child notification is-success">
+      </div>
+      <div class="tile is-parent">
+        <article class="tile is-child notification is-success box">
           <p class="subtitle">Sync</p>
         </article>
-        <article class="tile is-child notification is-success">
+      </div>
+      <div class="tile is-parent">
+        <article class="tile is-child notification is-success box">
           <p class="subtitle">Remove?</p>
         </article>
       </div>
     </div>
-    <NeighborRow v-for="neighbor in neighbors" neighbor="neighbor"/>
+    <NeighborRow v-for="neighbor in neighbors" neighbor="neighbor" :key="neighbor"/>
   </div>
 </template>
 
