@@ -20,7 +20,7 @@ const API_TOKEN = 'D6W69PRgCoDKgHZGJmRUNA';
 // Make things more noticeable in the UI by introducing a fake delay
 // to logins
 const FAKE_DELAY = 500; // ms
-app.post('/login', (req, res) => {
+app.post('/api/login', (req, res) => {
   setTimeout(() => (
     res.json({
       success: true,

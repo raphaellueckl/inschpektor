@@ -47,6 +47,7 @@
         // this.$store.dispatch('login').then(() => {
           // this.$router.push({path: '/dashboard'});
         // });
+        // axios.get('/api/coins').then(response => {console.log(response)});
       }
     }
   };
