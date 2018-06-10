@@ -1,13 +1,17 @@
-import Vue from 'vue'
-import Vuex from 'vuex'
+import Vue from 'vue';
+import Vuex from 'vuex';
 
-Vue.use(Vuex)
+Vue.use(Vuex);
 
 import axios from 'axios';
 
+const iri_ip = '192.168.188.20';
+const iri_port = '14265';
+
 const state = {
   token: null,
-  loading: false
+  loading: false,
+  nodeInfo: null
 };
 
 const mutations = {
@@ -19,6 +23,9 @@ const mutations = {
   },
   LOGIN_SUCCESS(state) {
     state.loading = false;
+  },
+  SET_NODE_INFO(state, info) {
+    state.nodeInfo = info;
   }
 };
 
@@ -35,12 +42,19 @@ const actions = {
       commit('SET_TOKEN', null);
       resolve();
     });
+  },
+  fetchNodeInfo({commit}) {
+    axios(createIriRequest('getNodeInfo')).then(response => {
+      console.log(response.data)
+      commit('SET_NODE_INFO', response.data);
+    });
   }
 };
 
 const getters = {
   token: state => state.token,
-  loading: state => state.loading
+  loading: state => state.loading,
+  nodeInfo: state => state.nodeInfo
 };
 
 const loginModule = {
@@ -50,8 +64,20 @@ const loginModule = {
   getters
 };
 
+function createIriRequest(command) {
+  return {
+    url: `http://${iri_ip}:${iri_port}`,
+    data: {'command': command},
+    method: 'post',
+    headers: {
+      'Content-Type': 'application/json',
+      'X-IOTA-API-Version': '1'
+    }
+  };
+}
+
 export default new Vuex.Store({
   modules: {
     loginModule
   }
-})
+});

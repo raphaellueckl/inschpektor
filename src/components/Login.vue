@@ -23,7 +23,7 @@
             </div>
             <div class="field">
               <p class="control">
-                <button class="button is-success" @click="login">
+                <button class="button is-success" @click="fetchNodeInfo">
                   Login
                 </button>
               </p>
@@ -37,19 +37,22 @@
 </template>
 
 <script>
+  import {mapActions} from 'vuex';
   import axios from 'axios';
 
   export default {
     name: 'Login',
     methods: {
       login() {
-        axios.get('/api/iri/getNeighbors').then(response => {console.log(response)});
-        // axios.post('/api/login').then(response => {console.log(response)});
-        // this.$store.dispatch('login').then(() => {
-          // this.$router.push({path: '/dashboard'});
-        // });
-        // axios.get('/api/coins').then(response => {console.log(response)});
-      }
+        // axios.get('/api/iri/getNeighbors').then(response => {console.log(response)});
+      },
+      ...mapActions(['fetchNodeInfo'])
+    },
+    computed: {
+      // ...mapGetters([
+        // 'nodeInfo'
+      // ])
+
     }
   };
 </script>
