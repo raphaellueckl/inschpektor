@@ -11,7 +11,8 @@ const iri_port = '14265';
 const state = {
   token: null,
   loading: false,
-  nodeInfo: {}
+  nodeInfo: null,
+  hostNode: `${iri_ip}:${iri_port}`
 };
 
 const mutations = {
@@ -54,7 +55,8 @@ const actions = {
 const getters = {
   token: state => state.token,
   loading: state => state.loading,
-  nodeInfo: state => state.nodeInfo
+  nodeInfo: state => state.nodeInfo,
+  hostNode: state => state.hostNode
 };
 
 const loginModule = {

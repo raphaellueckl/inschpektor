@@ -32,13 +32,12 @@
       </div>
     </div>
     <div class="navbar-end">
-        <span class="navbar-item">
-          <div v-if="nodeInfo.latestSolidSubtangleMilestoneIndex">
+        <span v-if="nodeInfo" class="navbar-item __online"
+              :class="{ __offline: nodeInfo.latestSolidSubtangleMilestoneIndex < nodeInfo.latestMilestoneIndex - 1}">
             {{nodeInfo.latestSolidSubtangleMilestoneIndex}} / {{nodeInfo.latestMilestoneIndex}}
-          </div>
-          <div v-else>
-            Node seems offline!
-          </div>
+        </span>
+      <span v-else>
+          Node seems offline!
         </span>
     </div>
   </nav>
@@ -49,9 +48,6 @@
 
   export default {
     name: 'Menu',
-    created() {
-      this.$store.dispatch('fetchNodeInfo');
-    },
     computed: {
       ...mapGetters(['nodeInfo'])
     }
@@ -59,5 +55,15 @@
 </script>
 
 <style scoped>
+  .__online {
+    background: hsl(141, 71%, 48%);
+  }
 
+  .__offline {
+    background: hsl(348, 100%, 61%);
+  }
+
+  .navbar-item {
+    border-bottom-left-radius: 20px;
+  }
 </style>

@@ -3,16 +3,16 @@
     <Menu/>
     <section class="section">
       <div class="container">
-      <transition name="fade">
-        <router-view/>
-      </transition>
+        <transition name="fade">
+          <router-view/>
+        </transition>
       </div>
     </section>
   </div>
 </template>
 
 <script>
-  import Menu from './components/Menu'
+  import Menu from './components/Menu';
 
 
   export default {
@@ -23,7 +23,10 @@
     data() {
       return {
         neighbors: ['a', 'b', 'c', 'd', 'e', 'f', 'g', 'h', 'i', 'j', 'k'] // Length 11
-      }
+      };
+    },
+    created() {
+      this.$store.dispatch('fetchNodeInfo');
     }
   };
 </script>
