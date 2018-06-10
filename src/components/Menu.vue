@@ -17,19 +17,21 @@
         <router-link to="/" class="navbar-item">
           Dashboard
         </router-link>
-        <div class="navbar-start">
-          <router-link to="/manage" class="navbar-item">
-            Manage
-          </router-link>
-          <router-link to="/login" class="navbar-item">
-            Login
-          </router-link>
-          <router-link to="/about" class="navbar-item">
-            About
-          </router-link>
-        </div>
+        <router-link to="/manage" class="navbar-item">
+          Manage
+        </router-link>
+        <router-link to="/node" class="navbar-item">
+          Node Info
+        </router-link>
+        <router-link to="/login" class="navbar-item">
+          Login
+        </router-link>
+        <router-link to="/about" class="navbar-item">
+          About
+        </router-link>
       </div>
-      <div class="navbar-end">
+    </div>
+    <div class="navbar-end">
         <span class="navbar-item">
           <div v-if="nodeInfo.latestSolidSubtangleMilestoneIndex">
             {{nodeInfo.latestSolidSubtangleMilestoneIndex}} / {{nodeInfo.latestMilestoneIndex}}
@@ -38,7 +40,6 @@
             Node seems offline!
           </div>
         </span>
-      </div>
     </div>
   </nav>
 </template>
