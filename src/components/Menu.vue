@@ -30,17 +30,30 @@
         </div>
       </div>
       <div class="navbar-end">
-            <span class="navbar-item">
-              subtangle index / milestone index
-            </span>
+        <span class="navbar-item">
+          <div v-if="nodeInfo.latestSolidSubtangleMilestoneIndex">
+            {{nodeInfo.latestSolidSubtangleMilestoneIndex}} / {{nodeInfo.latestMilestoneIndex}}
+          </div>
+          <div v-else>
+            Node seems offline!
+          </div>
+        </span>
       </div>
     </div>
   </nav>
 </template>
 
 <script>
+  import {mapGetters} from 'vuex';
+
   export default {
-    name: 'Menu'
+    name: 'Menu',
+    created() {
+      this.$store.dispatch('fetchNodeInfo');
+    },
+    computed: {
+      ...mapGetters(['nodeInfo'])
+    }
   };
 </script>
 

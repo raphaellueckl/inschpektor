@@ -11,7 +11,7 @@ const iri_port = '14265';
 const state = {
   token: null,
   loading: false,
-  nodeInfo: null
+  nodeInfo: {}
 };
 
 const mutations = {
@@ -45,7 +45,7 @@ const actions = {
   },
   fetchNodeInfo({commit}) {
     axios(createIriRequest('getNodeInfo')).then(response => {
-      console.log(response.data)
+      console.log(response.data);
       commit('SET_NODE_INFO', response.data);
     });
   }
