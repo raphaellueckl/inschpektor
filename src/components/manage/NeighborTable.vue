@@ -27,11 +27,12 @@
         </article>
       </div>
     </div>
-    <NeighborRow v-for="neighbor in neighbors" neighbor="neighbor" :key="neighbor"/>
+    <NeighborRow v-for="neighbor in neighbors" neighbor="neighbor" :key="neighbor.address"/>
   </div>
 </template>
 
 <script>
+  import {mapGetters} from 'vuex';
   import NeighborRow from './NeighborRow';
 
   export default {
@@ -41,8 +42,11 @@
     },
     data() {
       return {
-        neighbors: [1, 2, 3]
+        // neighbors: [1, 2, 3]
       }
+    },
+    computed: {
+      ...mapGetters(['neighbors'])
     }
   }
 </script>

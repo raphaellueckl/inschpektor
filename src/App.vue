@@ -27,6 +27,7 @@
     },
     created() {
       this.$store.dispatch('fetchNodeInfo');
+      this.$store.dispatch('fetchNeighbors');
     }
   };
 </script>

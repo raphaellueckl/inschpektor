@@ -1,7 +1,7 @@
 <template>
   <!--<article class="tile is-child notification" :class="colors[id % colors.length]">-->
-  <article class="tile is-child notification" >
-    <h1 class="title">123.123.123.123</h1>
+  <article class="tile is-child notification">
+    <h1 class="title">{{neighbor.address}}</h1>
     <div class="media-content">
       <div class="content">
         <p>
@@ -24,7 +24,7 @@
 <script>
   export default {
     name: 'Neighbor',
-    props: ['id'],
+    props: ['neighbor'],
     data() {
       return {
         colors: ['is-primary', 'is-link', 'is-info', 'is-success', 'is-warning', 'is-danger']

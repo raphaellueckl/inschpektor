@@ -5,7 +5,7 @@
 
         <div class="tile is-parent is-vertical">
           <div v-for="(neighbor, index) in neighbors" v-if="index < neighbors.length / 3">
-            <Neighbor :id="index"/>
+            <Neighbor :neighbor="neighbor"/>
             <br>
           </div>
         </div>
@@ -13,7 +13,7 @@
         <div class="tile is-parent is-vertical">
           <div v-for="(neighbor, index) in neighbors"
                v-if="index >= neighbors.length / 3 && index < neighbors.length * 2 / 3">
-            <Neighbor :id="index"/>
+            <Neighbor :neighbor="neighbor"/>
             <br>
           </div>
         </div>
@@ -21,7 +21,7 @@
         <div class="tile is-parent is-vertical">
           <div v-for="(neighbor, index) in neighbors"
                v-if="index >= neighbors.length * 2 / 3">
-            <Neighbor :id="index"/>
+            <Neighbor :neighbor="neighbor"/>
             <br>
           </div>
         </div>
@@ -32,6 +32,7 @@
 </template>
 
 <script>
+  import {mapGetters} from 'vuex';
   import Neighbor from './Neighbor.vue'
 
   export default {
@@ -41,8 +42,11 @@
     },
     data() {
       return {
-        neighbors: ['a', 'b', 'c', 'd', 'e', 'f', 'g', 'h']
+        // neighbors: ['a', 'b', 'c', 'd', 'e', 'f', 'g', 'h']
       }
+    },
+    computed: {
+      ...mapGetters(['neighbors'])
     }
   };
 </script>
