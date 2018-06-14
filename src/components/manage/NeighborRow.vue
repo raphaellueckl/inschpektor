@@ -10,7 +10,7 @@
     <div class="tile is-parent">
       <article class="tile is-child notification is-info box">
         <div class="content">
-          IP
+          {{neighbor.address}}
         </div>
       </article>
     </div>

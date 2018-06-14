@@ -27,7 +27,7 @@
         </article>
       </div>
     </div>
-    <NeighborRow v-for="neighbor in neighbors" neighbor="neighbor" :key="neighbor.address"/>
+    <NeighborRow v-for="neighbor in neighbors" :neighbor="neighbor" :key="neighbor.address"/>
   </div>
 </template>
 
