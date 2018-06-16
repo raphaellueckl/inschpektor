@@ -14,10 +14,11 @@
     "@fortawesome/fontawesome-free-regular": "^5.0.13",
     "@fortawesome/fontawesome-free-solid": "^5.0.13",
     "axios": "^0.18.0",
-    "express": "^4.16.3",
     "bulma": "^0.7.1",
+    "express": "^4.16.3",
     "node-sass": "^4.9.0",
     "sass-loader": "^7.0.3",
+    "sqlite3": "^4.0.0",
     "vue": "^2.5.16",
     "vue-router": "^3.0.1",
     "vuex": "^3.0.1"

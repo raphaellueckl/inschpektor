@@ -4,6 +4,7 @@ const axios = require('axios');
 const history = require('connect-history-api-fallback');
 
 const app = express();
+
 const iri_ip = '192.168.188.20';
 const iri_port = '14265';
 
@@ -77,6 +78,43 @@ function createIriRequest(command) {
     }
   };
 }
+
+const sqlite3 = require('sqlite3').verbose();
+const db = new sqlite3.Database('db');
+
+app.get(`${BASE_URL}/insertdb`, function (req, res) {
+
+  db.serialize(function () {
+    // db.run('CREATE TABLE lorem (info TEXT)')
+    const stmt = db.prepare('INSERT INTO lorem VALUES (?)')
+
+    for (let i = 0; i < 10; i++) {
+      stmt.run('Ipsum ' + i)
+    }
+
+    stmt.finalize()
+
+    db.each('SELECT rowid AS id, info FROM lorem', function (err, row) {
+      console.log(row.id + ': ' + row.info)
+    })
+  })
+
+  res.json({})
+
+});
+
+app.get(`${BASE_URL}/getdb`, function (req, res) {
+
+  db.serialize(function () {
+    db.each('SELECT rowid AS id, info FROM lorem', function (err, row) {
+      console.log(row.id + ': ' + row.info)
+    })
+  })
+
+  res.json({})
+
+});
+
 
 app.listen(app.get('port'), () => {
   console.log(`Find the server at: http://localhost:${app.get('port')}/`); // eslint-disable-line no-console
