@@ -14,16 +14,10 @@
 <script>
   import Menu from './components/Menu';
 
-
   export default {
     name: 'app',
     components: {
       Menu
-    },
-    data() {
-      return {
-        neighbors: ['a', 'b', 'c', 'd', 'e', 'f', 'g', 'h', 'i', 'j', 'k'] // Length 11
-      };
     },
     created() {
       this.$store.dispatch('fetchNodeInfo');

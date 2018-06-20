@@ -2,6 +2,34 @@
 const express = require('express');
 const axios = require('axios');
 const history = require('connect-history-api-fallback');
+const sqlite3 = require('sqlite3').verbose();
+
+const db = new sqlite3.Database('db');
+(function createTables() {
+  db.serialize(() => {
+    db.run(
+      'CREATE TABLE IF NOT EXISTS neighbors (' +
+      'address TEXT,' +
+      'numberOfAllTransactions INTEGER,' +
+      'numberOfRandomTransactionRequests INTEGER,' +
+      'numberOfNewTransactions INTEGER,' +
+      'numberOfInvalidTransactions INTEGER,' +
+      'numberOfSentTransactions INTEGER,' +
+      'connectionType TEXT' +
+      ')'
+    );
+    // db.run(
+    //   'CREATE TRIGGER IF NOT EXISTS after_insertion_trigger' +
+    //   'AFTER INSERT ON neighbors' +
+    //   'BEGIN' +
+    //   '    DELETE FROM neighbors' +
+    //   '    WHERE uuid IN (' +
+    //   '        SELECT uuid FROM table ORDER BY sent ASC, timestamp DESC LIMIT -1 OFFSET 100' +
+    //   '    );' +
+    //   'END;'
+    // );
+  })
+})();
 
 const app = express();
 
@@ -49,22 +77,22 @@ app.get('/api/iri/getNeighbors', (req, res) => {
 
 app.get(`${BASE_URL}/neighbors`, function (req, res) {
   axios(createIriRequest('getNeighbors'))
-    .then(response => {
-      res.json(response.data.neighbors);
-    })
-    .catch(error => {
-      res.json(mockData.neighbors);
-    });
+  .then(response => {
+    res.json(response.data.neighbors);
+  })
+  .catch(error => {
+    res.json(mockData.neighbors);
+  });
 });
 
 app.get(`${BASE_URL}/node-info`, (req, res) => {
   axios(createIriRequest('getNodeInfo'))
-    .then(response => {
-      res.json(response.data);
-    })
-    .catch(error => {
-      res.json([]);
-    });
+  .then(response => {
+    res.json(response.data);
+  })
+  .catch(error => {
+    res.json([]);
+  });
 });
 
 function createIriRequest(command) {
@@ -79,39 +107,44 @@ function createIriRequest(command) {
   };
 }
 
-const sqlite3 = require('sqlite3').verbose();
-const db = new sqlite3.Database('db');
-
 app.get(`${BASE_URL}/insertdb`, function (req, res) {
 
   db.serialize(function () {
-    // db.run('CREATE TABLE lorem (info TEXT)')
-    const stmt = db.prepare('INSERT INTO lorem VALUES (?)')
+    const stmt = db.prepare('INSERT INTO neighbors (address, numberOfAllTransactions, numberOfRandomTransactionRequests, numberOfNewTransactions, numberOfInvalidTransactions, numberOfSentTransactions, connectionType) VALUES (?, ?, ?, ?, ?, ?, ?)');
 
-    for (let i = 0; i < 10; i++) {
-      stmt.run('Ipsum ' + i)
+    for (neighbor in mockData.neighbors) {
+      stmt.run(
+        neighbor.address,
+        neighbor.numberOfAllTransactions,
+        neighbor.numberOfRandomTransactionRequests,
+        neighbor.numberOfNewTransactions,
+        neighbor.numberOfInvalidTransactions,
+        neighbor.numberOfSentTransactions,
+        neighbor.connectionType);
     }
 
-    stmt.finalize()
+    stmt.finalize();
 
-    db.each('SELECT rowid AS id, info FROM lorem', function (err, row) {
-      console.log(row.id + ': ' + row.info)
-    })
-  })
+    db.each('SELECT rowid as id, * FROM neighbors', function (err, row) {
+      console.log(row)
+      console.log(row.id + ': ' + row.address);
+    });
+  });
 
-  res.json({})
+  res.json({});
 
 });
 
 app.get(`${BASE_URL}/getdb`, function (req, res) {
 
   db.serialize(function () {
-    db.each('SELECT rowid AS id, info FROM lorem', function (err, row) {
-      console.log(row.id + ': ' + row.info)
-    })
-  })
-
-  res.json({})
+    const fetched = [];
+    db.each('SELECT rowid AS id, address FROM neighbors', function (err, row) {
+      fetched.push(`${row.id}:${row.address}`);
+      console.log(row.id + ' ' + row.address);
+    });
+    res.json(fetched);
+  });
 
 });
 
@@ -119,7 +152,6 @@ app.get(`${BASE_URL}/getdb`, function (req, res) {
 app.listen(app.get('port'), () => {
   console.log(`Find the server at: http://localhost:${app.get('port')}/`); // eslint-disable-line no-console
 });
-
 
 const mockData =
   {
@@ -207,4 +239,39 @@ const mockData =
       }
     ],
     'duration': 0
+  };
+
+async function theFetcher() {
+  function fetch() {
+    axios(createIriRequest('getNeighbors'))
+    .then(response => {
+      const neighbors = response.data.neighbors;
+
+      const stmt = db.prepare('INSERT INTO neighbors VALUES (?, ?, ?, ?, ?, ?, ?)');
+      for (neighbor in neighbors) {
+        stmt.run(
+          neighbor.address,
+          neighbor.numberOfAllTransactions,
+          neighbor.numberOfRandomTransactionRequests,
+          neighbor.numberOfNewTransactions,
+          neighbor.numberOfInvalidTransactions,
+          neighbor.numberOfSentTransactions,
+          neighbor.connectionType);
+      }
+      stmt.finalize();
+    })
+    .catch(error => console.log('Error: fetch()'));
   }
+
+  while (true) {
+    fetch();
+
+    let timekeeper = new Promise((resolve, reject) => {
+      setTimeout(() => resolve(), 15000);
+    });
+
+    let result = await timekeeper;
+  }
+}
+
+theFetcher();
