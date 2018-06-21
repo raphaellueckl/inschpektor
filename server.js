@@ -9,6 +9,7 @@ const db = new sqlite3.Database('db');
   db.serialize(() => {
     db.run(
       'CREATE TABLE IF NOT EXISTS neighbors (' +
+      'timestamp DATETIME DEFAULT CURRENT_TIMESTAMP,' +
       'address TEXT,' +
       'numberOfAllTransactions INTEGER,' +
       'numberOfRandomTransactionRequests INTEGER,' +
@@ -18,13 +19,32 @@ const db = new sqlite3.Database('db');
       'connectionType TEXT' +
       ')'
     );
+
+    // db.run(
+    //   `CREATE TRIGGER IF NOT EXISTS after_insertion_trigger
+    //   AFTER INSERT ON neighbors
+    //   BEGIN
+    //     DELETE FROM neighbors WHERE rowid in (
+    //       SELECT rowid FROM neighbors
+    //       INNER JOIN (
+    //         SELECT rowid, address, timestamp, ROW_NUMBER() OVER (PARTITION BY address ORDER BY timestamp
+    //       ) as LegacyNr
+    //       FROM neighbors
+    //       ) as oldest_allowed_tmstmp_per_adress
+    //       ON
+    //       oldest_tmstmp_per_adress.id = neighbors.rowid
+    //       and oldest_tmstmp_per_adress.LegacyNr > 100
+    //     );
+    //     END;`
+    // );
+
     // db.run(
     //   'CREATE TRIGGER IF NOT EXISTS after_insertion_trigger' +
     //   'AFTER INSERT ON neighbors' +
     //   'BEGIN' +
     //   '    DELETE FROM neighbors' +
     //   '    WHERE uuid IN (' +
-    //   '        SELECT uuid FROM table ORDER BY sent ASC, timestamp DESC LIMIT -1 OFFSET 100' +
+    //   '        SELECT * FROM table ORDER BY timestamp DESC, timestamp DESC LIMIT -1 OFFSET 100' +
     //   '    );' +
     //   'END;'
     // );
@@ -126,8 +146,7 @@ app.get(`${BASE_URL}/insertdb`, function (req, res) {
     stmt.finalize();
 
     db.each('SELECT rowid as id, * FROM neighbors', function (err, row) {
-      console.log(row)
-      console.log(row.id + ': ' + row.address);
+      console.log(row.id + ': ' + row.address + ' time: ' + row.timestamp);
     });
   });
 
@@ -137,14 +156,20 @@ app.get(`${BASE_URL}/insertdb`, function (req, res) {
 
 app.get(`${BASE_URL}/getdb`, function (req, res) {
 
-  db.serialize(function () {
-    const fetched = [];
-    db.each('SELECT rowid AS id, address FROM neighbors', function (err, row) {
-      fetched.push(`${row.id}:${row.address}`);
-      console.log(row.id + ' ' + row.address);
-    });
-    res.json(fetched);
+  // db.serialize(function () {
+  //   const fetched = [];
+  //   db.each('SELECT rowid AS id, address, timestamp FROM neighbors', function (err, row) {
+  //     fetched.push(`${row.id}:${row.address}`);
+  //     console.log(row.id + ' ' + row.address + ' time: ' + row.timestamp);
+  //   });
+  //   res.json(fetched);
+  // });
+
+  db.each('SELECT rowid AS id, address FROM neighbors', function (err, row) {
+    // console.log(row.id + ': ' + row.address);
   });
+
+  res.json({});
 
 });
 
@@ -247,8 +272,8 @@ async function theFetcher() {
     .then(response => {
       const neighbors = response.data.neighbors;
 
-      const stmt = db.prepare('INSERT INTO neighbors VALUES (?, ?, ?, ?, ?, ?, ?)');
-      for (neighbor in neighbors) {
+      const stmt = db.prepare('INSERT INTO neighbors (address, numberOfAllTransactions, numberOfRandomTransactionRequests, numberOfNewTransactions, numberOfInvalidTransactions, numberOfSentTransactions, connectionType) VALUES (?, ?, ?, ?, ?, ?, ?)');
+      neighbors.forEach((neighbor) => {
         stmt.run(
           neighbor.address,
           neighbor.numberOfAllTransactions,
@@ -257,17 +282,18 @@ async function theFetcher() {
           neighbor.numberOfInvalidTransactions,
           neighbor.numberOfSentTransactions,
           neighbor.connectionType);
-      }
+      });
       stmt.finalize();
     })
-    .catch(error => console.log('Error: fetch()'));
+    .catch(error => console.log(error));
   }
 
   while (true) {
-    fetch();
+    // fetch();
 
     let timekeeper = new Promise((resolve, reject) => {
       setTimeout(() => resolve(), 15000);
+      // setTimeout(() => resolve());
     });
 
     let result = await timekeeper;
