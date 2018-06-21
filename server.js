@@ -112,7 +112,7 @@ app.get(`${BASE_URL}/insertdb`, function (req, res) {
   db.serialize(function () {
     const stmt = db.prepare('INSERT INTO neighbors (address, numberOfAllTransactions, numberOfRandomTransactionRequests, numberOfNewTransactions, numberOfInvalidTransactions, numberOfSentTransactions, connectionType) VALUES (?, ?, ?, ?, ?, ?, ?)');
 
-    for (neighbor in mockData.neighbors) {
+    mockData.neighbors.forEach(neighbor => {
       stmt.run(
         neighbor.address,
         neighbor.numberOfAllTransactions,
@@ -121,7 +121,7 @@ app.get(`${BASE_URL}/insertdb`, function (req, res) {
         neighbor.numberOfInvalidTransactions,
         neighbor.numberOfSentTransactions,
         neighbor.connectionType);
-    }
+    });
 
     stmt.finalize();
 
