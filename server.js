@@ -48,7 +48,7 @@ const db = new sqlite3.Database('db');
     //   '    );' +
     //   'END;'
     // );
-  })
+  });
 })();
 
 const app = express();
@@ -81,18 +81,54 @@ app.post('/api/login', (req, res) => {
 });
 
 app.get('/api/iri/getNeighbors', (req, res) => {
-  axios.post(
-    `http://${iri_ip}:${iri_port}`,
-    {'command': 'getNodeInfo'},
-    {
-      headers: {
-        'Content-Type': 'application/json',
-        'X-IOTA-API-Version': '1'
-      }
-    }
-  ).then(response => {
-    res.json(response.data);
+
+  axios(createIriRequest('getNeighbors'))
+  .then(getNeighborsResponse => {
+
+    const neighbors = getNeighborsResponse.data.neighbors;
+
+    db.all('SELECT * FROM neighbors ORDER BY timestamp ASC', [], (err, rows) => {
+
+      neighbors.forEach(n => {
+
+        axios(createIriRequest('getNodeInfo'))
+        .then(nodeInfoResponse => {
+          let nodeInfo = nodeInfoResponse.data;
+
+          const oldestEntry = rows.find(row => n.address === row.address);
+
+          const uiNeighbor = {
+            address: n.address,
+            iriVersion: n.appVersion,
+            synced: n.latestSolidSubtangleMilestoneIndex,
+            active: n.numberOfNewTransactions > oldestEntry.numberOfNewTransactions,
+            protocol: n.connectionType,
+            onlineTime: n.time
+          }
+
+        })
+        .catch(error => {
+
+        });
+
+        const oldestEntry = rows.find(row => n.address === row.address);
+
+        const uiNeighbor = {
+          address: n.address,
+          active: n.numberOfNewTransactions > oldestEntry.numberOfNewTransactions,
+          protocol: n.connectionType
+        }
+
+      });
+    });
+
+    res.json(rows);
+
+  })
+  .catch(error => {
+    console.log(error)
   });
+
 });
 
 app.get(`${BASE_URL}/neighbors`, function (req, res) {
