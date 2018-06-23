@@ -82,28 +82,28 @@ app.post('/api/login', (req, res) => {
 
 app.get('/api/iri/getNeighbors', (req, res) => {
 
-  axios(createIriRequest('getNeighbors'))
+  axios(createIriRequest(iri_ip, 'getNeighbors'))
   .then(getNeighborsResponse => {
 
-    const neighbors = getNeighborsResponse.data.neighbors;
+    const activeNeighbors = getNeighborsResponse.data.neighbors;
 
     db.all('SELECT * FROM neighbors ORDER BY timestamp ASC', [], (err, rows) => {
 
-      neighbors.forEach(n => {
+      activeNeighbors.forEach(activeNeighbor => {
 
-        axios(createIriRequest('getNodeInfo'))
+        axios(createIriRequest(activeNeighbor.address.split(':')[0], 'getNodeInfo'))
         .then(nodeInfoResponse => {
           let nodeInfo = nodeInfoResponse.data;
 
-          const oldestEntry = rows.find(row => n.address === row.address);
+          const oldestEntry = rows.find(row => activeNeighbor.address === row.address);
 
           const uiNeighbor = {
-            address: n.address,
-            iriVersion: n.appVersion,
-            synced: n.latestSolidSubtangleMilestoneIndex,
-            active: n.numberOfNewTransactions > oldestEntry.numberOfNewTransactions,
-            protocol: n.connectionType,
-            onlineTime: n.time
+            address: activeNeighbor.address,
+            iriVersion: activeNeighbor.appVersion,
+            synced: activeNeighbor.latestSolidSubtangleMilestoneIndex,
+            active: activeNeighbor.numberOfNewTransactions > oldestEntry.numberOfNewTransactions,
+            protocol: activeNeighbor.connectionType,
+            onlineTime: activeNeighbor.time
           }
 
         })
@@ -111,15 +111,16 @@ app.get('/api/iri/getNeighbors', (req, res) => {
 
         });
 
-        const oldestEntry = rows.find(row => n.address === row.address);
+        const oldestEntry = rows.find(row => activeNeighbor.address === row.address);
 
         const uiNeighbor = {
-          address: n.address,
-          active: n.numberOfNewTransactions > oldestEntry.numberOfNewTransactions,
-          protocol: n.connectionType
+          address: activeNeighbor.address,
+          active: activeNeighbor.numberOfNewTransactions > oldestEntry.numberOfNewTransactions,
+          protocol: activeNeighbor.connectionType
         }
 
       });
+
     });
 
     res.json(rows);
@@ -132,7 +133,7 @@ app.get('/api/iri/getNeighbors', (req, res) => {
 });
 
 app.get(`${BASE_URL}/neighbors`, function (req, res) {
-  axios(createIriRequest('getNeighbors'))
+  axios(createIriRequest(iri_ip, 'getNeighbors'))
   .then(response => {
     res.json(response.data.neighbors);
   })
@@ -142,7 +143,7 @@ app.get(`${BASE_URL}/neighbors`, function (req, res) {
 });
 
 app.get(`${BASE_URL}/node-info`, (req, res) => {
-  axios(createIriRequest('getNodeInfo'))
+  axios(createIriRequest(iri_ip, 'getNodeInfo'))
   .then(response => {
     res.json(response.data);
   })
@@ -151,9 +152,9 @@ app.get(`${BASE_URL}/node-info`, (req, res) => {
   });
 });
 
-function createIriRequest(command) {
+function createIriRequest(nodeIp, command) {
   return {
-    url: `http://${iri_ip}:${iri_port}`,
+    url: `http://${nodeIp}:${iri_port}`,
     data: {'command': command},
     method: 'post',
     headers: {
@@ -201,11 +202,11 @@ app.get(`${BASE_URL}/getdb`, function (req, res) {
   //   res.json(fetched);
   // });
 
-  db.each('SELECT rowid AS id, address FROM neighbors', function (err, row) {
-    // console.log(row.id + ': ' + row.address);
+  db.all('SELECT * FROM neighbors ORDER BY timestamp ASC', [], (err, rows) => {
+    res.json(rows);
   });
 
-  res.json({});
+
 
 });
 
@@ -304,7 +305,7 @@ const mockData =
 
 async function theFetcher() {
   function fetch() {
-    axios(createIriRequest('getNeighbors'))
+    axios(createIriRequest(iri_ip, 'getNeighbors'))
     .then(response => {
       const neighbors = response.data.neighbors;
 
@@ -325,7 +326,7 @@ async function theFetcher() {
   }
 
   while (true) {
-    // fetch();
+    fetch();
 
     let timekeeper = new Promise((resolve, reject) => {
       setTimeout(() => resolve(), 15000);
