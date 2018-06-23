@@ -1,8 +1,22 @@
-/* eslint-disable no-param-reassign */
 const express = require('express');
 const axios = require('axios');
 const history = require('connect-history-api-fallback');
 const sqlite3 = require('sqlite3').verbose();
+
+const app = express();
+app.set('port', (process.env.PORT || 3000));
+
+if (process.env.NODE_ENV === 'production') {
+  app.use(history());
+  app.use(express.static(path.join(__dirname, '/dist')));
+}
+
+const IRI_IP = '192.168.188.20';
+const IRI_PORT = '14265';
+const BASE_URL = '/api';
+
+// A fake API token our server validates
+const API_TOKEN = 'D6W69PRgCoDKgHZGJmRUNA';
 
 const db = new sqlite3.Database('db');
 (function createTables() {
@@ -37,36 +51,8 @@ const db = new sqlite3.Database('db');
     //     );
     //     END;`
     // );
-
-    // db.run(
-    //   'CREATE TRIGGER IF NOT EXISTS after_insertion_trigger' +
-    //   'AFTER INSERT ON neighbors' +
-    //   'BEGIN' +
-    //   '    DELETE FROM neighbors' +
-    //   '    WHERE uuid IN (' +
-    //   '        SELECT * FROM table ORDER BY timestamp DESC, timestamp DESC LIMIT -1 OFFSET 100' +
-    //   '    );' +
-    //   'END;'
-    // );
   });
 })();
-
-const app = express();
-
-const iri_ip = '192.168.188.20';
-const iri_port = '14265';
-
-app.set('port', (process.env.PORT || 3000));
-
-const BASE_URL = '/api';
-
-if (process.env.NODE_ENV === 'production') {
-  app.use(history());
-  app.use(express.static(path.join(__dirname, '/dist')));
-}
-
-// A fake API token our server validates
-const API_TOKEN = 'D6W69PRgCoDKgHZGJmRUNA';
 
 // Make things more noticeable in the UI by introducing a fake delay
 // to logins
@@ -82,18 +68,22 @@ app.post('/api/login', (req, res) => {
 
 app.get('/api/iri/getNeighbors', (req, res) => {
 
-  axios(createIriRequest(iri_ip, 'getNeighbors'))
-  .then(getNeighborsResponse => {
+  axios(createIriRequest(IRI_IP, 'getNeighbors'))
+  .then(iriNeighborsResponse => {
 
-    const activeNeighbors = getNeighborsResponse.data.neighbors;
+    const activeNeighbors = iriNeighborsResponse.data.neighbors;
 
     db.all('SELECT * FROM neighbors ORDER BY timestamp ASC', [], (err, rows) => {
+
+      console.log('Active neighbors length: ' + activeNeighbors.length);
 
       activeNeighbors.forEach(activeNeighbor => {
 
         axios(createIriRequest(activeNeighbor.address.split(':')[0], 'getNodeInfo'))
         .then(nodeInfoResponse => {
           let nodeInfo = nodeInfoResponse.data;
+
+          console.log('enter')
 
           const oldestEntry = rows.find(row => activeNeighbor.address === row.address);
 
@@ -108,7 +98,7 @@ app.get('/api/iri/getNeighbors', (req, res) => {
 
         })
         .catch(error => {
-
+          console.log("cannot get info")
         });
 
         const oldestEntry = rows.find(row => activeNeighbor.address === row.address);
@@ -123,7 +113,7 @@ app.get('/api/iri/getNeighbors', (req, res) => {
 
     });
 
-    res.json(rows);
+    res.json({});
 
   })
   .catch(error => {
@@ -133,7 +123,7 @@ app.get('/api/iri/getNeighbors', (req, res) => {
 });
 
 app.get(`${BASE_URL}/neighbors`, function (req, res) {
-  axios(createIriRequest(iri_ip, 'getNeighbors'))
+  axios(createIriRequest(IRI_IP, 'getNeighbors'))
   .then(response => {
     res.json(response.data.neighbors);
   })
@@ -143,7 +133,7 @@ app.get(`${BASE_URL}/neighbors`, function (req, res) {
 });
 
 app.get(`${BASE_URL}/node-info`, (req, res) => {
-  axios(createIriRequest(iri_ip, 'getNodeInfo'))
+  axios(createIriRequest(IRI_IP, 'getNodeInfo'))
   .then(response => {
     res.json(response.data);
   })
@@ -154,13 +144,14 @@ app.get(`${BASE_URL}/node-info`, (req, res) => {
 
 function createIriRequest(nodeIp, command) {
   return {
-    url: `http://${nodeIp}:${iri_port}`,
+    url: `http://${nodeIp}:${IRI_PORT}`,
     data: {'command': command},
     method: 'post',
     headers: {
       'Content-Type': 'application/json',
       'X-IOTA-API-Version': '1'
-    }
+    },
+    timeout: 1000
   };
 }
 
@@ -192,28 +183,47 @@ app.get(`${BASE_URL}/insertdb`, function (req, res) {
 });
 
 app.get(`${BASE_URL}/getdb`, function (req, res) {
-
-  // db.serialize(function () {
-  //   const fetched = [];
-  //   db.each('SELECT rowid AS id, address, timestamp FROM neighbors', function (err, row) {
-  //     fetched.push(`${row.id}:${row.address}`);
-  //     console.log(row.id + ' ' + row.address + ' time: ' + row.timestamp);
-  //   });
-  //   res.json(fetched);
-  // });
-
   db.all('SELECT * FROM neighbors ORDER BY timestamp ASC', [], (err, rows) => {
     res.json(rows);
   });
-
-
-
 });
-
 
 app.listen(app.get('port'), () => {
   console.log(`Find the server at: http://localhost:${app.get('port')}/`); // eslint-disable-line no-console
 });
+
+async function theFetcher() {
+  function fetch() {
+    axios(createIriRequest(IRI_IP, 'getNeighbors'))
+    .then(response => {
+      const neighbors = response.data.neighbors;
+
+      const stmt = db.prepare('INSERT INTO neighbors (address, numberOfAllTransactions, numberOfRandomTransactionRequests, numberOfNewTransactions, numberOfInvalidTransactions, numberOfSentTransactions, connectionType) VALUES (?, ?, ?, ?, ?, ?, ?)');
+      neighbors.forEach((neighbor) => {
+        stmt.run(
+          neighbor.address,
+          neighbor.numberOfAllTransactions,
+          neighbor.numberOfRandomTransactionRequests,
+          neighbor.numberOfNewTransactions,
+          neighbor.numberOfInvalidTransactions,
+          neighbor.numberOfSentTransactions,
+          neighbor.connectionType);
+      });
+      stmt.finalize();
+    })
+    .catch(error => console.log(error));
+  }
+
+  while (true) {
+    fetch();
+
+    let timekeeper = new Promise((resolve, reject) => {
+      setTimeout(() => resolve(), 15000);
+    });
+
+    let result = await timekeeper;
+  }
+}
 
 const mockData =
   {
@@ -302,39 +312,5 @@ const mockData =
     ],
     'duration': 0
   };
-
-async function theFetcher() {
-  function fetch() {
-    axios(createIriRequest(iri_ip, 'getNeighbors'))
-    .then(response => {
-      const neighbors = response.data.neighbors;
-
-      const stmt = db.prepare('INSERT INTO neighbors (address, numberOfAllTransactions, numberOfRandomTransactionRequests, numberOfNewTransactions, numberOfInvalidTransactions, numberOfSentTransactions, connectionType) VALUES (?, ?, ?, ?, ?, ?, ?)');
-      neighbors.forEach((neighbor) => {
-        stmt.run(
-          neighbor.address,
-          neighbor.numberOfAllTransactions,
-          neighbor.numberOfRandomTransactionRequests,
-          neighbor.numberOfNewTransactions,
-          neighbor.numberOfInvalidTransactions,
-          neighbor.numberOfSentTransactions,
-          neighbor.connectionType);
-      });
-      stmt.finalize();
-    })
-    .catch(error => console.log(error));
-  }
-
-  while (true) {
-    fetch();
-
-    let timekeeper = new Promise((resolve, reject) => {
-      setTimeout(() => resolve(), 15000);
-      // setTimeout(() => resolve());
-    });
-
-    let result = await timekeeper;
-  }
-}
 
 theFetcher();
