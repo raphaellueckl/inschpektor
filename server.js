@@ -68,6 +68,8 @@ app.post('/api/login', (req, res) => {
 
 app.get('/api/iri/getNeighbors', (req, res) => {
 
+  const resultNeighbors = [];
+
   axios(createIriRequest(IRI_IP, 'getNeighbors'))
   .then(iriNeighborsResponse => {
 
@@ -82,38 +84,42 @@ app.get('/api/iri/getNeighbors', (req, res) => {
         axios(createIriRequest(activeNeighbor.address.split(':')[0], 'getNodeInfo'))
         .then(nodeInfoResponse => {
           let nodeInfo = nodeInfoResponse.data;
-
-          console.log('enter')
-
           const oldestEntry = rows.find(row => activeNeighbor.address === row.address);
 
-          const uiNeighbor = {
+          const resultNeighbor = {
             address: activeNeighbor.address,
-            iriVersion: activeNeighbor.appVersion,
-            synced: activeNeighbor.latestSolidSubtangleMilestoneIndex,
+            iriVersion: nodeInfo.appVersion,
+            synced: nodeInfo.latestSolidSubtangleMilestoneIndex,
             active: activeNeighbor.numberOfNewTransactions > oldestEntry.numberOfNewTransactions,
             protocol: activeNeighbor.connectionType,
-            onlineTime: activeNeighbor.time
-          }
+            onlineTime: nodeInfo.time
+          };
 
+          resultNeighbors.push(resultNeighbor)
+
+          console.log('hans')
+          if (activeNeighbors[activeNeighbors.length-1] === activeNeighbor) res.json(resultNeighbors)
         })
         .catch(error => {
-          console.log("cannot get info")
+          const oldestEntry = rows.find(row => activeNeighbor.address === row.address);
+
+          const resultNeighbor = {
+            address: activeNeighbor.address,
+            iriVersion: '<unavailable>',
+            synced: '<unavailable>',
+            active: oldestEntry ? activeNeighbor.numberOfNewTransactions > oldestEntry.numberOfNewTransactions : '<unavailable>',
+            protocol: activeNeighbor.connectionType,
+            onlineTime: '<unavailable>'
+          };
+          resultNeighbors.push(resultNeighbor)
+
+          console.log('error')
+          if (activeNeighbors[activeNeighbors.length-1] === activeNeighbor) res.json(resultNeighbors)
         });
-
-        const oldestEntry = rows.find(row => activeNeighbor.address === row.address);
-
-        const uiNeighbor = {
-          address: activeNeighbor.address,
-          active: activeNeighbor.numberOfNewTransactions > oldestEntry.numberOfNewTransactions,
-          protocol: activeNeighbor.connectionType
-        }
 
       });
 
     });
-
-    res.json({});
 
   })
   .catch(error => {
