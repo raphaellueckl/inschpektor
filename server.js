@@ -66,7 +66,7 @@ app.post('/api/login', (req, res) => {
   ), FAKE_DELAY);
 });
 
-app.get('/api/iri/getNeighbors', (req, res) => {
+app.get('/api/neighbors', (req, res) => {
 
   const resultNeighbors = [];
 
@@ -76,8 +76,6 @@ app.get('/api/iri/getNeighbors', (req, res) => {
     const activeNeighbors = iriNeighborsResponse.data.neighbors;
 
     db.all('SELECT * FROM neighbors ORDER BY timestamp ASC', [], (err, rows) => {
-
-      console.log('Active neighbors length: ' + activeNeighbors.length);
 
       activeNeighbors.forEach(activeNeighbor => {
 
@@ -90,14 +88,13 @@ app.get('/api/iri/getNeighbors', (req, res) => {
             address: activeNeighbor.address,
             iriVersion: nodeInfo.appVersion,
             synced: nodeInfo.latestSolidSubtangleMilestoneIndex,
-            active: activeNeighbor.numberOfNewTransactions > oldestEntry.numberOfNewTransactions,
+            active: oldestEntry ? activeNeighbor.numberOfNewTransactions > oldestEntry.numberOfNewTransactions : null,
             protocol: activeNeighbor.connectionType,
             onlineTime: nodeInfo.time
           };
 
-          resultNeighbors.push(resultNeighbor)
+          resultNeighbors.push(resultNeighbor);
 
-          console.log('hans')
           if (activeNeighbors[activeNeighbors.length-1] === activeNeighbor) res.json(resultNeighbors)
         })
         .catch(error => {
@@ -105,15 +102,14 @@ app.get('/api/iri/getNeighbors', (req, res) => {
 
           const resultNeighbor = {
             address: activeNeighbor.address,
-            iriVersion: '<unavailable>',
-            synced: '<unavailable>',
-            active: oldestEntry ? activeNeighbor.numberOfNewTransactions > oldestEntry.numberOfNewTransactions : '<unavailable>',
+            iriVersion: null,
+            synced: null,
+            active: oldestEntry ? activeNeighbor.numberOfNewTransactions > oldestEntry.numberOfNewTransactions : null,
             protocol: activeNeighbor.connectionType,
-            onlineTime: '<unavailable>'
+            onlineTime: null
           };
-          resultNeighbors.push(resultNeighbor)
+          resultNeighbors.push(resultNeighbor);
 
-          console.log('error')
           if (activeNeighbors[activeNeighbors.length-1] === activeNeighbor) res.json(resultNeighbors)
         });
 
@@ -157,7 +153,7 @@ function createIriRequest(nodeIp, command) {
       'Content-Type': 'application/json',
       'X-IOTA-API-Version': '1'
     },
-    timeout: 1000
+    timeout: 250
   };
 }
 

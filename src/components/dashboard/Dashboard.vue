@@ -40,11 +40,6 @@
     components: {
       Neighbor
     },
-    data() {
-      return {
-        // neighbors: ['a', 'b', 'c', 'd', 'e', 'f', 'g', 'h']
-      }
-    },
     computed: {
       ...mapGetters(['neighbors'])
     }

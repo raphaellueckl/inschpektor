@@ -4,17 +4,20 @@
     <h1 class="title">{{neighbor.address}}</h1>
     <div class="media-content">
       <div class="content">
+        {{neighbor}}
         <p>
-          <strong>Active:</strong><span class="align__right">❌</span>
+          <strong>Active:</strong><span class="align__right">{{neighbor.active ? '✔️' : '❌' }}</span>
         </p>
         <p>
-          <strong>Synced:</strong><span class="align__right">✔️</span>
+          <strong>Synced:</strong><span class="align__right">
+          {{neighbor.synced === null ? 'unavailable'
+          : neighbor.synced ? '✔' : '❌'}}️</span>
         </p>
         <p>
-          <strong>Iri-version:</strong><span class="align__right">1.4.2</span>
+          <strong>Iri-version:</strong><span class="align__right">{{neighbor.iriVersion}}</span>
         </p>
         <p>
-          <strong>Online since:</strong><span class="align__right">3d 12h 2m</span>
+          <strong>Online since:</strong><span class="align__right">{{neighbor.onlineTime | timespan}}</span>
         </p>
       </div>
     </div>
@@ -22,12 +25,21 @@
 </template>
 
 <script>
+  import moment from 'moment';
+
   export default {
     name: 'Neighbor',
     props: ['neighbor'],
     data() {
       return {
         colors: ['is-primary', 'is-link', 'is-info', 'is-success', 'is-warning', 'is-danger']
+      }
+    },
+    filters: {
+      timespan: function (date) {
+        // return moment(date).format('MMMM Do YYYY, h:mm:ss a').diff(new Date());
+        // return moment(date).diff(new Date());
+        return moment(date);
       }
     }
   }
