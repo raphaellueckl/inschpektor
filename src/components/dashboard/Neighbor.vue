@@ -6,11 +6,11 @@
       <div class="content">
         {{neighbor}}
         <p>
-          <strong>Active:</strong><span class="align__right">{{neighbor.active ? '✔️' : '❌' }}</span>
+          <strong>Active:</strong><span class="align__right">{{neighbor.active === null ? 'N/A' : neighbor.active ? '✔️' : '❌' }}</span>
         </p>
         <p>
           <strong>Synced:</strong><span class="align__right">
-          {{neighbor.synced === null ? 'unavailable'
+          {{neighbor.synced === null ? 'N/A'
           : neighbor.synced ? '✔' : '❌'}}️</span>
         </p>
         <p>

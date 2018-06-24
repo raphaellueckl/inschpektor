@@ -40,11 +40,6 @@
     components: {
       NeighborRow
     },
-    data() {
-      return {
-        // neighbors: [1, 2, 3]
-      }
-    },
     computed: {
       ...mapGetters(['neighbors'])
     }

@@ -14,6 +14,9 @@ if (process.env.NODE_ENV === 'production') {
 const IRI_IP = '192.168.188.20';
 const IRI_PORT = '14265';
 const BASE_URL = '/api';
+const MAX_MILESTONES_BEHIND_BEFORE_UNSYNCED = 50;
+
+let currentOwnNodeInfo = {};
 
 // A fake API token our server validates
 const API_TOKEN = 'D6W69PRgCoDKgHZGJmRUNA';
@@ -87,7 +90,7 @@ app.get('/api/neighbors', (req, res) => {
           const resultNeighbor = {
             address: activeNeighbor.address,
             iriVersion: nodeInfo.appVersion,
-            synced: nodeInfo.latestSolidSubtangleMilestoneIndex,
+            synced: nodeInfo.latestSolidSubtangleMilestoneIndex >= currentOwnNodeInfo.latestMilestoneIndex - MAX_MILESTONES_BEHIND_BEFORE_UNSYNCED,
             active: oldestEntry ? activeNeighbor.numberOfNewTransactions > oldestEntry.numberOfNewTransactions : null,
             protocol: activeNeighbor.connectionType,
             onlineTime: nodeInfo.time
@@ -108,6 +111,7 @@ app.get('/api/neighbors', (req, res) => {
             protocol: activeNeighbor.connectionType,
             onlineTime: null
           };
+          console.log(oldestEntry ? (activeNeighbor.numberOfNewTransactions > oldestEntry.numberOfNewTransactions) : null)
           resultNeighbors.push(resultNeighbor);
 
           if (activeNeighbors[activeNeighbors.length-1] === activeNeighbor) res.json(resultNeighbors)
@@ -213,7 +217,13 @@ async function theFetcher() {
       });
       stmt.finalize();
     })
-    .catch(error => console.log(error));
+    .catch(error => console.log('Failed to fetch neighbors of own node.', error));
+
+    axios(createIriRequest(IRI_IP, 'getNodeInfo'))
+    .then(nodeInfoResponse => {
+      currentOwnNodeInfo = nodeInfoResponse.data;
+    })
+    .catch(error => console.log('Failed to fetch own node info.', error));
   }
 
   while (true) {
