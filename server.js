@@ -80,7 +80,11 @@ app.get('/api/neighbors', (req, res) => {
 
     db.all('SELECT * FROM neighbors ORDER BY timestamp ASC', [], (err, rows) => {
 
-      activeNeighbors.forEach(activeNeighbor => {
+      console.log('active neighbors: ' + activeNeighbors.length)
+
+      for (let i = 0; i < activeNeighbors.length; i++) {
+        const activeNeighbor = activeNeighbors[i];
+
 
         axios(createIriRequest(activeNeighbor.address.split(':')[0], 'getNodeInfo'))
         .then(nodeInfoResponse => {
@@ -98,7 +102,11 @@ app.get('/api/neighbors', (req, res) => {
 
           resultNeighbors.push(resultNeighbor);
 
-          if (activeNeighbors[activeNeighbors.length-1] === activeNeighbor) res.json(resultNeighbors)
+          if (activeNeighbors.length === i+1) {
+            console.log('valid: ' + activeNeighbors[activeNeighbors.length-1].address, activeNeighbor.address)
+            console.log('result: ' + resultNeighbors.length)
+            res.json(resultNeighbors)
+          }
         })
         .catch(error => {
           const oldestEntry = rows.find(row => activeNeighbor.address === row.address);
@@ -111,13 +119,16 @@ app.get('/api/neighbors', (req, res) => {
             protocol: activeNeighbor.connectionType,
             onlineTime: null
           };
-          console.log(oldestEntry ? (activeNeighbor.numberOfNewTransactions > oldestEntry.numberOfNewTransactions) : null)
           resultNeighbors.push(resultNeighbor);
 
-          if (activeNeighbors[activeNeighbors.length-1] === activeNeighbor) res.json(resultNeighbors)
+          if (activeNeighbors.length === i+1) {
+            console.log('error: ' + activeNeighbors[activeNeighbors.length-1].address, activeNeighbor.address)
+            console.log('result: ' + resultNeighbors.length)
+            res.json(resultNeighbors)
+          }
         });
 
-      });
+      }
 
     });
 

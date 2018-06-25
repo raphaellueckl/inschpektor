@@ -4,7 +4,6 @@
     <h1 class="title">{{neighbor.address}}</h1>
     <div class="media-content">
       <div class="content">
-        {{neighbor}}
         <p>
           <strong>Active:</strong><span class="align__right">{{neighbor.active === null ? 'N/A' : neighbor.active ? '✔️' : '❌' }}</span>
         </p>
@@ -14,10 +13,10 @@
           : neighbor.synced ? '✔' : '❌'}}️</span>
         </p>
         <p>
-          <strong>Iri-version:</strong><span class="align__right">{{neighbor.iriVersion}}</span>
+          <strong>Iri-version:</strong><span class="align__right">{{neighbor.iriVersion === null ? 'N/A' : neighbor.iriVersion}}</span>
         </p>
         <p>
-          <strong>Online since:</strong><span class="align__right">{{neighbor.onlineTime | timespan}}</span>
+          <strong>Online since:</strong><span class="align__right">{{neighbor.onlineTime === null ? 'N/A' : neighbor.onlineTime | timespan}}</span>
         </p>
       </div>
     </div>
