@@ -70,21 +70,15 @@ app.post('/api/login', (req, res) => {
 });
 
 app.get('/api/neighbors', (req, res) => {
-
   const resultNeighbors = [];
 
   axios(createIriRequest(IRI_IP, 'getNeighbors'))
   .then(iriNeighborsResponse => {
-
     const activeNeighbors = iriNeighborsResponse.data.neighbors;
 
     db.all('SELECT * FROM neighbors ORDER BY timestamp ASC', [], (err, rows) => {
-
-      console.log('active neighbors: ' + activeNeighbors.length)
-
-      for (let i = 0; i < activeNeighbors.length; i++) {
-        const activeNeighbor = activeNeighbors[i];
-
+      function doCallAndPrepareCallForNext(activeNeighbors, currentIndex) {
+        const activeNeighbor = activeNeighbors[currentIndex];
 
         axios(createIriRequest(activeNeighbor.address.split(':')[0], 'getNodeInfo'))
         .then(nodeInfoResponse => {
@@ -102,9 +96,9 @@ app.get('/api/neighbors', (req, res) => {
 
           resultNeighbors.push(resultNeighbor);
 
-          if (activeNeighbors.length === i+1) {
-            console.log('valid: ' + activeNeighbors[activeNeighbors.length-1].address, activeNeighbor.address)
-            console.log('result: ' + resultNeighbors.length)
+          if (++currentIndex < activeNeighbors.length) {
+            doCallAndPrepareCallForNext(activeNeighbors, currentIndex);
+          } else {
             res.json(resultNeighbors)
           }
         })
@@ -119,24 +113,23 @@ app.get('/api/neighbors', (req, res) => {
             protocol: activeNeighbor.connectionType,
             onlineTime: null
           };
+
           resultNeighbors.push(resultNeighbor);
 
-          if (activeNeighbors.length === i+1) {
-            console.log('error: ' + activeNeighbors[activeNeighbors.length-1].address, activeNeighbor.address)
-            console.log('result: ' + resultNeighbors.length)
+          if (++currentIndex < activeNeighbors.length) {
+            doCallAndPrepareCallForNext(activeNeighbors, currentIndex);
+          } else {
             res.json(resultNeighbors)
           }
         });
-
       }
 
+      doCallAndPrepareCallForNext(activeNeighbors, 0);
     });
-
   })
   .catch(error => {
     console.log(error)
   });
-
 });
 
 app.get(`${BASE_URL}/neighbors`, function (req, res) {
