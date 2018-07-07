@@ -11,12 +11,12 @@
           <strong>Friendly Node:</strong><span class="align__right">{{neighbor.isFriendlyNode ? '✔️' : '❌'}}</span>
         </p>
         <p>
-          <strong>Active:</strong><span class="align__right">{{neighbor.active === null ? 'N/A' : neighbor.active ? '✔️' : '❌' }}</span>
+          <strong>Active:</strong><span class="align__right">{{neighbor.isActive === null ? 'N/A' : neighbor.isActive ? '✔️' : '❌' }}</span>
         </p>
         <p>
           <strong>Synced:</strong><span class="align__right">
-          {{neighbor.synced === null ? 'N/A'
-          : neighbor.synced ? '✔' : '❌'}}️</span>
+          {{neighbor.isSynced === null ? 'N/A'
+          : neighbor.isSynced ? '✔' : '❌'}}️</span>
         </p>
         <p>
           <strong>Iri-version:</strong><span class="align__right">{{neighbor.iriVersion === null ? 'N/A' : neighbor.iriVersion}}</span>
@@ -43,7 +43,7 @@
     },
     filters: {
       timespan: function (unixTimestampNum) {
-        return unixTimestampNum ? moment(unixTimestampNum).format("MM-DD-YYYY hh:mm") : 'N/A';
+        return unixTimestampNum ? moment(unixTimestampNum).format("MM-DD-YYYY hh:mm A") : 'N/A';
       }
     }
   }
