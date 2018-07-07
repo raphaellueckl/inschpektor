@@ -30,7 +30,6 @@ const mutations = {
     state.nodeInfo = info;
   },
   SET_NEIGHBORS(state, neighbors) {
-    console.log('Fetched Neighbors: ', state);
     state.neighbors = neighbors;
   }
 };

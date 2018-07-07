@@ -91,7 +91,8 @@ app.get('/api/neighbors', (req, res) => {
             synced: nodeInfo.latestSolidSubtangleMilestoneIndex >= currentOwnNodeInfo.latestMilestoneIndex - MAX_MILESTONES_BEHIND_BEFORE_UNSYNCED,
             active: oldestEntry ? activeNeighbor.numberOfNewTransactions > oldestEntry.numberOfNewTransactions : null,
             protocol: activeNeighbor.connectionType,
-            onlineTime: nodeInfo.time
+            onlineTime: nodeInfo.time,
+            isFriendlyNode: activeNeighbor.numberOfInvalidTransactions < activeNeighbor.numberOfAllTransactions / 200
           };
 
           resultNeighbors.push(resultNeighbor);
@@ -111,7 +112,8 @@ app.get('/api/neighbors', (req, res) => {
             synced: null,
             active: oldestEntry ? activeNeighbor.numberOfNewTransactions > oldestEntry.numberOfNewTransactions : null,
             protocol: activeNeighbor.connectionType,
-            onlineTime: null
+            onlineTime: null,
+            isFriendlyNode: activeNeighbor.numberOfInvalidTransactions < activeNeighbor.numberOfAllTransactions / 200
           };
 
           resultNeighbors.push(resultNeighbor);
