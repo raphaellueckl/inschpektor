@@ -16,7 +16,7 @@
           <strong>Iri-version:</strong><span class="align__right">{{neighbor.iriVersion === null ? 'N/A' : neighbor.iriVersion}}</span>
         </p>
         <p>
-          <strong>Online since:</strong><span class="align__right">{{neighbor.onlineTime === null ? 'N/A' : neighbor.onlineTime | timespan}}</span>
+          <strong>Node time:</strong><span class="align__right">{{neighbor.onlineTime === null ? null : neighbor.onlineTime | timespan}}</span>
         </p>
       </div>
     </div>
@@ -35,10 +35,9 @@
       }
     },
     filters: {
-      timespan: function (date) {
-        // return moment(date).format('MMMM Do YYYY, h:mm:ss a').diff(new Date());
-        // return moment(date).diff(new Date());
-        return moment(date);
+      timespan: function (unixTimestampNum) {
+        console.log(unixTimestampNum)
+        return unixTimestampNum ? moment(unixTimestampNum).format("MM-DD-YYYY hh:mm") : 'N/A';
       }
     }
   }
