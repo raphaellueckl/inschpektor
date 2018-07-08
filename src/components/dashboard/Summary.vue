@@ -3,9 +3,9 @@
     <article class="message is-success" :class="[issues(neighbors).length === 0 ? 'is-success' : 'is-warning']">
       <div class="message-header">
         <p>Summary - Neighbors: {{neighbors.length}}</p>
-        <button class="delete" aria-label="delete"></button>
+        <button class="delete" aria-label="delete" v-on:click="showContent = !showContent"></button>
       </div>
-      <div class="message-body">
+      <div class="message-body" v-if="showContent">
         <p v-if="issues(neighbors).length === 0">Everything is fine! :)</p>
         <p v-for="issue in issues(neighbors)">• {{issue}}</p>
       </div>
@@ -14,13 +14,15 @@
 </template>
 
 <script>
-  import {mapGetters} from 'vuex';
-
   export default {
     name: 'Summary',
     props: ['neighbors'],
+    data: () => {
+      return {
+        showContent: true
+      };
+    },
     methods: {
-      // ...mapGetters(['neighbors']),
       issues: (neighbors) => {
         const issueMsgs = [];
 
