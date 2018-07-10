@@ -3,7 +3,6 @@
     <img src="../assets/logo.png">
     <p>
       This is an open source app, that can be found @ <a href="https://github.com/codepleb/inschpektor">Github</a>.
-
     </p>
     <p>
       The application is based on Vuejs.
@@ -18,7 +17,7 @@
     <br>
     <br>
     <h3 class="title is-3">Donations</h3>
-    <p>If you like this app and you want to fund me, use the following IOTA address:</p>
+    <p>If you like this app and you want to support me, use the following IOTA address:</p>
     <p>
       IPXS9YLKJMODKUBHOXRHSUOMWYCBAKYGRCNLH9RAEP9NXRXXYPGBZBVQQWCMLNOHZQRTOGIRMTISGXAVAGASBFLAUB
     </p>
