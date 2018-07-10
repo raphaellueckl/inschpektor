@@ -1,9 +1,17 @@
 <template>
   <div v-if="neighbors">
-    <article class="message is-success" :class="[issues(neighbors).length === 0 ? 'is-success' : 'is-warning']">
+    <article class="message" :class="[issues(neighbors).length === 0 ? 'is-success' : 'is-warning']" v-on:click="showContent = !showContent">
       <div class="message-header">
         <p>Summary - Neighbors: {{neighbors.length}}</p>
-        <button class="delete" aria-label="delete" v-on:click="showContent = !showContent"></button>
+
+        <a v-if="showContent" class="button is-warning" :key="1">
+          <i class="fas fa-window-minimize"></i>
+        </a>
+
+        <a v-else class="button is-warning" :key="0">
+          <i class="far fa-window-maximize"></i>
+        </a>
+
       </div>
       <div class="message-body" v-if="showContent">
         <p v-if="issues(neighbors).length === 0">Everything is fine! :)</p>
@@ -17,7 +25,7 @@
   export default {
     name: 'Summary',
     props: ['neighbors'],
-    data: () => {
+    data() {
       return {
         showContent: true
       };

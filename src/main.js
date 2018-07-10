@@ -4,9 +4,13 @@ import router from './router'
 import store from './store'
 
 import fontawesome from '@fortawesome/fontawesome'
-import faTrashAlt from '@fortawesome/fontawesome-free-regular/faTrashAlt'
+import farTrashAlt from '@fortawesome/fontawesome-free-regular/faTrashAlt'
+import fasWindowMinimize from '@fortawesome/fontawesome-free-solid/faWindowMinimize'
+import farWindowMaximize from '@fortawesome/fontawesome-free-regular/faWindowMaximize'
 
-fontawesome.library.add(faTrashAlt)
+fontawesome.library.add(farTrashAlt)
+fontawesome.library.add(fasWindowMinimize)
+fontawesome.library.add(farWindowMaximize)
 
 require('./assets/sass/main.scss');
 
