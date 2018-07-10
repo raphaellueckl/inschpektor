@@ -8,7 +8,7 @@
             <div class="media-content">
               <div class="content" v-if="nodeInfo">
                 <p>
-                  <strong>Iri version: </strong>{{nodeInfo.appVersion}}
+                  <strong>IRI Version: </strong>{{nodeInfo.appVersion}}
                 </p>
                 <p>
                   <strong>Cores: </strong>{{nodeInfo.jreAvailableProcessors}}
@@ -17,7 +17,7 @@
                   <strong>Ram: </strong>{{nodeInfo.jreMaxMemory}}
                 </p>
                 <p>
-                  <strong>Java version: </strong>{{nodeInfo.jreVersion}}
+                  <strong>Java Version: </strong>{{nodeInfo.jreVersion}}
                 </p>
                 <p>
                   <strong>Neighbors: </strong>{{nodeInfo.neighbors}}
@@ -25,7 +25,15 @@
                 <p>
                   <strong>Timestamp: </strong>{{nodeInfo.time === null ? null : nodeInfo.time | timespan}}
                 </p>
-
+                <p>
+                  <strong>RAM Usage: </strong>
+                  <progress class="progress is-success"
+                            :class=""
+                            :value="nodeInfo.jreFreeMemory"
+                            :max="nodeInfo.jreMaxMemory">
+                  </progress>
+                  <span> {{Math.round(nodeInfo.jreFreeMemory / 1000000)}} / {{Math.round(nodeInfo.jreMaxMemory / 1000000)}} MB</span>
+                </p>
               </div>
             </div>
           </article>
@@ -48,12 +56,15 @@
     },
     filters: {
       timespan: function (unixTimestampNum) {
-        return unixTimestampNum ? moment(unixTimestampNum).format("MM-DD-YYYY hh:mm A") : 'N/A';
+        return unixTimestampNum ? moment(unixTimestampNum).format('MM-DD-YYYY hh:mm A') : 'N/A';
       }
     }
   };
 </script>
 
 <style scoped>
-
+  progress {
+    max-width: 300px;
+    display: inline-flex;
+  }
 </style>
