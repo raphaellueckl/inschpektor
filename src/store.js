@@ -31,7 +31,10 @@ const mutations = {
   },
   SET_NEIGHBORS(state, neighbors) {
     state.neighbors = neighbors;
-  }
+  },
+  SET_ERROR(state, nodeError) {
+    state.nodeError = nodeError;
+  },
 };
 
 const actions = {
@@ -49,14 +52,25 @@ const actions = {
     });
   },
   fetchNodeInfo({commit}) {
-    axios('/api/node-info').then(response => {
+    commit('SET_ERROR', 'NODE_INFO_INANCCESSIBLE');
+    axios('/api/node-info')
+    .then(response => {
       commit('SET_NODE_INFO', response.data);
+    })
+    .catch(error => {
+      commit('SET_NODE_INFO', null);
+      commit('SET_ERROR', error.data);
     });
   },
   fetchNeighbors({commit}) {
     axios('/api/neighbors').then(response => {
       commit('SET_NEIGHBORS', response.data);
     });
+  },
+  setNewNodeIP({dispatch, commit}) {
+    axios.put('/api/new-node-ip').then(response => {
+      dispatch('fetchNeighbors');
+    })
   }
 };
 
@@ -66,6 +80,7 @@ const getters = {
   nodeInfo: state => state.nodeInfo,
   hostNode: state => state.hostNode,
   neighbors: state => state.neighbors,
+  nodeError: state => state.nodeError,
 };
 
 const storeModule = {

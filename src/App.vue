@@ -4,7 +4,8 @@
     <section class="section">
       <div class="container">
         <transition name="fade">
-          <router-view/>
+          <Error v-if="nodeError" :code="nodeError"/>
+          <router-view v-else />
         </transition>
       </div>
     </section>
@@ -13,15 +14,21 @@
 
 <script>
   import Menu from './components/Menu';
+  import {mapGetters} from 'vuex';
+  import Error from './components/error/Error';
 
   export default {
     name: 'app',
     components: {
+      Error,
       Menu
     },
     created() {
       this.$store.dispatch('fetchNodeInfo');
       this.$store.dispatch('fetchNeighbors');
+    },
+    computed: {
+      ...mapGetters(['nodeError'])
     }
   };
 </script>

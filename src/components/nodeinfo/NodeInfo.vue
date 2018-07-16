@@ -28,7 +28,6 @@
                 <p>
                   <strong>RAM Usage: </strong>
                   <progress class="progress is-success"
-                            :class=""
                             :value="nodeInfo.jreFreeMemory"
                             :max="nodeInfo.jreMaxMemory">
                   </progress>

@@ -12,6 +12,7 @@ if (process.env.NODE_ENV === 'production') {
 }
 
 const IRI_IP = '192.168.188.20';
+// const IRI_IP = null;
 const IRI_PORT = '14265';
 const BASE_URL = '/api';
 const MAX_MILESTONES_BEHIND_BEFORE_UNSYNCED = 50;
@@ -145,13 +146,20 @@ app.get(`${BASE_URL}/neighbors`, function (req, res) {
 });
 
 app.get(`${BASE_URL}/node-info`, (req, res) => {
+  if (!IRI_IP) {
+    res.status(404).send('NODE_NOT_SET');
+  }
   axios(createIriRequest(IRI_IP, 'getNodeInfo'))
   .then(response => {
     res.json(response.data);
   })
   .catch(error => {
-    res.json([]);
+    res.status(500).send('NODE_INFO_INANCCESSIBLE');
   });
+});
+
+app.put(`${BASE_URL}/new-node-ip`, (req, res) => {
+  // req.json();
 });
 
 function createIriRequest(nodeIp, command) {

@@ -33,7 +33,7 @@
     </div>
     <div class="navbar-end">
         <span v-if="nodeInfo" class="navbar-item __online"
-              :class="{ __offline: nodeInfo.latestSolidSubtangleMilestoneIndex < nodeInfo.latestMilestoneIndex - 1}">
+              :class="{__offline: nodeInfo.latestSolidSubtangleMilestoneIndex < nodeInfo.latestMilestoneIndex - 1}">
             {{nodeInfo.latestSolidSubtangleMilestoneIndex}} / {{nodeInfo.latestMilestoneIndex}}
         </span>
       <span v-else>
