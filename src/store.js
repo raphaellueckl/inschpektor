@@ -57,8 +57,8 @@ const actions = {
       commit('SET_NODE_INFO', response.data);
     })
     .catch(error => {
-      commit('SET_NODE_INFO', null);
-      commit('SET_ERROR', error.data);
+      commit('SET_NODE_INFO', null)
+      commit('SET_ERROR', error.response.data);
     });
   },
   fetchNeighbors({commit}) {
