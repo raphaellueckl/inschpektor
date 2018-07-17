@@ -11,8 +11,8 @@ if (process.env.NODE_ENV === 'production') {
   app.use(express.static(path.join(__dirname, '/dist')));
 }
 
-const IRI_IP = '192.168.188.20';
-// const IRI_IP = null;
+// const IRI_IP = '192.168.188.20';
+const IRI_IP = null;
 const IRI_PORT = '14265';
 const BASE_URL = '/api';
 const MAX_MILESTONES_BEHIND_BEFORE_UNSYNCED = 50;
@@ -35,6 +35,12 @@ const db = new sqlite3.Database('db');
       'numberOfInvalidTransactions INTEGER,' +
       'numberOfSentTransactions INTEGER,' +
       'connectionType TEXT' +
+      ')'
+    );
+
+    db.run(
+      'CREATE TABLE IF NOT EXISTS host_node (' +
+      'ip TEXT' +
       ')'
     );
 
@@ -156,6 +162,11 @@ app.get(`${BASE_URL}/node-info`, (req, res) => {
   .catch(error => {
     res.status(500).send('NODE_INFO_INANCCESSIBLE');
   });
+});
+
+// set hostnode ip
+app.post(`${BASE_URL}/host-node-ip`, (req, res) => {
+  console.log('****got em; ', req)
 });
 
 app.put(`${BASE_URL}/new-node-ip`, (req, res) => {

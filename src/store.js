@@ -66,10 +66,12 @@ const actions = {
       commit('SET_NEIGHBORS', response.data);
     });
   },
-  setNewNodeIP({dispatch, commit}) {
-    axios.put('/api/new-node-ip').then(response => {
+  setHostNodeIP({dispatch, commit}, nodeIp) {
+    axios.post('/api/host-node-ip', {nodeIp: nodeIp})
+    .then(response => {
       dispatch('fetchNeighbors');
     })
+    .catch(error => console.log('error setting node ip'));
   }
 };
 

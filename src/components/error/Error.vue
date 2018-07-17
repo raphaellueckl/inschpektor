@@ -8,7 +8,7 @@
     <nav class="level">
       <div class="level-item has-text-centered">
         <div class="control">
-          <button class="button is-link" :class="{'is-loading': submitted}" @click="setNode(nodeIp)">Submit</button>
+          <button class="button is-link" :class="{'is-loading': submitted}" @click="setHostNodeIP(nodeIp)">Submit</button>
         </div>
       </div>
     </nav>
@@ -16,6 +16,8 @@
 </template>
 
 <script>
+  import {mapActions} from 'vuex';
+
   export default {
     name: 'Error',
     props: ['code'],
@@ -26,9 +28,7 @@
       };
     },
     methods: {
-      setNode: (nodeIps) => {
-
-      }
+      ...mapActions(['setHostNodeIP'])
     }
   };
 </script>
