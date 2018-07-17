@@ -13,7 +13,8 @@ const state = {
   token: null,
   loading: false,
   nodeInfo: null,
-  neighbors: null
+  neighbors: null,
+  nodeError: null
 };
 
 const mutations = {
@@ -57,7 +58,7 @@ const actions = {
       commit('SET_NODE_INFO', response.data);
     })
     .catch(error => {
-      commit('SET_NODE_INFO', null)
+      commit('SET_NODE_INFO', null);
       commit('SET_ERROR', error.response.data);
     });
   },
