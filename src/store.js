@@ -52,7 +52,6 @@ const actions = {
     });
   },
   fetchNodeInfo({commit}) {
-    commit('SET_ERROR', 'NODE_INFO_INANCCESSIBLE');
     axios('/api/node-info')
     .then(response => {
       commit('SET_NODE_INFO', response.data);
