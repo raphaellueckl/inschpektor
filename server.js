@@ -11,8 +11,8 @@ if (process.env.NODE_ENV === 'production') {
   app.use(express.static(path.join(__dirname, '/dist')));
 }
 
-// const IRI_IP = '192.168.188.20';
-const IRI_IP = null;
+const IRI_IP = '192.168.188.20';
+// const IRI_IP = null;
 const IRI_PORT = '14265';
 const BASE_URL = '/api';
 const MAX_MILESTONES_BEHIND_BEFORE_UNSYNCED = 50;
