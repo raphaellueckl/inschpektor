@@ -67,6 +67,14 @@ const db = new sqlite3.Database('db');
   });
 })();
 
+(function initializeState() {
+  const sql = 'select * from host_node';
+  db.get(sql, [], (err, row) => {
+    console.log(row.ip);
+    iriIp = row.ip;
+  });
+})();
+
 // Make things more noticeable in the UI by introducing a fake delay
 // to logins
 const FAKE_DELAY = 500; // ms
@@ -223,7 +231,10 @@ app.get(`${BASE_URL}/insertdb`, function (req, res) {
 });
 
 app.get(`${BASE_URL}/getdb`, function (req, res) {
-  db.all('SELECT * FROM neighbors ORDER BY timestamp ASC', [], (err, rows) => {
+  // db.all('SELECT * FROM neighbors ORDER BY timestamp ASC', [], (err, rows) => {
+  //   res.json(rows);
+  // });
+  db.all('SELECT * FROM host_node', [], (err, rows) => {
     res.json(rows);
   });
 });
