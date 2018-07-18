@@ -8,7 +8,7 @@
     <nav class="level">
       <div class="level-item has-text-centered">
         <div class="control">
-          <button class="button is-link" :class="{'is-loading': submitted}" @click="setHostNodeIP(nodeIp)">Submit</button>
+          <button class="button is-link" :class="{'is-loading': submitted}" @click="setHostNodeIp(nodeIp)">Submit</button>
         </div>
       </div>
     </nav>
@@ -28,7 +28,7 @@
       };
     },
     methods: {
-      ...mapActions(['setHostNodeIP'])
+      ...mapActions(['setHostNodeIp'])
     }
   };
 </script>
