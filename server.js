@@ -41,10 +41,10 @@ const db = new sqlite3.Database('db');
     );
 
     db.run(
-      'CREATE TABLE IF NOT EXISTS host_node (' +
-      'ID INTEGER' +
-      'ip TEXT' +
-      ')'
+      `CREATE TABLE IF NOT EXISTS host_node (
+        ID INTEGER PRIMARY KEY,
+        ip TEXT
+      )`
     );
 
     // db.run(
@@ -171,14 +171,9 @@ app.get(`${BASE_URL}/node-info`, (req, res) => {
 app.post(`${BASE_URL}/host-node-ip`, (req, res) => {
   iriIp = req.body.nodeIp;
 
-  const updateHostIp = db.prepare(`INSERT INTO host_node (ID, ip)
-  VALUES(0, ?)
-  ON CONFLICT(ID)
-  DO UPDATE SET ip=iriIp`);
+  const updateHostIp = db.prepare(`REPLACE INTO host_node (ID, ip) VALUES(?, ?)`);
 
-  updateHostIp.run(iriIp);
-
-  updateHostIp.finalize();
+  updateHostIp.run(0, iriIp);
 
   res.status(200).send();
 });
