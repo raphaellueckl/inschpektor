@@ -42,6 +42,7 @@ const db = new sqlite3.Database('db');
 
     db.run(
       'CREATE TABLE IF NOT EXISTS host_node (' +
+      'ID INTEGER' +
       'ip TEXT' +
       ')'
     );
@@ -109,7 +110,7 @@ app.get('/api/neighbors', (req, res) => {
           if (++currentIndex < activeNeighbors.length) {
             doCallAndPrepareCallForNext(activeNeighbors, currentIndex);
           } else {
-            res.json(resultNeighbors)
+            res.json(resultNeighbors);
           }
         })
         .catch(error => {
@@ -130,7 +131,7 @@ app.get('/api/neighbors', (req, res) => {
           if (++currentIndex < activeNeighbors.length) {
             doCallAndPrepareCallForNext(activeNeighbors, currentIndex);
           } else {
-            res.json(resultNeighbors)
+            res.json(resultNeighbors);
           }
         });
       }
@@ -139,7 +140,7 @@ app.get('/api/neighbors', (req, res) => {
     });
   })
   .catch(error => {
-    console.log('failed to get neighbors')
+    console.log('failed to get neighbors');
   });
 });
 
@@ -149,7 +150,7 @@ app.get(`${BASE_URL}/neighbors`, function (req, res) {
     res.json(response.data.neighbors);
   })
   .catch(error => {
-    res.json(mockData.neighbors);
+    // res.json(mockData.neighbors);
   });
 });
 
@@ -169,7 +170,16 @@ app.get(`${BASE_URL}/node-info`, (req, res) => {
 // set hostnode ip
 app.post(`${BASE_URL}/host-node-ip`, (req, res) => {
   iriIp = req.body.nodeIp;
-  console.log('****got em; ', req.body.nodeIp)
+
+  const updateHostIp = db.prepare(`INSERT INTO host_node (ID, ip)
+  VALUES(0, ?)
+  ON CONFLICT(ID)
+  DO UPDATE SET ip=iriIp`);
+
+  updateHostIp.run(iriIp);
+
+  updateHostIp.finalize();
+
   res.status(200).send();
 });
 
@@ -195,16 +205,16 @@ app.get(`${BASE_URL}/insertdb`, function (req, res) {
   db.serialize(function () {
     const stmt = db.prepare('INSERT INTO neighbors (address, numberOfAllTransactions, numberOfRandomTransactionRequests, numberOfNewTransactions, numberOfInvalidTransactions, numberOfSentTransactions, connectionType) VALUES (?, ?, ?, ?, ?, ?, ?)');
 
-    mockData.neighbors.forEach(neighbor => {
-      stmt.run(
-        neighbor.address,
-        neighbor.numberOfAllTransactions,
-        neighbor.numberOfRandomTransactionRequests,
-        neighbor.numberOfNewTransactions,
-        neighbor.numberOfInvalidTransactions,
-        neighbor.numberOfSentTransactions,
-        neighbor.connectionType);
-    });
+    // mockData.neighbors.forEach(neighbor => {
+    //   stmt.run(
+    //     neighbor.address,
+    //     neighbor.numberOfAllTransactions,
+    //     neighbor.numberOfRandomTransactionRequests,
+    //     neighbor.numberOfNewTransactions,
+    //     neighbor.numberOfInvalidTransactions,
+    //     neighbor.numberOfSentTransactions,
+    //     neighbor.connectionType);
+    // });
 
     stmt.finalize();
 
@@ -265,93 +275,5 @@ async function theFetcher() {
     let result = await timekeeper;
   }
 }
-
-const mockData =
-  {
-    'neighbors': [
-      {
-        'address': 'MOCK_173.249.39.22:14600',
-        'numberOfAllTransactions': 29145,
-        'numberOfRandomTransactionRequests': 8382,
-        'numberOfNewTransactions': 12575,
-        'numberOfInvalidTransactions': 0,
-        'numberOfSentTransactions': 49310,
-        'connectionType': 'udp'
-      },
-      {
-        'address': 'MOCK_104.225.220.47:14600',
-        'numberOfAllTransactions': 17782,
-        'numberOfRandomTransactionRequests': 2208,
-        'numberOfNewTransactions': 4027,
-        'numberOfInvalidTransactions': 0,
-        'numberOfSentTransactions': 43203,
-        'connectionType': 'udp'
-      },
-      {
-        'address': 'MOCK_vmi173376.contaboserver.net:14600',
-        'numberOfAllTransactions': 31250,
-        'numberOfRandomTransactionRequests': 7608,
-        'numberOfNewTransactions': 14194,
-        'numberOfInvalidTransactions': 0,
-        'numberOfSentTransactions': 48576,
-        'connectionType': 'udp'
-      },
-      {
-        'address': 'MOCK_iotahosting.org:14600',
-        'numberOfAllTransactions': 22654,
-        'numberOfRandomTransactionRequests': 4202,
-        'numberOfNewTransactions': 5189,
-        'numberOfInvalidTransactions': 0,
-        'numberOfSentTransactions': 45221,
-        'connectionType': 'udp'
-      },
-      {
-        'address': 'MOCK_188.165.203.172:14600',
-        'numberOfAllTransactions': 1903,
-        'numberOfRandomTransactionRequests': 284,
-        'numberOfNewTransactions': 368,
-        'numberOfInvalidTransactions': 0,
-        'numberOfSentTransactions': 2538,
-        'connectionType': 'udp'
-      },
-      {
-        'address': 'MOCK_78.46.248.142:14600',
-        'numberOfAllTransactions': 210,
-        'numberOfRandomTransactionRequests': 44,
-        'numberOfNewTransactions': 23,
-        'numberOfInvalidTransactions': 0,
-        'numberOfSentTransactions': 2206,
-        'connectionType': 'udp'
-      },
-      {
-        'address': 'MOCK_71.206.23.175:14600',
-        'numberOfAllTransactions': 1077,
-        'numberOfRandomTransactionRequests': 128,
-        'numberOfNewTransactions': 44,
-        'numberOfInvalidTransactions': 0,
-        'numberOfSentTransactions': 1507,
-        'connectionType': 'udp'
-      },
-      {
-        'address': 'MOCK_195.201.24.253:14600',
-        'numberOfAllTransactions': 701,
-        'numberOfRandomTransactionRequests': 13,
-        'numberOfNewTransactions': 197,
-        'numberOfInvalidTransactions': 0,
-        'numberOfSentTransactions': 907,
-        'connectionType': 'udp'
-      },
-      {
-        'address': 'MOCK_111.231.86.86:14600',
-        'numberOfAllTransactions': 496,
-        'numberOfRandomTransactionRequests': 13,
-        'numberOfNewTransactions': 24,
-        'numberOfInvalidTransactions': 0,
-        'numberOfSentTransactions': 576,
-        'connectionType': 'udp'
-      }
-    ],
-    'duration': 0
-  };
 
 theFetcher();
