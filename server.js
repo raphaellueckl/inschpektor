@@ -70,8 +70,7 @@ const db = new sqlite3.Database('db');
 (function initializeState() {
   const sql = 'select * from host_node';
   db.get(sql, [], (err, row) => {
-    console.log(row.ip);
-    iriIp = row.ip;
+    iriIp = row ? row.ip : null;
   });
 })();
 
@@ -175,7 +174,6 @@ app.get(`${BASE_URL}/node-info`, (req, res) => {
   });
 });
 
-// set hostnode ip
 app.post(`${BASE_URL}/host-node-ip`, (req, res) => {
   iriIp = req.body.nodeIp;
 
@@ -184,10 +182,6 @@ app.post(`${BASE_URL}/host-node-ip`, (req, res) => {
   updateHostIp.run(0, iriIp);
 
   res.status(200).send();
-});
-
-app.put(`${BASE_URL}/new-node-ip`, (req, res) => {
-  // req.json();
 });
 
 function createIriRequest(nodeIp, command) {
@@ -203,72 +197,38 @@ function createIriRequest(nodeIp, command) {
   };
 }
 
-app.get(`${BASE_URL}/insertdb`, function (req, res) {
-
-  db.serialize(function () {
-    const stmt = db.prepare('INSERT INTO neighbors (address, numberOfAllTransactions, numberOfRandomTransactionRequests, numberOfNewTransactions, numberOfInvalidTransactions, numberOfSentTransactions, connectionType) VALUES (?, ?, ?, ?, ?, ?, ?)');
-
-    // mockData.neighbors.forEach(neighbor => {
-    //   stmt.run(
-    //     neighbor.address,
-    //     neighbor.numberOfAllTransactions,
-    //     neighbor.numberOfRandomTransactionRequests,
-    //     neighbor.numberOfNewTransactions,
-    //     neighbor.numberOfInvalidTransactions,
-    //     neighbor.numberOfSentTransactions,
-    //     neighbor.connectionType);
-    // });
-
-    stmt.finalize();
-
-    db.each('SELECT rowid as id, * FROM neighbors', function (err, row) {
-      console.log(row.id + ': ' + row.address + ' time: ' + row.timestamp);
-    });
-  });
-
-  res.json({});
-
-});
-
-app.get(`${BASE_URL}/getdb`, function (req, res) {
-  // db.all('SELECT * FROM neighbors ORDER BY timestamp ASC', [], (err, rows) => {
-  //   res.json(rows);
-  // });
-  db.all('SELECT * FROM host_node', [], (err, rows) => {
-    res.json(rows);
-  });
-});
-
 app.listen(app.get('port'), () => {
   console.log(`Find the server at: http://localhost:${app.get('port')}/`); // eslint-disable-line no-console
 });
 
 async function theFetcher() {
   function fetch() {
-    axios(createIriRequest(iriIp, 'getNeighbors'))
-    .then(response => {
-      const neighbors = response.data.neighbors;
+    if (iriIp) {
+      axios(createIriRequest(iriIp, 'getNeighbors'))
+      .then(response => {
+        const neighbors = response.data.neighbors;
 
-      const stmt = db.prepare('INSERT INTO neighbors (address, numberOfAllTransactions, numberOfRandomTransactionRequests, numberOfNewTransactions, numberOfInvalidTransactions, numberOfSentTransactions, connectionType) VALUES (?, ?, ?, ?, ?, ?, ?)');
-      neighbors.forEach((neighbor) => {
-        stmt.run(
-          neighbor.address,
-          neighbor.numberOfAllTransactions,
-          neighbor.numberOfRandomTransactionRequests,
-          neighbor.numberOfNewTransactions,
-          neighbor.numberOfInvalidTransactions,
-          neighbor.numberOfSentTransactions,
-          neighbor.connectionType);
-      });
-      stmt.finalize();
-    })
-    .catch(error => console.log('Failed to fetch neighbors of own node.'));
+        const stmt = db.prepare('INSERT INTO neighbors (address, numberOfAllTransactions, numberOfRandomTransactionRequests, numberOfNewTransactions, numberOfInvalidTransactions, numberOfSentTransactions, connectionType) VALUES (?, ?, ?, ?, ?, ?, ?)');
+        neighbors.forEach((neighbor) => {
+          stmt.run(
+            neighbor.address,
+            neighbor.numberOfAllTransactions,
+            neighbor.numberOfRandomTransactionRequests,
+            neighbor.numberOfNewTransactions,
+            neighbor.numberOfInvalidTransactions,
+            neighbor.numberOfSentTransactions,
+            neighbor.connectionType);
+        });
+        stmt.finalize();
+      })
+      .catch(error => console.log('Failed to fetch neighbors of own node.'));
 
-    axios(createIriRequest(iriIp, 'getNodeInfo'))
-    .then(nodeInfoResponse => {
-      currentOwnNodeInfo = nodeInfoResponse.data;
-    })
-    .catch(error => console.log('Failed to fetch own node info.'));
+      axios(createIriRequest(iriIp, 'getNodeInfo'))
+      .then(nodeInfoResponse => {
+        currentOwnNodeInfo = nodeInfoResponse.data;
+      })
+      .catch(error => console.log('Failed to fetch own node info.'));
+    }
   }
 
   while (true) {

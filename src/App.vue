@@ -13,8 +13,8 @@
 </template>
 
 <script>
-  import Menu from './components/Menu';
   import {mapGetters} from 'vuex';
+  import Menu from './components/Menu';
   import Error from './components/error/Error';
 
   export default {
