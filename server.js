@@ -11,8 +11,10 @@ if (process.env.NODE_ENV === 'production') {
   app.use(express.static(path.join(__dirname, '/dist')));
 }
 
-// const IRI_IP = '192.168.188.20';
-const IRI_IP = null;
+app.use(express.json());
+
+// const iriIp = '192.168.188.20';
+let iriIp = null;
 const IRI_PORT = '14265';
 const BASE_URL = '/api';
 const MAX_MILESTONES_BEHIND_BEFORE_UNSYNCED = 50;
@@ -79,7 +81,7 @@ app.post('/api/login', (req, res) => {
 app.get('/api/neighbors', (req, res) => {
   const resultNeighbors = [];
 
-  axios(createIriRequest(IRI_IP, 'getNeighbors'))
+  axios(createIriRequest(iriIp, 'getNeighbors'))
   .then(iriNeighborsResponse => {
     const activeNeighbors = iriNeighborsResponse.data.neighbors;
 
@@ -137,12 +139,12 @@ app.get('/api/neighbors', (req, res) => {
     });
   })
   .catch(error => {
-    console.log(error)
+    console.log('failed to get neighbors')
   });
 });
 
 app.get(`${BASE_URL}/neighbors`, function (req, res) {
-  axios(createIriRequest(IRI_IP, 'getNeighbors'))
+  axios(createIriRequest(iriIp, 'getNeighbors'))
   .then(response => {
     res.json(response.data.neighbors);
   })
@@ -152,10 +154,10 @@ app.get(`${BASE_URL}/neighbors`, function (req, res) {
 });
 
 app.get(`${BASE_URL}/node-info`, (req, res) => {
-  if (!IRI_IP) {
+  if (!iriIp) {
     res.status(404).send('NODE_NOT_SET');
   }
-  axios(createIriRequest(IRI_IP, 'getNodeInfo'))
+  axios(createIriRequest(iriIp, 'getNodeInfo'))
   .then(response => {
     res.json(response.data);
   })
@@ -166,7 +168,9 @@ app.get(`${BASE_URL}/node-info`, (req, res) => {
 
 // set hostnode ip
 app.post(`${BASE_URL}/host-node-ip`, (req, res) => {
-  console.log('****got em; ', req)
+  iriIp = req.body.nodeIp;
+  console.log('****got em; ', req.body.nodeIp)
+  res.status(200).send();
 });
 
 app.put(`${BASE_URL}/new-node-ip`, (req, res) => {
@@ -225,7 +229,7 @@ app.listen(app.get('port'), () => {
 
 async function theFetcher() {
   function fetch() {
-    axios(createIriRequest(IRI_IP, 'getNeighbors'))
+    axios(createIriRequest(iriIp, 'getNeighbors'))
     .then(response => {
       const neighbors = response.data.neighbors;
 
@@ -242,13 +246,13 @@ async function theFetcher() {
       });
       stmt.finalize();
     })
-    .catch(error => console.log('Failed to fetch neighbors of own node.', error));
+    .catch(error => console.log('Failed to fetch neighbors of own node.'));
 
-    axios(createIriRequest(IRI_IP, 'getNodeInfo'))
+    axios(createIriRequest(iriIp, 'getNodeInfo'))
     .then(nodeInfoResponse => {
       currentOwnNodeInfo = nodeInfoResponse.data;
     })
-    .catch(error => console.log('Failed to fetch own node info.', error));
+    .catch(error => console.log('Failed to fetch own node info.'));
   }
 
   while (true) {

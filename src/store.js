@@ -67,9 +67,10 @@ const actions = {
       commit('SET_NEIGHBORS', response.data);
     });
   },
-  setHostNodeIP({dispatch, commit}, nodeIp) {
+  setHostNodeIp({dispatch, commit}, nodeIp) {
     axios.post('/api/host-node-ip', {nodeIp: nodeIp})
     .then(response => {
+      commit('SET_ERROR', null);
       dispatch('fetchNeighbors');
     })
     .catch(error => console.log('error setting node ip'));
