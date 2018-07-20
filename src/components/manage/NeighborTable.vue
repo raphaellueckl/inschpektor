@@ -1,33 +1,25 @@
 <template>
   <div>
-    <div class="tile is-ancestor">
-      <div class="tile is-parent">
-        <article class="tile is-child notification is-success box">
-          <p class="subtitle">Username</p>
-        </article>
+    <div class="columns">
+      <div class="column is-one-fifth">
+        Username
       </div>
-      <div class="tile is-parent">
-        <article class="tile is-child notification is-success box">
-          <p class="subtitle">IP</p>
-        </article>
+      <div class="column is-two-fifths">
+        IP
       </div>
-      <div class="tile is-parent">
-        <article class="tile is-child notification is-success box">
-          <p class="subtitle">Active</p>
-        </article>
+      <div class="column">
+        Active
       </div>
-      <div class="tile is-parent">
-        <article class="tile is-child notification is-success box">
-          <p class="subtitle">Sync</p>
-        </article>
+      <div class="column">
+        Sync
       </div>
-      <div class="tile is-parent">
-        <article class="tile is-child notification is-success box">
-          <p class="subtitle">Remove?</p>
-        </article>
+      <div class="column">
+        Remove?
       </div>
     </div>
+
     <NeighborRow v-for="neighbor in neighbors" :neighbor="neighbor" :key="neighbor.address"/>
+
   </div>
 </template>
 
@@ -47,5 +39,11 @@
 </script>
 
 <style scoped>
-
+  .column {
+    font-weight: 600;
+    background-color: hsl(141, 71%, 48%);
+    color: #fff;
+    border-radius: 4px;
+    margin: 4px;
+  }
 </style>

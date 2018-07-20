@@ -1,39 +1,19 @@
 <template>
-  <div class="tile is-ancestor">
-    <div class="tile is-parent">
-      <article class="tile is-child notification is-info box">
-        <div class="content">
-          Username
-        </div>
-      </article>
+  <div class="columns">
+    <div class="column is-one-fifth">
+      Username
     </div>
-    <div class="tile is-parent">
-      <article class="tile is-child notification is-info box">
-        <div class="content">
-          {{neighbor.address}}
-        </div>
-      </article>
+    <div class="column is-two-fifths">
+      {{neighbor.address}}
     </div>
-    <div class="tile is-parent">
-      <article class="tile is-child notification is-info box">
-        <div class="content">
-          Active
-        </div>
-      </article>
+    <div class="column">
+      Active
     </div>
-    <div class="tile is-parent">
-      <article class="tile is-child notification is-info box">
-        <div class="content">
-          Sync
-        </div>
-      </article>
+    <div class="column">
+      Sync
     </div>
-    <div class="tile is-parent">
-      <article class="tile is-child notification is-info box">
-        <div class="content">
-          <i class="far fa-trash-alt"></i>
-        </div>
-      </article>
+    <div class="column">
+      <i class="far fa-trash-alt"/>
     </div>
   </div>
 </template>
@@ -42,8 +22,14 @@
   export default {
     name: 'NeighborRow',
     props: ['neighbor']
-  }
+  };
 </script>
 
 <style scoped>
+  .column {
+    background-color: #009fff;
+    color: #fff;
+    border-radius: 4px;
+    margin: 4px;
+  }
 </style>
