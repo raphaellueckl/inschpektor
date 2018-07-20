@@ -1,16 +1,17 @@
 <template>
   <div class="columns">
     <div class="column is-one-fifth">
-      Username
+      User123
     </div>
     <div class="column is-two-fifths">
       {{neighbor.address}}
     </div>
     <div class="column">
-      Active
+      {{neighbor.isActive === null ? 'N/A' : neighbor.isActive ? '✔️' : '❌' }}
     </div>
     <div class="column">
-      Sync
+      {{neighbor.isSynced === null ? 'N/A'
+      : neighbor.isSynced ? '✔' : '❌'}}️
     </div>
     <div class="column">
       <i class="far fa-trash-alt"/>
