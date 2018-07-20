@@ -1,5 +1,14 @@
 <template>
   <div>
+    <article class="message is-danger">
+      <div class="message-header">
+        <p>Non-functional</p>
+      </div>
+      <div class="message-body">
+        <p>This login mask is currently non-functional, but it will come soon!</p>
+      </div>
+    </article>
+
     <section class="section">
       <div class="container">
         <h1 class="title">Authentication</h1>
