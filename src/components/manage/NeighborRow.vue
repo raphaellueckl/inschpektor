@@ -27,10 +27,10 @@
 </script>
 
 <style scoped>
-  .column {
+  .columns {
     background-color: #009fff;
     color: #fff;
+    margin-top: 4px;
     border-radius: 4px;
-    margin: 4px;
   }
 </style>

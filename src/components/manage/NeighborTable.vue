@@ -1,6 +1,6 @@
 <template>
   <div>
-    <div class="columns">
+    <div class="columns header">
       <div class="column is-one-fifth">
         Username
       </div>
@@ -39,11 +39,10 @@
 </script>
 
 <style scoped>
-  .column {
-    font-weight: 600;
+  .columns.header {
     background-color: hsl(141, 71%, 48%);
     color: #fff;
     border-radius: 4px;
-    margin: 4px;
+    margin-top: 4px;
   }
 </style>
