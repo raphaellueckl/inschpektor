@@ -14,7 +14,7 @@
       : neighbor.isSynced ? '✔' : '❌'}}️
     </div>
     <div class="column">
-      <i class="far fa-trash-alt"/>
+      <a class="button is-danger is-rounded" @click="remove"><i class="far fa-trash-alt"/></a>
     </div>
   </div>
 </template>
@@ -22,7 +22,12 @@
 <script>
   export default {
     name: 'NeighborRow',
-    props: ['neighbor']
+    props: ['neighbor'],
+    methods: {
+      remove() {
+
+      }
+    }
   };
 </script>
 
