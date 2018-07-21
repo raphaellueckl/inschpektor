@@ -14,7 +14,7 @@
       : neighbor.isSynced ? '✔' : '❌'}}️
     </div>
     <div class="column">
-      <a class="button is-danger is-rounded" @click="remove"><i class="far fa-trash-alt"/></a>
+      <a class="button is-danger is-rounded" :class="{'is-loading': submitted}" @click="remove"><i class="far fa-trash-alt"/></a>
     </div>
   </div>
 </template>
@@ -23,9 +23,14 @@
   export default {
     name: 'NeighborRow',
     props: ['neighbor'],
+    data: () => {
+      return {
+        submitted: false
+      };
+    },
     methods: {
       remove() {
-
+        this.submitted = true;
       }
     }
   };
