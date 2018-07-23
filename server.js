@@ -196,10 +196,17 @@ app.delete(`${BASE_URL}/neighbor`, (req, res) => {
   .catch(error => console.log(`Couldn't remove neighbors`));
 
   const removeNeighborEntriesWithAddress = db.prepare(`DELETE FROM neighbor where address=?`);
-  removeNeighborEntriesWithAddress.run(address);
+  removeNeighborEntriesWithAddress.run(address + ':14265');
 
   res.status(200).send();
 });
+
+// app.get(`${BASE_URL}/glimpse`, function (req, res) {
+//   db.all('SELECT * FROM neighbor as ne GROUP BY ne.address', [], (err, rows) => {
+//     console.log(rows);
+//     res.json(rows.length);
+//   });
+// });
 
 function createIriRequest(nodeIp, command) {
   return {
