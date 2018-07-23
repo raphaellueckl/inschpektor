@@ -1,15 +1,18 @@
 <template>
   <div>
+    <AddNeighbor/>
     <NeighborTable/>
   </div>
 </template>
 
 <script>
+  import AddNeighbor from './AddNeighbor';
   import NeighborTable from './NeighborTable';
 
   export default {
     name: 'Manage',
     components: {
+      AddNeighbor,
       NeighborTable
     }
   }
