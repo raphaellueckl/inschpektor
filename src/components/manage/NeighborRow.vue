@@ -31,6 +31,7 @@
     methods: {
       remove() {
         this.submitted = true;
+        this.$store.dispatch('removeNeighbor', this.neighbor);
       }
     }
   };
@@ -38,7 +39,7 @@
 
 <style scoped>
   .columns {
-    background-color: #009fff;
+    background-color: rgb(0, 159, 255, 0.85);
     color: #fff;
     margin-top: 4px;
     border-radius: 4px;

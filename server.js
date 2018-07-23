@@ -28,7 +28,7 @@ const db = new sqlite3.Database('db');
 (function createTables() {
   db.serialize(() => {
     db.run(
-      'CREATE TABLE IF NOT EXISTS neighbors (' +
+      'CREATE TABLE IF NOT EXISTS neighbor (' +
       'timestamp DATETIME DEFAULT CURRENT_TIMESTAMP,' +
       'address TEXT,' +
       'numberOfAllTransactions INTEGER,' +
@@ -49,17 +49,17 @@ const db = new sqlite3.Database('db');
 
     // db.run(
     //   `CREATE TRIGGER IF NOT EXISTS after_insertion_trigger
-    //   AFTER INSERT ON neighbors
+    //   AFTER INSERT ON neighbor
     //   BEGIN
-    //     DELETE FROM neighbors WHERE rowid in (
-    //       SELECT rowid FROM neighbors
+    //     DELETE FROM neighbor WHERE rowid in (
+    //       SELECT rowid FROM neighbor
     //       INNER JOIN (
     //         SELECT rowid, address, timestamp, ROW_NUMBER() OVER (PARTITION BY address ORDER BY timestamp
     //       ) as LegacyNr
-    //       FROM neighbors
+    //       FROM neighbor
     //       ) as oldest_allowed_tmstmp_per_adress
     //       ON
-    //       oldest_tmstmp_per_adress.id = neighbors.rowid
+    //       oldest_tmstmp_per_adress.id = neighbor.rowid
     //       and oldest_tmstmp_per_adress.LegacyNr > 100
     //     );
     //     END;`
@@ -93,7 +93,7 @@ app.get('/api/neighbors', (req, res) => {
   .then(iriNeighborsResponse => {
     const activeNeighbors = iriNeighborsResponse.data.neighbors;
 
-    db.all('SELECT * FROM neighbors ORDER BY timestamp ASC', [], (err, rows) => {
+    db.all('SELECT * FROM neighbor ORDER BY timestamp ASC', [], (err, rows) => {
       function doCallAndPrepareCallForNext(activeNeighbors, currentIndex) {
         const activeNeighbor = activeNeighbors[currentIndex];
 
@@ -184,6 +184,21 @@ app.post(`${BASE_URL}/host-node-ip`, (req, res) => {
   res.status(200).send();
 });
 
+// app.delete(`${BASE_URL}/neighbor`, (req, res) => {
+//   const address = req.body.address;
+//   console.log('incoming address: ' + address);
+//
+//   axios(createIriRequest(iriIp, 'getNeighbors'))
+//   .then(response => console.log('Removed neighbor, status: ', response.status))
+//   .catch(error => console.log('Couldn\'t remove neighbors'));
+//
+//   const removeNeighborEntriesWithAddress = db.prepare(`DELETE FROM neighbor where address=?`);
+//
+//   removeNeighborEntriesWithAddress.run(address);
+//
+//   res.status(200).send();
+// });
+
 function createIriRequest(nodeIp, command) {
   return {
     url: `http://${nodeIp}:${IRI_PORT}`,
@@ -208,7 +223,7 @@ async function theFetcher() {
       .then(response => {
         const neighbors = response.data.neighbors;
 
-        const stmt = db.prepare('INSERT INTO neighbors (address, numberOfAllTransactions, numberOfRandomTransactionRequests, numberOfNewTransactions, numberOfInvalidTransactions, numberOfSentTransactions, connectionType) VALUES (?, ?, ?, ?, ?, ?, ?)');
+        const stmt = db.prepare('INSERT INTO neighbor (address, numberOfAllTransactions, numberOfRandomTransactionRequests, numberOfNewTransactions, numberOfInvalidTransactions, numberOfSentTransactions, connectionType) VALUES (?, ?, ?, ?, ?, ?, ?)');
         neighbors.forEach((neighbor) => {
           stmt.run(
             neighbor.address,

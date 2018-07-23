@@ -74,6 +74,14 @@ const actions = {
       dispatch('fetchNeighbors');
     })
     .catch(error => console.log('error setting node ip'));
+  },
+  removeNeighbor({dispatch, commit}, neighbor) {
+    console.log(neighbor)
+    // axios.delete('/api/neighbor', {address: neighbor.address})
+    // .then(response => {
+    //   dispatch('fetchNeighbors');
+    // })
+    // .catch(error => console.log('error deleting neighbor'));
   }
 };
 
