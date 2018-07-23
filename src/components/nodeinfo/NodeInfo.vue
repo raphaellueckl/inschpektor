@@ -14,7 +14,7 @@
                   <strong>Cores: </strong>{{nodeInfo.jreAvailableProcessors}}
                 </p>
                 <p>
-                  <strong>Ram: </strong>{{nodeInfo.jreMaxMemory}}
+                  <strong>Ram: </strong>{{Math.round(nodeInfo.jreMaxMemory / 100000000) / 10}} GB
                 </p>
                 <p>
                   <strong>Java Version: </strong>{{nodeInfo.jreVersion}}
