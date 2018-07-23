@@ -184,25 +184,27 @@ app.post(`${BASE_URL}/host-node-ip`, (req, res) => {
   res.status(200).send();
 });
 
-// app.delete(`${BASE_URL}/neighbor`, (req, res) => {
-//   const address = req.body.address;
-//   console.log('incoming address: ' + address);
-//
-//   axios(createIriRequest(iriIp, 'getNeighbors'))
-//   .then(response => console.log('Removed neighbor, status: ', response.status))
-//   .catch(error => console.log('Couldn\'t remove neighbors'));
-//
-//   const removeNeighborEntriesWithAddress = db.prepare(`DELETE FROM neighbor where address=?`);
-//
-//   removeNeighborEntriesWithAddress.run(address);
-//
-//   res.status(200).send();
-// });
+app.delete(`${BASE_URL}/neighbor`, (req, res) => {
+  const address = req.body.address;
+  console.log('incoming address: ' + address);
+
+  const removeNeighborRequest = createIriRequest(iriIp, 'removeNeighbors');
+  removeNeighborRequest.data.uris = [`udp://${address}:14265`];
+
+  axios(removeNeighborRequest)
+  .then(response => console.log('Removed neighbor, status: ', response.status))
+  .catch(error => console.log(`Couldn't remove neighbors`));
+
+  const removeNeighborEntriesWithAddress = db.prepare(`DELETE FROM neighbor where address=?`);
+  removeNeighborEntriesWithAddress.run(address);
+
+  res.status(200).send();
+});
 
 function createIriRequest(nodeIp, command) {
   return {
     url: `http://${nodeIp}:${IRI_PORT}`,
-    data: {'command': command},
+    data: {command},
     method: 'post',
     headers: {
       'Content-Type': 'application/json',
