@@ -19,11 +19,8 @@
 
                   <div class="field">
                     <label class="label">IP-Address</label>
-                    <div class="control has-icons-left has-icons-right">
+                    <div class="control has-icons-right">
                       <input class="input is-success" type="text" placeholder="E.g. 123.32.123.123">
-                      <span class="icon is-small is-left">
-                        <i class="fas fa-user"></i>
-                      </span>
                       <span class="icon is-small is-right">
                         <i class="fas fa-check"></i>
                       </span>
@@ -32,7 +29,7 @@
                   </div>
 
                   <div class="field">
-                    <label class="label">Subject</label>
+                    <label class="label">protocol</label>
                     <div class="control">
                       <div class="select">
                         <select>
