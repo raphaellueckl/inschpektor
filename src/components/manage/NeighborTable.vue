@@ -44,5 +44,6 @@
     color: #fff;
     border-radius: 4px;
     margin-top: 4px;
+    font-weight: bold;
   }
 </style>
