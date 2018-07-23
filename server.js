@@ -215,7 +215,7 @@ function createIriRequest(nodeIp, command) {
 }
 
 app.listen(app.get('port'), () => {
-  console.log(`Find the server at: http://localhost:${app.get('port')}/`); // eslint-disable-line no-console
+  console.log(`Find the server at: http://localhost:${app.get('port')}/`);
 });
 
 async function theFetcher() {
