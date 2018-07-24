@@ -13,7 +13,7 @@
                   <div class="field">
                     <label class="label">Name</label>
                     <div class="control">
-                      <input class="input" type="text" placeholder="Custom name for this node">
+                      <input class="input" type="text" placeholder="Custom name for this neighbor">
                     </div>
                   </div>
 

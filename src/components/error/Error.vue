@@ -1,5 +1,6 @@
 <template>
   <div>
+
     <h1 class="title">Hi :)</h1>
     <div v-if="code === 'NODE_NOT_SET'">
       <h2 class="subtitle">Looks like you didn't link your node yet. Please provide the IP / Domain below.</h2>
@@ -10,7 +11,18 @@
         changed.</h2>
     </div>
 
-    <input v-model="nodeIp" class="input" type="text" placeholder="IP / Domain of your node">
+    <br>
+
+    <nav class="level">
+      <div class="level-item has-text-centered">
+        <div class="field is-expanded">
+          <label class="label">Host-Node IP:</label>
+          <div class="control">
+            <input v-model="nodeIp" class="input" type="text" placeholder="E.g. 192.168.1.111">
+          </div>
+        </div>
+      </div>
+    </nav>
 
     <nav class="level">
       <div class="level-item has-text-centered">
@@ -21,6 +33,7 @@
         </div>
       </div>
     </nav>
+
   </div>
 </template>
 
