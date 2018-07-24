@@ -13,31 +13,23 @@
                   <div class="field">
                     <label class="label">Name</label>
                     <div class="control">
-                      <input class="input" type="text" placeholder="Custom name for this neighbor">
+                      <input v-model="name" class="input" type="text" placeholder="Custom name for this neighbor">
                     </div>
                   </div>
 
                   <div class="field">
                     <label class="label">IP-Address</label>
                     <div class="control has-icons-right">
-                      <input class="input is-success" type="text" placeholder="E.g. 123.32.123.123">
-                      <span class="icon is-small is-right">
+                      <input v-model="ipAddress" class="input" :class="[isCorrectAddress ? 'is-success' : 'is-danger']"
+                             type="text" placeholder="E.g. 123.32.123.123">
+                      <span v-if="validIp" class="icon is-small is-right" :key="0">
                         <i class="fas fa-check"></i>
                       </span>
+                      <span v-else class="icon is-small is-right" :key="1">
+                        <i class="fas fa-exclamation-triangle"></i>
+                      </span>
                     </div>
-                    <p class="help is-success">This username is available</p>
-                  </div>
-
-                  <div class="field">
-                    <label class="label">protocol</label>
-                    <div class="control">
-                      <div class="select">
-                        <select>
-                          <option>Select dropdown</option>
-                          <option>With options</option>
-                        </select>
-                      </div>
-                    </div>
+                    <p v-if="!validIp" class="help is-danger">Wrong node address format!</p>
                   </div>
 
                   <div class="field is-grouped">
@@ -45,7 +37,7 @@
                       <button class="button is-link">Submit</button>
                     </div>
                     <div class="control">
-                      <button class="button is-text">Cancel</button>
+                      <button class="button is-text" @click="clearFields">Cancel</button>
                     </div>
                   </div>
                 </div>
@@ -62,7 +54,28 @@
 
 <script>
   export default {
-    name: 'AddNeighbor'
+    name: 'AddNeighbor',
+    data: () => {
+      return {
+        name: '',
+        ipAddress: '',
+        validIp: false
+      };
+    },
+    computed: {
+      isCorrectAddress: function () {
+        const startRegex = new RegExp(`^(udp|tcp):\\/\\/`);
+        const endRegex = new RegExp(`:[0-9]{3,5}$`);
+        this.validIp = startRegex.test(this.ipAddress) && endRegex.test(this.ipAddress);
+        return startRegex.test(this.ipAddress) && endRegex.test(this.ipAddress);
+      }
+    },
+    methods: {
+      clearFields: function() {
+        this.name = '';
+        this.ipAddress = '';
+      }
+    }
   };
 </script>
 

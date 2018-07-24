@@ -7,15 +7,15 @@
     </div>
 
     <div v-else>
-      <h2 class="subtitle">There appears to be problems reaching your node. You can link another IP down below, if it
-        changed.</h2>
+      <h2 class="subtitle">There appears to be problems reaching your node. If the IP changed, please update it down
+        below. Otherwise, you have to fix the node itself.</h2>
     </div>
 
     <br>
 
     <nav class="level">
       <div class="level-item has-text-centered">
-        <div class="field is-expanded">
+        <div class="field">
           <label class="label">Host-Node IP:</label>
           <div class="control">
             <input v-model="nodeIp" class="input" type="text" placeholder="E.g. 192.168.1.111">
