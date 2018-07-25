@@ -21,7 +21,7 @@
                     <label class="label">IP-Address</label>
                     <div class="control has-icons-right">
                       <input v-model="ipAddress" class="input" :class="[isCorrectAddress ? 'is-success' : 'is-danger']"
-                             type="text" placeholder="E.g. 123.32.123.123">
+                             type="text" placeholder="E.g. udp://123.32.123.123:14600 or tcp://neighbor-domain.net:14600">
                       <span v-if="validIp" class="icon is-small is-right" :key="0">
                         <i class="fas fa-check"></i>
                       </span>
@@ -34,7 +34,7 @@
 
                   <div class="field is-grouped">
                     <div class="control">
-                      <button class="button is-link">Submit</button>
+                      <button class="button is-link" @click="addNeighbor({name, address: ipAddress})">Submit</button>
                     </div>
                     <div class="control">
                       <button class="button is-text" @click="clearFields">Cancel</button>
@@ -53,6 +53,8 @@
 </template>
 
 <script>
+  import {mapActions} from 'vuex';
+
   export default {
     name: 'AddNeighbor',
     data: () => {
@@ -71,10 +73,11 @@
       }
     },
     methods: {
-      clearFields: function() {
+      ...mapActions(['addNeighbor']),
+      clearFields: function () {
         this.name = '';
         this.ipAddress = '';
-      }
+      },
     }
   };
 </script>

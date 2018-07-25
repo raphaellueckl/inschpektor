@@ -76,6 +76,13 @@ const actions = {
     })
     .catch(error => console.log('error setting node ip'));
   },
+  addNeighbor({dispatch, commit}, neighborSubmission) {
+    axios.post('/api/neighbor', {name: neighborSubmission.name, address: neighborSubmission.address})
+    .then(response => {
+      dispatch('fetchNeighbors');
+    })
+    .catch(error => console.log('Error adding neighbor'));
+  },
   removeNeighbor({dispatch, commit}, neighbor) {
     const address = neighbor.address.split(':')[0];
     axios.delete('/api/neighbor', {data: {address}})

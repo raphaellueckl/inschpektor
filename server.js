@@ -201,6 +201,24 @@ app.delete(`${BASE_URL}/neighbor`, (req, res) => {
   res.status(200).send();
 });
 
+app.post(`${BASE_URL}/neighbor`, (req, res) => {
+  const name = req.body.name;
+  const address = req.body.address;
+  console.log(name, address);
+
+  // const removeNeighborRequest = createIriRequest(iriIp, 'removeNeighbors');
+  // removeNeighborRequest.data.uris = [`udp://${address}:14265`];
+  //
+  // axios(removeNeighborRequest)
+  // .then(response => console.log('Removed neighbor, status: ', response.status))
+  // .catch(error => console.log(`Couldn't remove neighbors`));
+  //
+  // const removeNeighborEntriesWithAddress = db.prepare(`DELETE FROM neighbor where address=?`);
+  // removeNeighborEntriesWithAddress.run(address + ':14265');
+
+  res.status(200).send();
+});
+
 // app.get(`${BASE_URL}/glimpse`, function (req, res) {
 //   db.all('SELECT * FROM neighbor as ne GROUP BY ne.address', [], (err, rows) => {
 //     console.log(rows);
