@@ -16,3 +16,4 @@ As soon as this is handled, I would put it into an alpha state.
 - Create DB trigger for a limited amount of inserts into neighbors
 - Create a node app and list it on NPM
 - Permanently add neighbor (by writing to iri file)
+- Notifications
