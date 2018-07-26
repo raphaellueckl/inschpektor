@@ -193,7 +193,7 @@ app.delete(`${BASE_URL}/neighbor`, (req, res) => {
 
   axios(removeNeighborRequest)
   .then(response => console.log('Removed neighbor, status: ', response.status))
-  .catch(error => console.log(`Couldn't remove neighbors`));
+  .catch(error => console.log(`Couldn't remove neighbor`));
 
   const removeNeighborEntriesWithAddress = db.prepare(`DELETE FROM neighbor where address=?`);
   removeNeighborEntriesWithAddress.run(address + ':14265');
@@ -206,13 +206,13 @@ app.post(`${BASE_URL}/neighbor`, (req, res) => {
   const address = req.body.address;
   console.log(name, address);
 
-  // const removeNeighborRequest = createIriRequest(iriIp, 'removeNeighbors');
-  // removeNeighborRequest.data.uris = [`udp://${address}:14265`];
-  //
-  // axios(removeNeighborRequest)
-  // .then(response => console.log('Removed neighbor, status: ', response.status))
-  // .catch(error => console.log(`Couldn't remove neighbors`));
-  //
+  const removeNeighborRequest = createIriRequest(iriIp, 'addNeighbors');
+  removeNeighborRequest.data.uris = [address];
+
+  axios(removeNeighborRequest)
+  .then(response => console.log('Added neighbor, status: ', response.status))
+  .catch(error => console.log(`Couldn't add neighbor`));
+
   // const removeNeighborEntriesWithAddress = db.prepare(`DELETE FROM neighbor where address=?`);
   // removeNeighborEntriesWithAddress.run(address + ':14265');
 
