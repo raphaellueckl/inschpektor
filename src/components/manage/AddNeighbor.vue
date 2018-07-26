@@ -20,7 +20,7 @@
                   <div class="field">
                     <label class="label">IP-Address</label>
                     <div class="control has-icons-right">
-                      <input v-model="ipAddress" class="input" :class="[isCorrectAddress ? 'is-success' : 'is-danger']"
+                      <input v-model="ipAddress" class="input" :class="[ipAddress ? isCorrectAddress ? 'is-success' : 'is-danger' : '']"
                              type="text" placeholder="E.g. udp://123.32.123.123:14600 or tcp://neighbor-domain.net:14600">
                       <span v-if="isCorrectAddress" class="icon is-small is-right" :key="0">
                         <i class="fas fa-check"></i>
@@ -67,7 +67,7 @@
       isCorrectAddress: function () {
         if (!this.ipAddress) return true;
         const startRegex = new RegExp(`^(udp|tcp):\\/\\/`);
-        const endRegex = new RegExp(`:[0-9]{3,5}$`);
+        const endRegex = new RegExp(`:[0-9]{2,5}$`);
         return startRegex.test(this.ipAddress) && endRegex.test(this.ipAddress);
       }
     },
