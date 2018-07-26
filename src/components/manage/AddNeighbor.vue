@@ -22,19 +22,19 @@
                     <div class="control has-icons-right">
                       <input v-model="ipAddress" class="input" :class="[isCorrectAddress ? 'is-success' : 'is-danger']"
                              type="text" placeholder="E.g. udp://123.32.123.123:14600 or tcp://neighbor-domain.net:14600">
-                      <span v-if="validIp" class="icon is-small is-right" :key="0">
+                      <span v-if="isCorrectAddress" class="icon is-small is-right" :key="0">
                         <i class="fas fa-check"></i>
                       </span>
                       <span v-else class="icon is-small is-right" :key="1">
                         <i class="fas fa-exclamation-triangle"></i>
                       </span>
                     </div>
-                    <p v-if="!validIp" class="help is-danger">Wrong node address format!</p>
+                    <p v-if="!isCorrectAddress" class="help is-danger">Wrong node address format!</p>
                   </div>
 
                   <div class="field is-grouped">
                     <div class="control">
-                      <button class="button is-link" @click="addNeighbor({name, address: ipAddress}); clearFields()">Submit</button>
+                      <button class="button is-link" :disabled="ipAddress && !isCorrectAddress" @click="addNeighbor({name, address: ipAddress}); clearFields()">Submit</button>
                     </div>
                     <div class="control">
                       <button class="button is-text" @click="clearFields">Cancel</button>
@@ -61,14 +61,13 @@
       return {
         name: '',
         ipAddress: '',
-        validIp: false
       };
     },
     computed: {
       isCorrectAddress: function () {
+        if (!this.ipAddress) return true;
         const startRegex = new RegExp(`^(udp|tcp):\\/\\/`);
         const endRegex = new RegExp(`:[0-9]{3,5}$`);
-        this.validIp = startRegex.test(this.ipAddress) && endRegex.test(this.ipAddress);
         return startRegex.test(this.ipAddress) && endRegex.test(this.ipAddress);
       }
     },
