@@ -194,6 +194,7 @@ app.delete(`${BASE_URL}/neighbor`, (req, res) => {
   axios(removeNeighborRequest)
   .then(response => {
     console.log('Removed neighbor, status: ', response.status);
+
     const removeNeighborEntriesWithAddress = db.prepare(`DELETE FROM neighbor where address=?`);
     removeNeighborEntriesWithAddress.run(address + ':14265');
 
@@ -215,13 +216,18 @@ app.post(`${BASE_URL}/neighbor`, (req, res) => {
   removeNeighborRequest.data.uris = [address];
 
   axios(removeNeighborRequest)
-  .then(response => console.log('Added neighbor, status: ', response.status))
-  .catch(error => console.log(`Couldn't add neighbor`));
+  .then(response => {
+    console.log('Added neighbor, status: ', response.status);
 
-  // const removeNeighborEntriesWithAddress = db.prepare(`DELETE FROM neighbor where address=?`);
-  // removeNeighborEntriesWithAddress.run(address + ':14265');
+    const removeNeighborEntriesWithAddress = db.prepare(`DELETE FROM neighbor where address=?`);
+    removeNeighborEntriesWithAddress.run(address + ':14265');
 
-  res.status(200).send();
+    res.status(200).send();
+  })
+  .catch(error => {
+    console.log(`Couldn't add neighbor`);
+    res.status(500).send();
+  });
 });
 
 // app.get(`${BASE_URL}/glimpse`, function (req, res) {
