@@ -34,7 +34,7 @@
 
                   <div class="field is-grouped">
                     <div class="control">
-                      <button class="button is-link" @click="addNeighbor({name, address: ipAddress})">Submit</button>
+                      <button class="button is-link" @click="addNeighbor({name, address: ipAddress}); clearFields()">Submit</button>
                     </div>
                     <div class="control">
                       <button class="button is-text" @click="clearFields">Cancel</button>

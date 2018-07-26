@@ -192,13 +192,18 @@ app.delete(`${BASE_URL}/neighbor`, (req, res) => {
   removeNeighborRequest.data.uris = [`udp://${address}:14265`];
 
   axios(removeNeighborRequest)
-  .then(response => console.log('Removed neighbor, status: ', response.status))
-  .catch(error => console.log(`Couldn't remove neighbor`));
+  .then(response => {
+    console.log('Removed neighbor, status: ', response.status);
+    const removeNeighborEntriesWithAddress = db.prepare(`DELETE FROM neighbor where address=?`);
+    removeNeighborEntriesWithAddress.run(address + ':14265');
 
-  const removeNeighborEntriesWithAddress = db.prepare(`DELETE FROM neighbor where address=?`);
-  removeNeighborEntriesWithAddress.run(address + ':14265');
+    res.status(200).send();
+  })
+  .catch(error => {
+    console.log(`Couldn't remove neighbor`);
+    res.status(500).send();
+  });
 
-  res.status(200).send();
 });
 
 app.post(`${BASE_URL}/neighbor`, (req, res) => {
