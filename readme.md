@@ -17,3 +17,6 @@ As soon as this is handled, I would put it into an alpha state.
 - Create a node app and list it on NPM
 - Permanently add neighbor (by writing to iri file)
 - Notifications
+- Fix manage-neighbor mobile table
+- Proper error component routing
+- User authentication
