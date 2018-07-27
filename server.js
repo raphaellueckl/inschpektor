@@ -189,7 +189,7 @@ app.delete(`${BASE_URL}/neighbor`, (req, res) => {
   console.log('incoming address: ' + address);
 
   const removeNeighborRequest = createIriRequest(iriIp, 'removeNeighbors');
-  removeNeighborRequest.data.uris = [`udp://${address}:14265`];
+  removeNeighborRequest.data.uris = [`udp://${address}:14600`];
 
   axios(removeNeighborRequest)
   .then(response => {
