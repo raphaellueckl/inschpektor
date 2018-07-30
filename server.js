@@ -4,16 +4,18 @@ const history = require('connect-history-api-fallback');
 const sqlite3 = require('sqlite3').verbose();
 
 const app = express();
-app.set('port', (process.env.PORT || 3000));
+app.set('port', (process.env.PORT || 14266));
 
-if (process.env.NODE_ENV === 'production') {
+if (process.env.NODE_ENV === 'prod') {
+  console.log('Environment: PROD');
   app.use(history());
-  app.use(express.static(path.join(__dirname, '/dist')));
+  app.use(express.static(__dirname + '/dist'));
+} else {
+  console.log('Environment: DEV');
 }
 
 app.use(express.json());
 
-// const iriIp = '192.168.188.20';
 let iriIp = null;
 const IRI_PORT = '14265';
 const BASE_URL = '/api';
@@ -21,7 +23,7 @@ const MAX_MILESTONES_BEHIND_BEFORE_UNSYNCED = 50;
 
 let currentOwnNodeInfo = {};
 
-// A fake API token our server validates
+// Fake API token for login
 const API_TOKEN = 'D6W69PRgCoDKgHZGJmRUNA';
 
 const db = new sqlite3.Database('db');
@@ -74,16 +76,12 @@ const db = new sqlite3.Database('db');
   });
 })();
 
-// Make things more noticeable in the UI by introducing a fake delay
-// to logins
 const FAKE_DELAY = 500; // ms
 app.post('/api/login', (req, res) => {
-  setTimeout(() => (
     res.json({
       success: true,
       token: API_TOKEN,
     })
-  ), FAKE_DELAY);
 });
 
 app.get('/api/neighbors', (req, res) => {
@@ -249,6 +247,10 @@ function createIriRequest(nodeIp, command) {
     timeout: 250
   };
 }
+
+app.get('/', function(req, res) {
+  res.sendfile('./dist/index.html');
+});
 
 app.listen(app.get('port'), () => {
   console.log(`Find the server at: http://localhost:${app.get('port')}/`);

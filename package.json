@@ -1,13 +1,35 @@
 {
   "name": "inschpektor",
-  "version": "0.1.0",
+  "version": "0.0.2",
+  "description": "An IOTA neighbor manager for your node.",
+  "main": "server.js",
   "private": true,
   "scripts": {
-    "start": "nodemon server.js",
     "start-dev": "concurrently \"nodemon server.js\" \"npm run serve\"",
+    "start-prod": "NODE_ENV=prod node server.js",
+    "api": "nodemon server.js",
     "serve": "vue-cli-service serve",
     "build": "vue-cli-service build"
   },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/codepleb/inschpektor.git"
+  },
+  "keywords": [
+    "iota",
+    "node",
+    "neighbor",
+    "iri",
+    "manager",
+    "vuejs",
+    "open-source"
+  ],
+  "author": "codepleb",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/codepleb/inschpektor/issues"
+  },
+  "homepage": "https://github.com/codepleb/inschpektor#readme",
   "dependencies": {
     "@fortawesome/fontawesome": "^1.1.8",
     "@fortawesome/fontawesome-free-brands": "^5.0.13",
