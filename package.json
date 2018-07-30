@@ -1,13 +1,13 @@
 {
   "name": "inschpektor",
-  "version": "0.0.4",
+  "version": "0.0.8",
   "description": "An IOTA neighbor manager for your node.",
   "main": "server.js",
   "private": false,
   "scripts": {
-    "start-dev": "concurrently \"nodemon server.js\" \"npm run serve\"",
-    "start-prod": "NODE_ENV=prod node server.js",
-    "api": "nodemon server.js",
+    "start-dev": "concurrently \"NODE_ENV=dev nodemon server.js\" \"npm run serve\"",
+    "start-prod": "node server.js",
+    "api": "NODE_ENV=dev nodemon server.js",
     "serve": "vue-cli-service serve",
     "build": "vue-cli-service build"
   },

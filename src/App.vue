@@ -26,6 +26,9 @@
     created() {
       this.$store.dispatch('fetchNodeInfo');
       this.$store.dispatch('fetchNeighbors');
+
+      // Mock login token as long as not implemented
+      localStorage.setItem('token', 'loginToken');
     },
     computed: {
       ...mapGetters(['nodeError'])

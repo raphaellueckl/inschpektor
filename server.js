@@ -8,12 +8,12 @@ const sqlite3 = require('sqlite3').verbose();
 const app = express();
 app.set('port', (process.env.PORT || 8732));
 
-if (process.env.NODE_ENV === 'prod') {
+if (process.env.NODE_ENV === 'dev') {
+  console.log('Environment: DEV');
+} else {
   console.log('Environment: PROD');
   app.use(history());
   app.use(express.static(__dirname + '/dist'));
-} else {
-  console.log('Environment: DEV');
 }
 
 app.use(express.json());
@@ -45,7 +45,7 @@ const db = new sqlite3.Database('db');
     );
 
     db.run(
-      `CREATE TABLE IF NOT EXISTS host_node (
+        `CREATE TABLE IF NOT EXISTS host_node (
         ID INTEGER PRIMARY KEY,
         ip TEXT
       )`
@@ -80,10 +80,10 @@ const db = new sqlite3.Database('db');
 
 const FAKE_DELAY = 500; // ms
 app.post('/api/login', (req, res) => {
-    res.json({
-      success: true,
-      token: API_TOKEN,
-    })
+  res.json({
+    success: true,
+    token: API_TOKEN,
+  });
 });
 
 app.get('/api/neighbors', (req, res) => {
@@ -251,7 +251,7 @@ function createIriRequest(nodeIp, command) {
 }
 
 app.get('/', function(req, res) {
-  res.sendfile('./dist/index.html');
+  res.sendFile('./dist/index.html');
 });
 
 app.listen(app.get('port'), () => {
