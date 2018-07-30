@@ -1,6 +1,6 @@
 {
   "name": "inschpektor",
-  "version": "0.0.2",
+  "version": "0.0.4",
   "description": "An IOTA neighbor manager for your node.",
   "main": "server.js",
   "private": false,
@@ -10,6 +10,9 @@
     "api": "nodemon server.js",
     "serve": "vue-cli-service serve",
     "build": "vue-cli-service build"
+  },
+  "bin": {
+    "inschpektor": "server.js"
   },
   "repository": {
     "type": "git",
