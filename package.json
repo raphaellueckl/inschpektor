@@ -3,7 +3,7 @@
   "version": "0.0.2",
   "description": "An IOTA neighbor manager for your node.",
   "main": "server.js",
-  "private": true,
+  "private": false,
   "scripts": {
     "start-dev": "concurrently \"nodemon server.js\" \"npm run serve\"",
     "start-prod": "NODE_ENV=prod node server.js",
@@ -37,6 +37,7 @@
     "@fortawesome/fontawesome-free-solid": "^5.0.13",
     "axios": "^0.18.0",
     "bulma": "^0.7.1",
+    "connect-history-api-fallback": "^1.5.0",
     "express": "^4.16.3",
     "moment": "^2.22.2",
     "node-sass": "^4.9.2",

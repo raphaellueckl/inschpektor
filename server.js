@@ -4,7 +4,7 @@ const history = require('connect-history-api-fallback');
 const sqlite3 = require('sqlite3').verbose();
 
 const app = express();
-app.set('port', (process.env.PORT || 14266));
+app.set('port', (process.env.PORT || 8732));
 
 if (process.env.NODE_ENV === 'prod') {
   console.log('Environment: PROD');
