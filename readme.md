@@ -7,13 +7,15 @@ As soon as this is handled, I would put it into an alpha state.
 
 ### Installation
 
-Run `sudo npm i -g inschpektor --unsafe-perm && cd ~ && mkdir inschpektor`.
+Run `sudo npm i -g inschpektor --unsafe-perm && cd ~ && mkdir -p inschpektor`.
 
 (Keep in mind that this is a very early stage of development and the installation process will be subject to change.)
 
 ### Running after installation
 
 Always run this command: `cd ~ && cd inschpektor && inschpektor`.
+
+As soon as it is running, you find it in your browser @ <http://localhost:8732>
 
 (Keep in mind that this is a very early stage of development and the boot process will be subject to change.)
 
