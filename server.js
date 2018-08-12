@@ -230,6 +230,10 @@ app.post(`${BASE_URL}/neighbor`, (req, res) => {
   });
 });
 
+app.get(`${BASE_URL}/iri-ip`, (req, res) => {
+  res.send(iriIp);
+});
+
 // app.get(`${BASE_URL}/glimpse`, function (req, res) {
 //   db.all('SELECT * FROM neighbor as ne GROUP BY ne.address', [], (err, rows) => {
 //     console.log(rows);

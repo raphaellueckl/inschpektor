@@ -9,6 +9,7 @@
     <div v-else>
       <h2 class="subtitle">There appears to be problems reaching your node. If the IP changed, please update it down
         below. Otherwise, you have to fix the node itself.</h2>
+        <h2 class="subtitle">Currently set IP: {{iriIp}}</h2>
     </div>
 
     <br>
@@ -38,6 +39,7 @@
 </template>
 
 <script>
+  import {mapGetters} from 'vuex';
   import {mapActions} from 'vuex';
 
   export default {
@@ -51,6 +53,12 @@
     },
     methods: {
       ...mapActions(['setHostNodeIp'])
+    },
+    computed: {
+      ...mapGetters(['iriIp'])
+    },
+    created() {
+      this.$store.dispatch('fetchIriIp');
     }
   };
 </script>

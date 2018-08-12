@@ -26,6 +26,7 @@
     created() {
       this.$store.dispatch('fetchNodeInfo');
       this.$store.dispatch('fetchNeighbors');
+      this.$store.dispatch('fetchIriIp');
 
       // Mock login token as long as not implemented
       localStorage.setItem('token', 'loginToken');

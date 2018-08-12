@@ -13,6 +13,7 @@ const state = {
   token: null,
   loading: false,
   nodeInfo: null,
+  iriIp: null,
   neighbors: null,
   nodeError: null
 };
@@ -29,6 +30,9 @@ const mutations = {
   },
   SET_NODE_INFO(state, info) {
     state.nodeInfo = info;
+  },
+  SET_IRI_IP(state, ip) {
+    state.iriIp = ip;
   },
   SET_NEIGHBORS(state, neighbors) {
     state.neighbors = neighbors;
@@ -60,6 +64,14 @@ const actions = {
     .catch(error => {
       commit('SET_NODE_INFO', null);
       commit('SET_ERROR', error.response.data);
+    });
+  },
+  fetchIriIp({commit}) {
+    axios('/api/iri-ip')
+    .then(response => {
+      commit('SET_IRI_IP', response.data);
+    })
+    .catch(error => {
     });
   },
   fetchNeighbors({commit}) {
@@ -97,6 +109,7 @@ const getters = {
   token: state => state.token,
   loading: state => state.loading,
   nodeInfo: state => state.nodeInfo,
+  iriIp: state => state.iriIp,
   hostNode: state => state.hostNode,
   neighbors: state => state.neighbors,
   nodeError: state => state.nodeError,

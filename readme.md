@@ -25,10 +25,9 @@ As soon as it is running, you find it in your browser @ <http://localhost:8732>
 
 ### Features/Improves on the roadmap:
 
-- AddNeighbor functionality
+- Permanent AddNeighbor functionality
 - Manage non-UDP neighbors
 - Keep database slim by removing the oldest entries
-- "Current IP" in node error view
 - Improve fetchneighbors algorithm (introcude promises)
 - Improve database queries
 - Create DB trigger for a limited amount of inserts into neighbors
