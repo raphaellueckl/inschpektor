@@ -7,6 +7,10 @@ As soon as this is handled, I would put it into an alpha state.
 
 ### Installation
 
+You need a recent version of node to successfully run this app (10.8+):
+
+Check https://nodejs.org/en/download/ and download&install the version for your system.
+
 Run `sudo npm i -g inschpektor --unsafe-perm && cd ~ && mkdir -p inschpektor`.
 
 (Keep in mind that this is a very early stage of development and the installation process will be subject to change.)
@@ -35,3 +39,4 @@ As soon as it is running, you find it in your browser @ <http://localhost:8732>
 - Proper error component routing
 - User authentication
 - Improve node module process
+- Improve further for mobile (currently desktop has prio)
