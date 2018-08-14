@@ -281,6 +281,8 @@ async function theFetcher() {
             neighbor.connectionType);
         });
         stmt.finalize();
+
+        db.run(`DELETE FROM neighbor WHERE timestamp <= datetime('now', '-30 minutes')`);
       })
       .catch(error => console.log('Failed to fetch neighbors of own node.'));
 

@@ -25,6 +25,9 @@ As soon as it is running, you find it in your browser @ <http://localhost:8732>
 
 ### Features/Improves on the roadmap:
 
+- 'inschpektor' should always use the same db path
+- Improve db query to fetch neighbors
+- Add timestamp to entries and delete regularly
 - Permanent AddNeighbor functionality
 - Manage non-UDP neighbors
 - Keep database slim by removing the oldest entries
