@@ -35,6 +35,7 @@ I'm not poor and I have a job. But if you want to show some love, I always appre
 - 'inschpektor' should always use the same db path
 - Restart node when out of sync
 - Highlight static neighbors (compared to nelson ones)
+- Allow usernames
 - Update dependencies to remove the --unsafe-perm form the installation command
 - Improve db query to fetch neighbors
 - Add timestamp to entries and delete regularly
