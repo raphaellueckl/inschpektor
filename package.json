@@ -1,6 +1,6 @@
 {
   "name": "inschpektor",
-  "version": "0.1.0",
+  "version": "0.1.2",
   "description": "An IOTA neighbor manager for your node.",
   "main": "server.js",
   "private": false,
