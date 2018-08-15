@@ -28,7 +28,7 @@ let currentOwnNodeInfo = {};
 // Fake API token for login
 const API_TOKEN = 'D6W69PRgCoDKgHZGJmRUNA';
 
-const db = new sqlite3.Database('db');
+const db = new sqlite3.Database('__dirname/db');
 (function createTables() {
   db.serialize(() => {
     db.run(
