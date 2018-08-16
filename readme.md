@@ -26,31 +26,42 @@ To get the newest version (or ignore, if you already have it), you can just run 
 
 ### Donations
 
-You can get an address within the "About" section or use this one: IPXS9YLKJMODKUBHOXRHSUOMWYCBAKYGRCNLH9RAEP9NXRXXYPGBZBVQQWCMLNOHZQRTOGIRMTISGXAVAGASBFLAUB
+You can get an address within the "About" section or use this one:
+
+IPXS9YLKJMODKUBHOXRHSUOMWYCBAKYGRCNLH9RAEP9NXRXXYPGBZBVQQWCMLNOHZQRTOGIRMTISGXAVAGASBFLAUB
 
 I'm not poor and I have a job. But if you want to show some love, I always appreciate it. :)
 
-### Features/Improves on the roadmap:
+### Features/Improves on the roadmap
 
-- 'inschpektor' should always use the same db path
 - Restart node when out of sync
 - Highlight static neighbors (compared to nelson ones)
-- Allow usernames
+- Allow neighor usernames
+- Improve db query to fetch neighbors (promises, parallel fetching instead of serial)
 - Update dependencies to remove the --unsafe-perm form the installation command
-- Improve db query to fetch neighbors
-- Add timestamp to entries and delete regularly
-- Add 'reset db' functionality
-- Permanent AddNeighbor functionality
+- Permanent AddNeighbor functionality (write to iri config file)
+- Fetch regularly
+- User authentication
+- User authorization
 - Manage non-UDP neighbors
-- Keep database slim by removing the oldest entries
-- Improve fetchneighbors algorithm (introcude promises)
-- Improve database queries
-- Create DB trigger for a limited amount of inserts into neighbors
-- Create a node app and list it on NPM
 - Permanently add neighbor (by writing to iri file)
 - Notifications
 - Fix manage-neighbor mobile table
 - Proper error component routing
-- User authentication
-- Improve node module process
+- Add 'reset db' functionality
 - Improve further for mobile (currently desktop has prio)
+- Improve database queries
+
+### Supported
+✓ View neighbors
+✓ Add / Remove neighbors
+✓ NPM runnable app
+✓ Fetch info about hosted node
+✓ 
+✓ 
+✓ 
+✓ 
+✓ 
+✓ 
+✓ 
+✓ 
