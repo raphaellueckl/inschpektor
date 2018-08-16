@@ -40,7 +40,7 @@
         <div class="control">
           <button class="button is-link"
             :class="{'is-loading': submitted}"
-            @click="setHostNodeIp(nodeIp); submitted = true"
+            @click="setHostNodeIp(nodeIp, password); submitted = true"
             :disabled="code === 'NODE_NOT_SET' ? !password || !nodeIp : !nodeIp">
             Submit
           </button>

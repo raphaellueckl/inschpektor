@@ -19,6 +19,7 @@ if (process.env.NODE_ENV === 'dev') {
 app.use(express.json());
 
 let iriIp = null;
+let password = null;
 const IRI_PORT = '14265';
 const BASE_URL = '/api';
 const MAX_MILESTONES_BEHIND_BEFORE_UNSYNCED = 50;
@@ -75,6 +76,7 @@ const db = new sqlite3.Database(__dirname + '/db');
   const sql = 'select * from host_node';
   db.get(sql, [], (err, row) => {
     iriIp = row ? row.ip : null;
+    password = row ? row.password : null;
   });
 })();
 
@@ -176,10 +178,11 @@ app.get(`${BASE_URL}/node-info`, (req, res) => {
 
 app.post(`${BASE_URL}/host-node-ip`, (req, res) => {
   iriIp = req.body.nodeIp;
+  password = req.body.password;
 
-  const updateHostIp = db.prepare(`REPLACE INTO host_node (ID, ip) VALUES(?, ?)`);
+  const updateHostIp = db.prepare(`REPLACE INTO host_node (ID, ip, password) VALUES(?, ?, ?)`);
 
-  updateHostIp.run(0, iriIp);
+  updateHostIp.run(0, iriIp, password);
 
   res.status(200).send();
 });

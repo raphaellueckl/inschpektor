@@ -1,71 +1,65 @@
 <template>
   <div>
-    <article class="message is-danger">
-      <div class="message-header">
-        <p>Non-functional</p>
-      </div>
-      <div class="message-body">
-        <p>This login mask is currently non-functional, but it will come soon!</p>
-      </div>
-    </article>
+    <div class="container">
+      <h1 class="title">Login</h1>
+      <h2 class="subtitle">
+        To manage your neighbors, you need to login first.
+      </h2>
+    </div>
 
-    <section class="section">
-      <div class="container">
-        <h1 class="title">Authentication</h1>
-        <h2 class="subtitle">
-          To view / edit your neighbors, you need to login first.
-        </h2>
+    <br>
 
-        <div class="columns is-mobile">
-          <div class="column is-three-fifths is-offset-one-fifth">
-            <div class="field">
-              <label class="label">Account</label>
-              <div class="control">
-                <input class="input" type="text" placeholder="Username">
-              </div>
-            </div>
-            <div class="field">
-              <label class="label">Password</label>
-              <div class="control">
-                <input class="input" type="text" placeholder="Provide your password...">
-              </div>
-            </div>
-            <div class="field">
-              <p class="control">
-                <button class="button is-success" @click="fetchNodeInfo">
-                  Login
-                </button>
-              </p>
-            </div>
+    <nav class="level">
+      <div class="level-item has-text-centered">
+        <div class="field">
+          <label class="label">Password:</label>
+          <div class="control">
+            <input v-model="password" class="input" type="text" placeholder="Choose wisely...">
           </div>
         </div>
-
       </div>
-    </section>
+    </nav>
+
+    <nav class="level">
+      <div class="level-item has-text-centered">
+        <div class="control">
+          <button class="button is-success"
+            @click="fetchNodeInfo(); submitted = true"
+            :class="{'is-loading': submitted}"
+            :disabled="!password">
+            Submit
+          </button>
+        </div>
+      </div>
+    </nav>
   </div>
 </template>
 
 <script>
-  import {mapActions} from 'vuex';
-  import axios from 'axios';
+import { mapActions } from "vuex";
+import axios from "axios";
 
-  export default {
-    name: 'Login',
-    methods: {
-      login() {
-        // axios.get('/api/iri/getNeighbors').then(response => {console.log(response)});
-      },
-      ...mapActions(['fetchNodeInfo'])
+export default {
+  name: "Login",
+  methods: {
+    login() {
+      // axios.get('/api/iri/getNeighbors').then(response => {console.log(response)});
     },
-    computed: {
-      // ...mapGetters([
-        // 'nodeInfo'
-      // ])
-
-    }
-  };
+    ...mapActions(["fetchNodeInfo"])
+  },
+  data: () => {
+    return {
+      password: undefined,
+      submitted: false
+    };
+  },
+  computed: {
+    // ...mapGetters([
+    // 'nodeInfo'
+    // ])
+  }
+};
 </script>
 
 <style scoped>
-
 </style>

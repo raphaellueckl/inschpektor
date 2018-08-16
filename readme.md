@@ -57,11 +57,3 @@ I'm not poor and I have a job. But if you want to show some love, I always appre
 ✓ Add / Remove neighbors
 ✓ NPM runnable app
 ✓ Fetch info about hosted node
-✓ 
-✓ 
-✓ 
-✓ 
-✓ 
-✓ 
-✓ 
-✓ 
