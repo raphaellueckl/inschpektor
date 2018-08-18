@@ -4,6 +4,7 @@ const express = require('express');
 const axios = require('axios');
 const history = require('connect-history-api-fallback');
 const sqlite3 = require('sqlite3').verbose();
+const bcrypt = require('bcrypt');
 
 const app = express();
 app.set('port', (process.env.PORT || 8732));
@@ -19,15 +20,14 @@ if (process.env.NODE_ENV === 'dev') {
 app.use(express.json());
 
 let iriIp = null;
-let password = null;
+let hashedPw = null;
+let loginToken = null;
 const IRI_PORT = '14265';
 const BASE_URL = '/api';
 const MAX_MILESTONES_BEHIND_BEFORE_UNSYNCED = 50;
+const salt = 11;
 
 let currentOwnNodeInfo = {};
-
-// Fake API token for login
-const API_TOKEN = 'D6W69PRgCoDKgHZGJmRUNA';
 
 const db = new sqlite3.Database(__dirname + '/db');
 (function createTables() {
@@ -47,45 +47,37 @@ const db = new sqlite3.Database(__dirname + '/db');
 
     db.run(
         `CREATE TABLE IF NOT EXISTS host_node (
-        ID INTEGER PRIMARY KEY,
-        ip TEXT
+        id INTEGER PRIMARY KEY,
+        ip TEXT,
+        hashed_pw TEXT
       )`
     );
-
-    // db.run(
-    //   `CREATE TRIGGER IF NOT EXISTS after_insertion_trigger
-    //   AFTER INSERT ON neighbor
-    //   BEGIN
-    //     DELETE FROM neighbor WHERE rowid in (
-    //       SELECT rowid FROM neighbor
-    //       INNER JOIN (
-    //         SELECT rowid, address, timestamp, ROW_NUMBER() OVER (PARTITION BY address ORDER BY timestamp
-    //       ) as LegacyNr
-    //       FROM neighbor
-    //       ) as oldest_allowed_tmstmp_per_adress
-    //       ON
-    //       oldest_tmstmp_per_adress.id = neighbor.rowid
-    //       and oldest_tmstmp_per_adress.LegacyNr > 100
-    //     );
-    //     END;`
-    // );
   });
 })();
 
 (function initializeState() {
   const sql = 'select * from host_node';
   db.get(sql, [], (err, row) => {
+    console.log('*************')
+    console.log(row.hashed_pw)
+    console.log(row.hashedPw)
     iriIp = row ? row.ip : null;
-    password = row ? row.password : null;
+    hashedPw = row ? row.hashed_pw : null;
   });
 })();
 
-const FAKE_DELAY = 500; // ms
 app.post('/api/login', (req, res) => {
-  res.json({
-    success: true,
-    token: API_TOKEN,
-  });
+  const deliveredPw = req.body.password;
+
+  if (bcrypt.compareSync(deliveredPw, hashedPw)) {
+    loginToken = new Date().toString().split('').reverse().join('');
+    res.json({
+      success: true,
+      token: loginToken
+    });
+  } else {
+    res.status(404).send();
+  }
 });
 
 app.get('/api/neighbors', (req, res) => {
@@ -178,13 +170,19 @@ app.get(`${BASE_URL}/node-info`, (req, res) => {
 
 app.post(`${BASE_URL}/host-node-ip`, (req, res) => {
   iriIp = req.body.nodeIp;
-  password = req.body.password;
+  const password = req.body.password;
 
-  const updateHostIp = db.prepare(`REPLACE INTO host_node (ID, ip, password) VALUES(?, ?, ?)`);
+  const isCorrectPw = bcrypt.compareSync(password, hashedPw);
+  if (!isCorrectPw) {
+    res.status(403).send();
+  } else {
+    hashedPw = bcrypt.hashSync(password, salt);
 
-  updateHostIp.run(0, iriIp, password);
-
-  res.status(200).send();
+    const updateHostIp = db.prepare(`REPLACE INTO host_node (id, ip, hashed_pw) VALUES(?, ?, ?)`);
+    updateHostIp.run(0, iriIp, hashedPw);
+  
+    res.status(200).send();
+  }
 });
 
 app.delete(`${BASE_URL}/neighbor`, (req, res) => {

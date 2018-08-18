@@ -15,7 +15,8 @@ const state = {
   nodeInfo: null,
   iriIp: null,
   neighbors: null,
-  nodeError: null
+  nodeError: null,
+  password: null
 };
 
 const mutations = {
@@ -39,6 +40,9 @@ const mutations = {
   },
   SET_ERROR(state, nodeError) {
     state.nodeError = nodeError;
+  },
+  SET_PASSWORD(state, password) {
+    state.password = password;
   },
 };
 
