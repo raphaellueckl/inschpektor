@@ -24,7 +24,7 @@
       <div class="level-item has-text-centered">
         <div class="control">
           <button class="button is-success"
-            @click="fetchNodeInfo(); submitted = true"
+            @click="login(password); submitted = true"
             :class="{'is-loading': submitted}"
             :disabled="!password">
             Submit
@@ -45,7 +45,7 @@ export default {
     login() {
       // axios.get('/api/iri/getNeighbors').then(response => {console.log(response)});
     },
-    ...mapActions(["fetchNodeInfo"])
+    ...mapActions(["login"])
   },
   data: () => {
     return {
@@ -57,6 +57,13 @@ export default {
     // ...mapGetters([
     // 'nodeInfo'
     // ])
+  },
+  created() {
+    this.$store.subscribe( (mutation, state) => {
+      if (mutation.type === 'USER_AUTHENTICATED') {
+        this.$router.push('/');
+      }
+    })
   }
 };
 </script>

@@ -59,20 +59,20 @@ const db = new sqlite3.Database(__dirname + '/db');
   const sql = 'select * from host_node';
   db.get(sql, [], (err, row) => {
     console.log('*************')
-    console.log(row.hashed_pw)
-    console.log(row.hashedPw)
+    console.log(row)
+    // console.log(row.hashed_pw)
+    // console.log(row.hashedPw)
     iriIp = row ? row.ip : null;
-    hashedPw = row ? row.hashed_pw : null;
+    // hashedPw = row ? row.hashed_pw : null;
   });
 })();
 
 app.post('/api/login', (req, res) => {
   const deliveredPw = req.body.password;
-
+  console.log(deliveredPw)
   if (bcrypt.compareSync(deliveredPw, hashedPw)) {
     loginToken = new Date().toString().split('').reverse().join('');
     res.json({
-      success: true,
       token: loginToken
     });
   } else {
@@ -172,22 +172,20 @@ app.post(`${BASE_URL}/host-node-ip`, (req, res) => {
   iriIp = req.body.nodeIp;
   const password = req.body.password;
 
-  const isCorrectPw = bcrypt.compareSync(password, hashedPw);
-  if (!isCorrectPw) {
-    res.status(403).send();
-  } else {
+  if (!hashedPw || hashedPw && bcrypt.compareSync(password, hashedPw)) {
     hashedPw = bcrypt.hashSync(password, salt);
-
+    
     const updateHostIp = db.prepare(`REPLACE INTO host_node (id, ip, hashed_pw) VALUES(?, ?, ?)`);
     updateHostIp.run(0, iriIp, hashedPw);
   
     res.status(200).send();
+  } else {
+    res.status(403).send();
   }
 });
 
 app.delete(`${BASE_URL}/neighbor`, (req, res) => {
   const address = req.body.address;
-  console.log('incoming address: ' + address);
 
   const removeNeighborRequest = createIriRequest(iriIp, 'removeNeighbors');
   removeNeighborRequest.data.uris = [`udp://${address}:14600`];
