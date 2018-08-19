@@ -29,7 +29,7 @@
       this.$store.dispatch('fetchIriIp');
 
       // Mock login token as long as not implemented
-      localStorage.setItem('token', 'loginToken');
+      // localStorage.setItem('token', 'loginToken');
     },
     computed: {
       ...mapGetters(['nodeError'])

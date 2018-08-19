@@ -156,6 +156,9 @@ app.get(`${BASE_URL}/neighbors`, function (req, res) {
 });
 
 app.get(`${BASE_URL}/node-info`, (req, res) => {
+  let auth = req.get('Authorization');
+  console.log('auth: ', auth)
+  
   if (!iriIp) {
     res.status(404).send('NODE_NOT_SET');
   }

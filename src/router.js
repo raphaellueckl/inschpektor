@@ -9,6 +9,12 @@ import NotFound from './components/NotFound.vue';
 
 Vue.use(Router);
 
+const loginNecessary = (to, from, next) => {
+  const token = localStorage.getItem('token');
+  if (!token && to.path !== '/login') next('/login');
+  else next();
+}
+
 const router = new Router({
   mode: 'history',
   routes: [
@@ -21,21 +27,13 @@ const router = new Router({
       path: '/manage',
       name: 'manage',
       component: Manage,
-      beforeEnter: (to, from, next) => {
-        const token = localStorage.getItem('token');
-        if (!token && to.path !== '/login') next('/login');
-        else next();
-      }
+      beforeEnter: loginNecessary
     },
     {
       path: '/node',
       name: 'node-info',
       component: NodeInfo,
-      beforeEnter: (to, from, next) => {
-        const token = localStorage.getItem('token');
-        if (!token && to.path !== '/login') next('/login');
-        else next();
-      }
+      beforeEnter: loginNecessary
     },
     {
       path: '/login',

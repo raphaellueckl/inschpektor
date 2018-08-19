@@ -5,6 +5,8 @@ Vue.use(Vuex);
 
 import axios from 'axios';
 
+axios.defaults.headers.common['Authorization'] = localStorage.getItem('token');
+
 const iri_ip = '192.168.188.20';
 const iri_port = '14265';
 
@@ -23,12 +25,6 @@ const state = {
 const mutations = {
   SET_TOKEN(state, token) {
     state.token = token;
-  },
-  LOGIN_PENDING(state) {
-    state.loading = true;
-  },
-  LOGIN_SUCCESS(state) {
-    state.loading = false;
   },
   SET_NODE_INFO(state, info) {
     state.nodeInfo = info;
@@ -55,6 +51,7 @@ const actions = {
     return axios.post('/api/login', {password})
       .then(response => {
         localStorage.setItem('token', response.data.token);
+        axios.defaults.headers.common['Authorization'] = localStorage.getItem('token');
         commit('SET_TOKEN', response.data.token);
         commit('USER_AUTHENTICATED', true);
       })
@@ -91,10 +88,6 @@ const actions = {
     });
   },
   setHostNodeIp({ dispatch, commit }, ipAndPw) {
-
-    console.log('ip:')
-    console.log(ipAndPw)
-
     axios.post('/api/host-node-ip', { nodeIp: ipAndPw.nodeIp, password: ipAndPw.password })
       .then(response => {
         commit('SET_ERROR', null);
@@ -136,18 +129,6 @@ const storeModule = {
   actions,
   getters
 };
-
-function createIriRequest(command) {
-  return {
-    url: `http://${iri_ip}:${iri_port}`,
-    data: { 'command': command },
-    method: 'post',
-    headers: {
-      'Content-Type': 'application/json',
-      'X-IOTA-API-Version': '1'
-    }
-  };
-}
 
 export default new Vuex.Store({
   modules: {
