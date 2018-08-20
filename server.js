@@ -175,9 +175,14 @@ app.post(`${BASE_URL}/host-node-ip`, (req, res) => {
   iriIp = req.body.nodeIp;
   const password = req.body.password;
 
-  if (!hashedPw || hashedPw && bcrypt.compareSync(password, hashedPw)) {
+  if (!hashedPw && password || password && hashedPw && bcrypt.compareSync(password, hashedPw)) {
     hashedPw = bcrypt.hashSync(password, salt);
     
+    const updateHostIp = db.prepare(`REPLACE INTO host_node (id, ip, hashed_pw) VALUES(?, ?, ?)`);
+    updateHostIp.run(0, iriIp, hashedPw);
+  
+    res.status(200).send();
+  } else if (hashedPw && !password) {
     const updateHostIp = db.prepare(`REPLACE INTO host_node (id, ip, hashed_pw) VALUES(?, ?, ?)`);
     updateHostIp.run(0, iriIp, hashedPw);
   
