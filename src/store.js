@@ -90,6 +90,7 @@ const actions = {
   setHostNodeIp({ dispatch, commit }, ipAndPw) {
     axios.post('/api/host-node-ip', { nodeIp: ipAndPw.nodeIp, password: ipAndPw.password })
       .then(response => {
+        localStorage.setItem('token', ipAndPw.password);
         commit('SET_ERROR', null);
         dispatch('fetchNeighbors');
         dispatch('fetchNodeInfo');
