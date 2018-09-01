@@ -17,6 +17,8 @@ if (process.env.NODE_ENV === 'dev') {
   app.use(express.static(__dirname + '/dist'));
 }
 
+const neighborUsernames = new Map();
+
 app.use(express.json());
 
 let iriIp = null;
@@ -53,6 +55,13 @@ const db = new sqlite3.Database(__dirname + '/db');
         login_token TEXT
       )`
     );
+
+    db.run(
+      `CREATE TABLE IF NOT EXISTS neighbor_data (
+        address TEXT,
+        name TEXT
+      )`
+    );
   });
 })();
 
@@ -63,16 +72,33 @@ const db = new sqlite3.Database(__dirname + '/db');
     hashedPw = row ? row.hashed_pw : null;
     loginToken = row ? row.login_token : null;
   });
+
+  db.all('select * from neighbor_data', [], (err, rows) => {
+    rows.forEach(r => {
+      neighborUsernames.set(r.address, r.name ? r.name : null);
+    });
+  });
 })();
 
+// address is probably in the wrong format, without UDP etc in it
+function removeNeighborFromUserNameTable(address) {
+  neighborUsernames.delete(address);
+
+  const removeNeighborEntriesWithAddress = db.prepare(`DELETE FROM neighbor_data where address=?`);
+  removeNeighborEntriesWithAddress.run(address);
+
+  removeNeighborFromUserNameTable(address);
+}
+
 app.post('/api/login', (req, res) => {
-  const deliveredPw = req.body.password;
-  console.log(deliveredPw)
-  if (deliveredPw && deliveredPw === loginToken) {
+  const deliveredPasswordOrToken = req.body.passwordOrToken;
+
+  if (deliveredPasswordOrToken && deliveredPasswordOrToken === loginToken) {
+    // TODO maybe create a new token here
     res.json({
       token: loginToken
     });
-  } else if (deliveredPw && hashedPw && bcrypt.compareSync(deliveredPw, hashedPw)) {
+  } else if (deliveredPasswordOrToken && hashedPw && bcrypt.compareSync(deliveredPasswordOrToken, hashedPw)) {
     loginToken = new Date().toString().split('').reverse().join('');
 
     const updateHostIp = db.prepare(`REPLACE INTO host_node (id, login_token) VALUES(?, ?)`);
@@ -177,11 +203,15 @@ app.get(`${BASE_URL}/node-info`, (req, res) => {
 });
 
 app.post(`${BASE_URL}/host-node-ip`, (req, res) => {
-  iriIp = req.body.nodeIp;
+  const newIriIp = req.body.nodeIp;
   const password = req.body.password;
 
-  // Hier ist der Bug... login nicht moeglich nach host node ip setzung. login allgemein macht nun muehe
-  if (!hashedPw && password || password && hashedPw && bcrypt.compareSync(password, hashedPw) || hashedPw && !password) {
+  if (!newIriIp) res.status(404).send();
+
+  if (!hashedPw && password) hashedPw = bcrypt.hashSync(password, salt);
+
+  if (password && bcrypt.compareSync(password, hashedPw)) {
+    iriIp = newIriIp;
     loginToken = new Date().toString().split('').reverse().join('');
     const updateHostIp = db.prepare(`REPLACE INTO host_node (id, ip, hashed_pw, login_token) VALUES(?, ?, ?, ?)`);
     updateHostIp.run(0, iriIp, hashedPw, loginToken);
@@ -189,6 +219,12 @@ app.post(`${BASE_URL}/host-node-ip`, (req, res) => {
     res.json({
       token: loginToken
     });
+  } else if (!password) {
+    iriIp = newIriIp;
+    const updateHostIp = db.prepare(`REPLACE INTO host_node (id, ip) VALUES(?, ?)`);
+    updateHostIp.run(0, iriIp);
+
+    res.status(200).send();
   } else {
     res.status(403).send();
   }
@@ -219,17 +255,14 @@ app.delete(`${BASE_URL}/neighbor`, (req, res) => {
 app.post(`${BASE_URL}/neighbor`, (req, res) => {
   const name = req.body.name;
   const address = req.body.address;
-  console.log(name, address);
 
-  const removeNeighborRequest = createIriRequest(iriIp, 'addNeighbors');
-  removeNeighborRequest.data.uris = [address];
+  const addNeighborRequest = createIriRequest(iriIp, 'addNeighbors');
+  addNeighborRequest.data.uris = [address];
 
-  axios(removeNeighborRequest)
+  axios(addNeighborRequest)
   .then(response => {
-    console.log('Added neighbor, status: ', response.status);
-
     const removeNeighborEntriesWithAddress = db.prepare(`DELETE FROM neighbor where address=?`);
-    removeNeighborEntriesWithAddress.run(address + ':14265');
+    removeNeighborEntriesWithAddress.run(address);
 
     res.status(200).send();
   })

@@ -47,8 +47,8 @@ const mutations = {
 };
 
 const actions = {
-  login({ commit }, password) {
-    return axios.post('/api/login', {password})
+  login({ commit }, passwordOrToken) {
+    return axios.post('/api/login', {passwordOrToken})
       .then(response => {
         localStorage.setItem('token', response.data.token);
         axios.defaults.headers.common['Authorization'] = localStorage.getItem('token');
@@ -90,6 +90,12 @@ const actions = {
   setHostNodeIp({ dispatch, commit }, ipAndPw) {
     axios.post('/api/host-node-ip', { nodeIp: ipAndPw.nodeIp, password: ipAndPw.password })
       .then(response => {
+        if (response.data.token) {
+          commit('SET_TOKEN', response.data.token)
+          commit('USER_AUTHENTICATED', true);
+        } else {
+          commit('USER_AUTHENTICATED', false);
+        }
         commit('SET_ERROR', null);
         dispatch('fetchNeighbors');
         dispatch('fetchNodeInfo');
