@@ -23,7 +23,7 @@
         <router-link to="/node" class="navbar-item">
           Node Info
         </router-link>
-        <router-link to="/login" class="navbar-item">
+        <router-link to="/login" v-if="!authenticated" class="navbar-item">
           Login
         </router-link>
         <router-link to="/about" class="navbar-item">
@@ -49,7 +49,7 @@
   export default {
     name: 'Menu',
     computed: {
-      ...mapGetters(['nodeInfo'])
+      ...mapGetters(['nodeInfo', 'authenticated'])
     }
   };
 </script>

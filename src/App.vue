@@ -28,6 +28,9 @@
       this.$store.dispatch('fetchNeighbors');
       this.$store.dispatch('fetchIriIp');
 
+      const login = localStorage.getItem('token');
+      if (login) this.$store.dispatch('login', login);
+
       // Mock login token as long as not implemented
       // localStorage.setItem('token', 'loginToken');
     },

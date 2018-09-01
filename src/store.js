@@ -90,7 +90,6 @@ const actions = {
   setHostNodeIp({ dispatch, commit }, ipAndPw) {
     axios.post('/api/host-node-ip', { nodeIp: ipAndPw.nodeIp, password: ipAndPw.password })
       .then(response => {
-        if (ipAndPw.password) localStorage.setItem('token', ipAndPw.password);
         commit('SET_ERROR', null);
         dispatch('fetchNeighbors');
         dispatch('fetchNodeInfo');
@@ -122,6 +121,7 @@ const getters = {
   hostNode: state => state.hostNode,
   neighbors: state => state.neighbors,
   nodeError: state => state.nodeError,
+  authenticated: state => state.authenticated
 };
 
 const storeModule = {

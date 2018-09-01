@@ -49,7 +49,8 @@ const db = new sqlite3.Database(__dirname + '/db');
         `CREATE TABLE IF NOT EXISTS host_node (
         id INTEGER PRIMARY KEY,
         ip TEXT,
-        hashed_pw TEXT
+        hashed_pw TEXT,
+        login_token TEXT
       )`
     );
   });
@@ -58,20 +59,25 @@ const db = new sqlite3.Database(__dirname + '/db');
 (function initializeState() {
   const sql = 'select * from host_node';
   db.get(sql, [], (err, row) => {
-    console.log('*************')
-    console.log(row)
-    // console.log(row.hashed_pw)
-    // console.log(row.hashedPw)
     iriIp = row ? row.ip : null;
-    // hashedPw = row ? row.hashed_pw : null;
+    hashedPw = row ? row.hashed_pw : null;
+    loginToken = row ? row.login_token : null;
   });
 })();
 
 app.post('/api/login', (req, res) => {
   const deliveredPw = req.body.password;
   console.log(deliveredPw)
-  if (bcrypt.compareSync(deliveredPw, hashedPw)) {
+  if (deliveredPw && deliveredPw === loginToken) {
+    res.json({
+      token: loginToken
+    });
+  } else if (deliveredPw && hashedPw && bcrypt.compareSync(deliveredPw, hashedPw)) {
     loginToken = new Date().toString().split('').reverse().join('');
+
+    const updateHostIp = db.prepare(`REPLACE INTO host_node (id, login_token) VALUES(?, ?)`);
+    updateHostIp.run(0, loginToken);
+
     res.json({
       token: loginToken
     });
@@ -157,7 +163,6 @@ app.get(`${BASE_URL}/neighbors`, function (req, res) {
 
 app.get(`${BASE_URL}/node-info`, (req, res) => {
   let auth = req.get('Authorization');
-  console.log('auth: ', auth)
   
   if (!iriIp) {
     res.status(404).send('NODE_NOT_SET');
@@ -175,18 +180,15 @@ app.post(`${BASE_URL}/host-node-ip`, (req, res) => {
   iriIp = req.body.nodeIp;
   const password = req.body.password;
 
-  if (!hashedPw && password || password && hashedPw && bcrypt.compareSync(password, hashedPw)) {
-    hashedPw = bcrypt.hashSync(password, salt);
-    
-    const updateHostIp = db.prepare(`REPLACE INTO host_node (id, ip, hashed_pw) VALUES(?, ?, ?)`);
-    updateHostIp.run(0, iriIp, hashedPw);
-  
-    res.status(200).send();
-  } else if (hashedPw && !password) {
-    const updateHostIp = db.prepare(`REPLACE INTO host_node (id, ip, hashed_pw) VALUES(?, ?, ?)`);
-    updateHostIp.run(0, iriIp, hashedPw);
-  
-    res.status(200).send();
+  // Hier ist der Bug... login nicht moeglich nach host node ip setzung. login allgemein macht nun muehe
+  if (!hashedPw && password || password && hashedPw && bcrypt.compareSync(password, hashedPw) || hashedPw && !password) {
+    loginToken = new Date().toString().split('').reverse().join('');
+    const updateHostIp = db.prepare(`REPLACE INTO host_node (id, ip, hashed_pw, login_token) VALUES(?, ?, ?, ?)`);
+    updateHostIp.run(0, iriIp, hashedPw, loginToken);
+
+    res.json({
+      token: loginToken
+    });
   } else {
     res.status(403).send();
   }
