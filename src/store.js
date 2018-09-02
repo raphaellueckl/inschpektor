@@ -110,7 +110,7 @@ const actions = {
       .catch(error => console.log('Error adding neighbor'));
   },
   removeNeighbor({ dispatch, commit }, neighbor) {
-    const address = neighbor.address.split(':')[0];
+    const address = `${neighbor.protocol}://${neighbor.address}`;
     axios.delete('/api/neighbor', { data: { address } })
       .then(response => {
         dispatch('fetchNeighbors');

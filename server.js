@@ -75,6 +75,7 @@ const db = new sqlite3.Database(__dirname + '/db');
 
   db.all('select * from neighbor_data', [], (err, rows) => {
     rows.forEach(r => {
+      console.log('neighborsnames from DB: ' + r.name + ' | ' + r.address)
       neighborUsernames.set(r.address, r.name ? r.name : null);
     });
   });
@@ -86,8 +87,6 @@ function removeNeighborFromUserNameTable(address) {
 
   const removeNeighborEntriesWithAddress = db.prepare(`DELETE FROM neighbor_data where address=?`);
   removeNeighborEntriesWithAddress.run(address);
-
-  removeNeighborFromUserNameTable(address);
 }
 
 app.post('/api/login', (req, res) => {
@@ -232,16 +231,17 @@ app.post(`${BASE_URL}/host-node-ip`, (req, res) => {
 
 app.delete(`${BASE_URL}/neighbor`, (req, res) => {
   const address = req.body.address;
-
   const removeNeighborRequest = createIriRequest(iriIp, 'removeNeighbors');
-  removeNeighborRequest.data.uris = [`udp://${address}:14600`];
+  removeNeighborRequest.data.uris = [address];
 
   axios(removeNeighborRequest)
   .then(response => {
-    console.log('Removed neighbor, status: ', response.status);
+    const addressWithoutProtocolPrefix = address.substring(6);
 
     const removeNeighborEntriesWithAddress = db.prepare(`DELETE FROM neighbor where address=?`);
-    removeNeighborEntriesWithAddress.run(address + ':14265');
+    removeNeighborEntriesWithAddress.run(addressWithoutProtocolPrefix);
+
+    // removeNeighborFromUserNameTable(address);
 
     res.status(200).send();
   })
