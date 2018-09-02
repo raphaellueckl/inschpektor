@@ -1,7 +1,7 @@
 <template>
   <div class="columns">
     <div class="column is-one-fifth">
-      User123
+      {{neighbor.name ? neighbor.name : 'N/A'}}
     </div>
     <div class="column is-two-fifths">
       {{neighbor.address}}

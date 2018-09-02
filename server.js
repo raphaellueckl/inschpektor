@@ -58,7 +58,7 @@ const db = new sqlite3.Database(__dirname + '/db');
 
     db.run(
       `CREATE TABLE IF NOT EXISTS neighbor_data (
-        address TEXT,
+        address TEXT PRIMARY KEY,
         name TEXT
       )`
     );
@@ -75,18 +75,23 @@ const db = new sqlite3.Database(__dirname + '/db');
 
   db.all('select * from neighbor_data', [], (err, rows) => {
     rows.forEach(r => {
-      console.log('neighborsnames from DB: ' + r.name + ' | ' + r.address)
       neighborUsernames.set(r.address, r.name ? r.name : null);
     });
   });
 })();
 
-// address is probably in the wrong format, without UDP etc in it
 function removeNeighborFromUserNameTable(address) {
   neighborUsernames.delete(address);
 
   const removeNeighborEntriesWithAddress = db.prepare(`DELETE FROM neighbor_data where address=?`);
   removeNeighborEntriesWithAddress.run(address);
+}
+
+function addNeighborUserName(fullAddress, name) {
+  neighborUsernames.set(fullAddress, name);
+
+  const stmt = db.prepare('REPLACE INTO neighbor_data (address, name) VALUES (?, ?)');
+  stmt.run(fullAddress, name);
 }
 
 app.post('/api/login', (req, res) => {
@@ -137,6 +142,9 @@ app.get('/api/neighbors', (req, res) => {
             isFriendlyNode: activeNeighbor.numberOfInvalidTransactions < activeNeighbor.numberOfAllTransactions / 200
           };
 
+          const name = neighborUsernames.get(`${resultNeighbor.protocol}://${resultNeighbor.address}`);
+          resultNeighbor.name = name ? name : null;
+
           resultNeighbors.push(resultNeighbor);
 
           if (++currentIndex < activeNeighbors.length) {
@@ -158,6 +166,9 @@ app.get('/api/neighbors', (req, res) => {
             isFriendlyNode: activeNeighbor.numberOfInvalidTransactions < activeNeighbor.numberOfAllTransactions / 200
           };
 
+          const name = neighborUsernames.get(`${resultNeighbor.protocol}://${resultNeighbor.address}`);
+          resultNeighbor.name = name ? name : null;
+
           resultNeighbors.push(resultNeighbor);
 
           if (++currentIndex < activeNeighbors.length) {
@@ -173,16 +184,6 @@ app.get('/api/neighbors', (req, res) => {
   })
   .catch(error => {
     console.log('failed to get neighbors');
-  });
-});
-
-app.get(`${BASE_URL}/neighbors`, function (req, res) {
-  axios(createIriRequest(iriIp, 'getNeighbors'))
-  .then(response => {
-    res.json(response.data.neighbors);
-  })
-  .catch(error => {
-    // res.json(mockData.neighbors);
   });
 });
 
@@ -229,6 +230,28 @@ app.post(`${BASE_URL}/host-node-ip`, (req, res) => {
   }
 });
 
+app.post(`${BASE_URL}/neighbor`, (req, res) => {
+  const name = req.body.name;
+  const fullAddress = req.body.address;
+
+  const addNeighborRequest = createIriRequest(iriIp, 'addNeighbors');
+  addNeighborRequest.data.uris = [fullAddress];
+
+  axios(addNeighborRequest)
+  .then(response => {
+    const removeNeighborEntriesWithAddress = db.prepare(`DELETE FROM neighbor where address=?`);
+    removeNeighborEntriesWithAddress.run(fullAddress);
+
+    addNeighborUserName(fullAddress, name);
+
+    res.status(200).send();
+  })
+  .catch(error => {
+    console.log(`Couldn't add neighbor`);
+    res.status(500).send();
+  });
+});
+
 app.delete(`${BASE_URL}/neighbor`, (req, res) => {
   const address = req.body.address;
   const removeNeighborRequest = createIriRequest(iriIp, 'removeNeighbors');
@@ -241,7 +264,7 @@ app.delete(`${BASE_URL}/neighbor`, (req, res) => {
     const removeNeighborEntriesWithAddress = db.prepare(`DELETE FROM neighbor where address=?`);
     removeNeighborEntriesWithAddress.run(addressWithoutProtocolPrefix);
 
-    // removeNeighborFromUserNameTable(address);
+    removeNeighborFromUserNameTable(address);
 
     res.status(200).send();
   })
@@ -252,36 +275,9 @@ app.delete(`${BASE_URL}/neighbor`, (req, res) => {
 
 });
 
-app.post(`${BASE_URL}/neighbor`, (req, res) => {
-  const name = req.body.name;
-  const address = req.body.address;
-
-  const addNeighborRequest = createIriRequest(iriIp, 'addNeighbors');
-  addNeighborRequest.data.uris = [address];
-
-  axios(addNeighborRequest)
-  .then(response => {
-    const removeNeighborEntriesWithAddress = db.prepare(`DELETE FROM neighbor where address=?`);
-    removeNeighborEntriesWithAddress.run(address);
-
-    res.status(200).send();
-  })
-  .catch(error => {
-    console.log(`Couldn't add neighbor`);
-    res.status(500).send();
-  });
-});
-
 app.get(`${BASE_URL}/iri-ip`, (req, res) => {
   res.send(iriIp);
 });
-
-// app.get(`${BASE_URL}/glimpse`, function (req, res) {
-//   db.all('SELECT * FROM neighbor as ne GROUP BY ne.address', [], (err, rows) => {
-//     console.log(rows);
-//     res.json(rows.length);
-//   });
-// });
 
 function createIriRequest(nodeIp, command) {
   return {

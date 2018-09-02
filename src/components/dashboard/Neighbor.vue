@@ -1,6 +1,6 @@
 <template>
   <article class="tile is-child notification">
-    <h1 class="title">{{neighbor.address}}</h1>
+    <h1 class="title">{{neighbor.name ? neighbor.name : neighbor.address}}</h1>
     <div class="media-content">
       <div class="content">
         <p>
