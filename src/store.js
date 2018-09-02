@@ -116,6 +116,10 @@ const actions = {
         dispatch('fetchNeighbors');
       })
       .catch(error => console.log('Error deleting neighbor'));
+  },
+  loadPeriodically({dispatch, commit}) {
+    dispatch('fetchNeighbors');
+    dispatch('fetchNodeInfo');
   }
 };
 
