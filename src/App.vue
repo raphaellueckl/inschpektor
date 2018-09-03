@@ -32,9 +32,6 @@ export default {
 
     const login = localStorage.getItem("token");
     if (login) this.$store.dispatch("login", login);
-
-    // Mock login token as long as not implemented
-    // localStorage.setItem('token', 'loginToken');
   },
   computed: {
     ...mapGetters(["nodeError"])
