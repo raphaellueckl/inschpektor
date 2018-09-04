@@ -116,6 +116,15 @@ app.post('/api/login', (req, res) => {
   }
 });
 
+app.post('/api/neighbor/nick', (req, res) => {
+  const name = req.body.name;
+  const fullAddress = req.body.fullAddress;
+
+  addNeighborUserName(fullAddress, name);
+
+  res.json({});
+});
+
 app.get('/api/neighbors', (req, res) => {
   const resultNeighbors = [];
 

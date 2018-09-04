@@ -1,12 +1,12 @@
 <template>
   <div class="columns">
     <div class="column is-one-fifth">
-
-    <input v-model="neighbor.name" placeholder="N/A" class="input" type="text">
-    <span class="icon is-small is-right block" :key="0" v-on:click="submitNick(neighbor)">
-      <i class="fas fa-check"></i>
-    </span>
-
+      <div class="horizontal-grid">
+        <input v-model="neighbor.name" placeholder="N/A" class="input" type="text">
+        <span class="icon is-small is-right center-checkmark" :key="0" v-on:click="addNeighborNick(neighbor)">
+          <i class="fas fa-check"></i>
+        </span>
+      </div>
     </div>
     <div class="column is-two-fifths">
       {{neighbor.address}}
@@ -25,6 +25,8 @@
 </template>
 
 <script>
+import {mapActions} from 'vuex';
+
 export default {
   name: "NeighborRow",
   props: ["neighbor"],
@@ -34,12 +36,10 @@ export default {
     };
   },
   methods: {
+    ...mapActions(['addNeighborNick']),
     remove() {
       this.submitted = true;
       this.$store.dispatch("removeNeighbor", this.neighbor);
-    },
-    submitNick(neighbor) {
-      console.log(neighbor);
     }
   }
 };
@@ -51,5 +51,15 @@ export default {
   color: #fff;
   margin-top: 4px;
   border-radius: 4px;
+}
+
+.horizontal-grid {
+  display: grid;
+  grid-template-columns: 10fr 1fr;
+  grid-gap: 10px;
+}
+
+.center-checkmark {
+  padding-top: 100%;
 }
 </style>

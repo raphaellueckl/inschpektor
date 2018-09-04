@@ -109,6 +109,12 @@ const actions = {
       })
       .catch(error => console.log('Error adding neighbor'));
   },
+  addNeighborNick({ commit }, neighbor) {
+    axios.post('/api/neighbor/nick', {name: neighbor.name, fullAddress: `${neighbor.protocol}://${neighbor.address}`})
+    .then(response => {
+    })
+    .catch(error => console.log('Error when setting nick for neighbor'));
+  },
   removeNeighbor({ dispatch, commit }, neighbor) {
     const address = `${neighbor.protocol}://${neighbor.address}`;
     axios.delete('/api/neighbor', { data: { address } })
@@ -117,7 +123,15 @@ const actions = {
       })
       .catch(error => console.log('Error deleting neighbor'));
   },
-  loadPeriodically({dispatch, commit}) {
+  addNickname({ dispatch }, neighbor) {
+    const address = `${neighbor.protocol}://${neighbor.address}`;
+    axios.delete('/api/neighbor', { data: { address } })
+      .then(response => {
+        dispatch('fetchNeighbors');
+      })
+      .catch(error => console.log('Error deleting neighbor'));
+  },
+  loadPeriodically({dispatch}) {
     dispatch('fetchNeighbors');
     dispatch('fetchNodeInfo');
   }
