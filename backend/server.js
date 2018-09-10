@@ -27,7 +27,7 @@ let loginToken = null;
 const IRI_PORT = '14265';
 const BASE_URL = '/api';
 const MAX_MILESTONES_BEHIND_BEFORE_UNSYNCED = 50;
-const salt = 11;
+const SALT = 11;
 
 let currentOwnNodeInfo = {};
 
@@ -217,7 +217,7 @@ app.post(`${BASE_URL}/host-node-ip`, (req, res) => {
 
   if (!newIriIp) res.status(404).send();
 
-  if (!hashedPw && password) hashedPw = bcrypt.hashSync(password, salt);
+  if (!hashedPw && password) hashedPw = bcrypt.hashSync(password, SALT);
 
   if (password && bcrypt.compareSync(password, hashedPw)) {
     iriIp = newIriIp;
