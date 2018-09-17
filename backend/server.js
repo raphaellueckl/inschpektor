@@ -14,7 +14,7 @@ if (process.env.NODE_ENV === 'dev') {
 } else {
   console.log('Environment: PROD');
   app.use(history());
-  app.use(express.static(__dirname + '/dist'));
+  app.use(express.static(__dirname + '/../dist'));
 }
 
 const neighborUsernames = new Map();
@@ -297,13 +297,9 @@ function createIriRequest(nodeIp, command) {
       'Content-Type': 'application/json',
       'X-IOTA-API-Version': '1'
     },
-    timeout: 250
+    timeout: 5000
   };
 }
-
-app.get('/', function(req, res) {
-  res.sendFile('./dist/index.html');
-});
 
 app.listen(app.get('port'), () => {
   console.log(`Find the server at: http://localhost:${app.get('port')}/`);
