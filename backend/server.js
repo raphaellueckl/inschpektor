@@ -1,5 +1,7 @@
 #!/usr/bin/env node
 
+const IRI_SERVICE = require('./util/iri.service.js');
+
 const express = require('express');
 const axios = require('axios');
 const history = require('connect-history-api-fallback');
@@ -289,16 +291,7 @@ app.get(`${BASE_URL}/iri-ip`, (req, res) => {
 });
 
 function createIriRequest(nodeIp, command) {
-  return {
-    url: `http://${nodeIp}:${IRI_PORT}`,
-    data: {command},
-    method: 'post',
-    headers: {
-      'Content-Type': 'application/json',
-      'X-IOTA-API-Version': '1'
-    },
-    timeout: 5000
-  };
+  return IRI_SERVICE.createIriRequest(nodeIp, IRI_PORT, command);
 }
 
 app.listen(app.get('port'), () => {
