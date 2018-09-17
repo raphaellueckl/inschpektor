@@ -34,24 +34,23 @@ I'm not poor and I have a job. But if you want to show some love, I always appre
 
 ### Features/Improves on the roadmap
 
-- Restart node when out of sync
-- Highlight static neighbors (compared to nelson ones)
-- Allow neighor usernames
-- Improve db query to fetch neighbors (promises, parallel fetching instead of serial)
-- Update dependencies to remove the --unsafe-perm form the installation command
-- Permanent AddNeighbor functionality (write to iri config file)
-- Fetch regularly
-- User authentication
-- User authorization
 - Manage non-UDP neighbors
 - Permanently add neighbor (by writing to iri file)
+- Unit tests
+- Mock data
+- Add 'reset db' functionality
+- Mark 'quality neighbors'
+- Restart node when out of sync
+- Highlight static neighbors (compared to nelson ones)
+- Improve db queries (promises, parallel fetching instead of serial => especially the getNeighbor queries)
+- Update dependencies to remove the --unsafe-perm form the installation command
+- Permanent AddNeighbor functionality (write to iri config file)
+- User authentication
+- User authorization
 - Notifications
 - Fix manage-neighbor mobile table
 - Proper error component routing
-- Add 'reset db' functionality
 - Improve further for mobile (currently desktop has prio)
-- Improve database queries
-- Mark 'quality neighbors'
 
 ### Supported
 ✓ View neighbors
