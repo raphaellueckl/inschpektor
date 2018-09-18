@@ -1,6 +1,7 @@
 #!/usr/bin/env node
 
-const IRI_SERVICE = require('./util/iri.service.js');
+const IRI_SERVICE = require('./util/iri.util.js');
+const USER_RESOURCE = require('./resource/user.resource.js');
 
 const express = require('express');
 const axios = require('axios');
