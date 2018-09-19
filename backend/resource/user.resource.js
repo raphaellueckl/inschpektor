@@ -1,4 +1,8 @@
+const express = require('express');
+const bcrypt = require('bcrypt');
+
 let loginToken;
+let hashedPw;
 
 class UserResource {
 
@@ -6,7 +10,15 @@ class UserResource {
     return loginToken;
   }
 
-  init(app) {
+  get hashedPw() {
+    return hashedPw;
+  }
+
+  set hashedPw(newHashedPw) {
+    hashedPw = newHashedPw;
+  }
+
+  init(app, db) {
     app.post('/api/login', (req, res) => {
       const deliveredPasswordOrToken = req.body.passwordOrToken;
 
@@ -18,8 +30,9 @@ class UserResource {
       } else if (deliveredPasswordOrToken && hashedPw && bcrypt.compareSync(deliveredPasswordOrToken, hashedPw)) {
         loginToken = new Date().toString().split('').reverse().join('');
 
-        const updateHostIp = db.prepare(`REPLACE INTO host_node (id, login_token) VALUES(?, ?)`);
-        updateHostIp.run(0, loginToken);
+        // const updateHostIp = db.prepare(`UPDATE host_node (id, login_token) VALUES(?, ?)`);
+        const updateHostIp = db.prepare(`UPDATE host_node SET login_token = ? WHERE id = ?`);
+        updateHostIp.run(loginToken, 0);
 
         res.json({
           token: loginToken

@@ -1,7 +1,6 @@
 #!/usr/bin/env node
 
 const IRI_SERVICE = require('./util/iri.util.js');
-const USER_RESOURCE = require('./resource/user.resource.js');
 
 const express = require('express');
 const axios = require('axios');
@@ -11,6 +10,9 @@ const bcrypt = require('bcrypt');
 
 const app = express();
 app.set('port', (process.env.PORT || 8732));
+app.use(express.json());
+
+const USER_RESOURCE = require('./resource/user.resource.js');
 
 if (process.env.NODE_ENV === 'dev') {
   console.log('Environment: DEV');
@@ -22,10 +24,7 @@ if (process.env.NODE_ENV === 'dev') {
 
 const neighborUsernames = new Map();
 
-app.use(express.json());
-
 let iriIp = null;
-let hashedPw = null;
 let loginToken = null;
 const IRI_PORT = '14265';
 const BASE_URL = '/api';
@@ -72,7 +71,7 @@ const db = new sqlite3.Database(__dirname + '/db');
   const sql = 'select * from host_node';
   db.get(sql, [], (err, row) => {
     iriIp = row ? row.ip : null;
-    hashedPw = row ? row.hashed_pw : null;
+    USER_RESOURCE.hashedPw = row ? row.hashed_pw : null;
     loginToken = row ? row.login_token : null;
   });
 
@@ -82,6 +81,8 @@ const db = new sqlite3.Database(__dirname + '/db');
     });
   });
 })();
+
+USER_RESOURCE.init(app, db);
 
 function removeNeighborFromUserNameTable(address) {
   neighborUsernames.delete(address);
@@ -96,28 +97,6 @@ function addNeighborUserName(fullAddress, name) {
   const stmt = db.prepare('REPLACE INTO neighbor_data (address, name) VALUES (?, ?)');
   stmt.run(fullAddress, name);
 }
-
-app.post('/api/login', (req, res) => {
-  const deliveredPasswordOrToken = req.body.passwordOrToken;
-
-  if (deliveredPasswordOrToken && deliveredPasswordOrToken === loginToken) {
-    // TODO maybe create a new token here
-    res.json({
-      token: loginToken
-    });
-  } else if (deliveredPasswordOrToken && hashedPw && bcrypt.compareSync(deliveredPasswordOrToken, hashedPw)) {
-    loginToken = new Date().toString().split('').reverse().join('');
-
-    const updateHostIp = db.prepare(`REPLACE INTO host_node (id, login_token) VALUES(?, ?)`);
-    updateHostIp.run(0, loginToken);
-
-    res.json({
-      token: loginToken
-    });
-  } else {
-    res.status(404).send();
-  }
-});
 
 app.post('/api/neighbor/nick', (req, res) => {
   const name = req.body.name;
@@ -201,7 +180,7 @@ app.get('/api/neighbors', (req, res) => {
 
 app.get(`${BASE_URL}/node-info`, (req, res) => {
   let auth = req.get('Authorization');
-  
+
   if (!iriIp) {
     res.status(404).send('NODE_NOT_SET');
   }
@@ -220,13 +199,14 @@ app.post(`${BASE_URL}/host-node-ip`, (req, res) => {
 
   if (!newIriIp) res.status(404).send();
 
-  if (!hashedPw && password) hashedPw = bcrypt.hashSync(password, SALT);
+  if (!USER_RESOURCE.hashedPw && password) USER_RESOURCE.hashedPw = bcrypt.hashSync(password, SALT);
 
-  if (password && bcrypt.compareSync(password, hashedPw)) {
+  if (password && bcrypt.compareSync(password, USER_RESOURCE.hashedPw)) {
     iriIp = newIriIp;
     loginToken = new Date().toString().split('').reverse().join('');
+
     const updateHostIp = db.prepare(`REPLACE INTO host_node (id, ip, hashed_pw, login_token) VALUES(?, ?, ?, ?)`);
-    updateHostIp.run(0, iriIp, hashedPw, loginToken);
+    updateHostIp.run(0, iriIp, USER_RESOURCE.hashedPw, loginToken);
 
     res.json({
       token: loginToken
