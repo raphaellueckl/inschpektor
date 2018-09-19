@@ -1,5 +1,10 @@
 class IriUtil {
 
+  constructor() {
+    this.iriIp = null;
+    this.IRI_PORT = '14265';
+  }
+
   createIriRequest(iriIp, iriPort, command) {
     return {
       url: `http://${iriIp}:${iriPort}`,
@@ -12,7 +17,7 @@ class IriUtil {
       timeout: 5000
     };
   }
-  
+
 }
 
 const iriUtil = new IriUtil();

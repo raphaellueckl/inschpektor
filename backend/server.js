@@ -1,6 +1,8 @@
 #!/usr/bin/env node
 
 const IRI_SERVICE = require('./util/iri.util.js');
+const USER_RESOURCE = require('./resource/user.resource.js');
+const NEIGHBOR_RESOURCE = require('./resource/neighbor.resource.js');
 
 const express = require('express');
 const axios = require('axios');
@@ -12,8 +14,6 @@ const app = express();
 app.set('port', (process.env.PORT || 8732));
 app.use(express.json());
 
-const USER_RESOURCE = require('./resource/user.resource.js');
-
 if (process.env.NODE_ENV === 'dev') {
   console.log('Environment: DEV');
 } else {
@@ -24,11 +24,8 @@ if (process.env.NODE_ENV === 'dev') {
 
 const neighborUsernames = new Map();
 
-let iriIp = null;
 let loginToken = null;
-const IRI_PORT = '14265';
 const BASE_URL = '/api';
-const MAX_MILESTONES_BEHIND_BEFORE_UNSYNCED = 50;
 const SALT = 11;
 
 let currentOwnNodeInfo = {};
@@ -70,7 +67,7 @@ const db = new sqlite3.Database(__dirname + '/db');
 (function initializeState() {
   const sql = 'select * from host_node';
   db.get(sql, [], (err, row) => {
-    iriIp = row ? row.ip : null;
+    IRI_SERVICE.iriIp = row ? row.ip : null;
     USER_RESOURCE.hashedPw = row ? row.hashed_pw : null;
     loginToken = row ? row.login_token : null;
   });
@@ -83,108 +80,15 @@ const db = new sqlite3.Database(__dirname + '/db');
 })();
 
 USER_RESOURCE.init(app, db);
-
-function removeNeighborFromUserNameTable(address) {
-  neighborUsernames.delete(address);
-
-  const removeNeighborEntriesWithAddress = db.prepare(`DELETE FROM neighbor_data where address=?`);
-  removeNeighborEntriesWithAddress.run(address);
-}
-
-function addNeighborUserName(fullAddress, name) {
-  neighborUsernames.set(fullAddress, name);
-
-  const stmt = db.prepare('REPLACE INTO neighbor_data (address, name) VALUES (?, ?)');
-  stmt.run(fullAddress, name);
-}
-
-app.post('/api/neighbor/nick', (req, res) => {
-  const name = req.body.name;
-  const fullAddress = req.body.fullAddress;
-
-  addNeighborUserName(fullAddress, name);
-
-  res.json({});
-});
-
-app.get('/api/neighbors', (req, res) => {
-  const resultNeighbors = [];
-
-  axios(IRI_SERVICE.createIriRequest(iriIp, IRI_PORT, 'getNeighbors'))
-  .then(iriNeighborsResponse => {
-    const activeNeighbors = iriNeighborsResponse.data.neighbors;
-
-    db.all('SELECT * FROM neighbor ORDER BY timestamp ASC', [], (err, rows) => {
-      function doCallAndPrepareCallForNext(activeNeighbors, currentIndex) {
-        const activeNeighbor = activeNeighbors[currentIndex];
-
-        axios(IRI_SERVICE.createIriRequest(activeNeighbor.address.split(':')[0], IRI_PORT, 'getNodeInfo'))
-        .then(nodeInfoResponse => {
-          let nodeInfo = nodeInfoResponse.data;
-          const oldestEntry = rows.find(row => activeNeighbor.address === row.address);
-
-          const resultNeighbor = {
-            address: activeNeighbor.address,
-            iriVersion: nodeInfo.appVersion,
-            isSynced: nodeInfo.latestSolidSubtangleMilestoneIndex >= currentOwnNodeInfo.latestMilestoneIndex - MAX_MILESTONES_BEHIND_BEFORE_UNSYNCED,
-            isActive: oldestEntry ? activeNeighbor.numberOfNewTransactions > oldestEntry.numberOfNewTransactions : null,
-            protocol: activeNeighbor.connectionType,
-            onlineTime: nodeInfo.time,
-            isFriendlyNode: activeNeighbor.numberOfInvalidTransactions < activeNeighbor.numberOfAllTransactions / 200
-          };
-
-          const name = neighborUsernames.get(`${resultNeighbor.protocol}://${resultNeighbor.address}`);
-          resultNeighbor.name = name ? name : null;
-
-          resultNeighbors.push(resultNeighbor);
-
-          if (++currentIndex < activeNeighbors.length) {
-            doCallAndPrepareCallForNext(activeNeighbors, currentIndex);
-          } else {
-            res.json(resultNeighbors);
-          }
-        })
-        .catch(error => {
-          const oldestEntry = rows.find(row => activeNeighbor.address === row.address);
-
-          const resultNeighbor = {
-            address: activeNeighbor.address,
-            iriVersion: null,
-            isSynced: null,
-            isActive: oldestEntry ? activeNeighbor.numberOfNewTransactions > oldestEntry.numberOfNewTransactions : null,
-            protocol: activeNeighbor.connectionType,
-            onlineTime: null,
-            isFriendlyNode: activeNeighbor.numberOfInvalidTransactions < activeNeighbor.numberOfAllTransactions / 200
-          };
-
-          const name = neighborUsernames.get(`${resultNeighbor.protocol}://${resultNeighbor.address}`);
-          resultNeighbor.name = name ? name : null;
-
-          resultNeighbors.push(resultNeighbor);
-
-          if (++currentIndex < activeNeighbors.length) {
-            doCallAndPrepareCallForNext(activeNeighbors, currentIndex);
-          } else {
-            res.json(resultNeighbors);
-          }
-        });
-      }
-
-      doCallAndPrepareCallForNext(activeNeighbors, 0);
-    });
-  })
-  .catch(error => {
-    console.log('failed to get neighbors');
-  });
-});
+NEIGHBOR_RESOURCE.init(app, db);
 
 app.get(`${BASE_URL}/node-info`, (req, res) => {
   let auth = req.get('Authorization');
 
-  if (!iriIp) {
+  if (!IRI_SERVICE.iriIp) {
     res.status(404).send('NODE_NOT_SET');
   }
-  axios(IRI_SERVICE.createIriRequest(iriIp, IRI_PORT, 'getNodeInfo'))
+  axios(IRI_SERVICE.createIriRequest(IRI_SERVICE.iriIp, IRI_SERVICE.IRI_PORT, 'getNodeInfo'))
   .then(response => {
     res.json(response.data);
   })
@@ -202,19 +106,19 @@ app.post(`${BASE_URL}/host-node-ip`, (req, res) => {
   if (!USER_RESOURCE.hashedPw && password) USER_RESOURCE.hashedPw = bcrypt.hashSync(password, SALT);
 
   if (password && bcrypt.compareSync(password, USER_RESOURCE.hashedPw)) {
-    iriIp = newIriIp;
+    IRI_SERVICE.iriIp = newIriIp;
     loginToken = new Date().toString().split('').reverse().join('');
 
     const updateHostIp = db.prepare(`REPLACE INTO host_node (id, ip, hashed_pw, login_token) VALUES(?, ?, ?, ?)`);
-    updateHostIp.run(0, iriIp, USER_RESOURCE.hashedPw, loginToken);
+    updateHostIp.run(0, IRI_SERVICE.iriIp, USER_RESOURCE.hashedPw, loginToken);
 
     res.json({
       token: loginToken
     });
   } else if (!password) {
-    iriIp = newIriIp;
+    IRI_SERVICE.iriIp = newIriIp;
     const updateHostIp = db.prepare(`UPDATE host_node SET ip = ? WHERE id = ?`);
-    updateHostIp.run(iriIp, 0);
+    updateHostIp.run(IRI_SERVICE.iriIp, 0);
 
     res.status(200).send();
   } else {
@@ -222,53 +126,8 @@ app.post(`${BASE_URL}/host-node-ip`, (req, res) => {
   }
 });
 
-app.post(`${BASE_URL}/neighbor`, (req, res) => {
-  const name = req.body.name;
-  const fullAddress = req.body.address;
-
-  const addNeighborRequest = IRI_SERVICE.createIriRequest(iriIp, IRI_PORT, 'addNeighbors');
-  addNeighborRequest.data.uris = [fullAddress];
-
-  axios(addNeighborRequest)
-  .then(response => {
-    const removeNeighborEntriesWithAddress = db.prepare(`DELETE FROM neighbor where address=?`);
-    removeNeighborEntriesWithAddress.run(fullAddress);
-
-    addNeighborUserName(fullAddress, name);
-
-    res.status(200).send();
-  })
-  .catch(error => {
-    console.log(`Couldn't add neighbor`);
-    res.status(500).send();
-  });
-});
-
-app.delete(`${BASE_URL}/neighbor`, (req, res) => {
-  const address = req.body.address;
-  const removeNeighborRequest = IRI_SERVICE.createIriRequest(iriIp, IRI_PORT, 'removeNeighbors');
-  removeNeighborRequest.data.uris = [address];
-
-  axios(removeNeighborRequest)
-  .then(response => {
-    const addressWithoutProtocolPrefix = address.substring(6);
-
-    const removeNeighborEntriesWithAddress = db.prepare(`DELETE FROM neighbor where address=?`);
-    removeNeighborEntriesWithAddress.run(addressWithoutProtocolPrefix);
-
-    removeNeighborFromUserNameTable(address);
-
-    res.status(200).send();
-  })
-  .catch(error => {
-    console.log(`Couldn't remove neighbor`);
-    res.status(500).send();
-  });
-
-});
-
 app.get(`${BASE_URL}/iri-ip`, (req, res) => {
-  res.send(iriIp);
+  res.send(IRI_SERVICE.iriIp);
 });
 
 app.listen(app.get('port'), () => {
@@ -277,8 +136,8 @@ app.listen(app.get('port'), () => {
 
 async function theFetcher() {
   function fetch() {
-    if (iriIp) {
-      axios(IRI_SERVICE.createIriRequest(iriIp, IRI_PORT, 'getNeighbors'))
+    if (IRI_SERVICE.iriIp) {
+      axios(IRI_SERVICE.createIriRequest(IRI_SERVICE.iriIp, IRI_SERVICE.IRI_PORT, 'getNeighbors'))
       .then(response => {
         const neighbors = response.data.neighbors;
 
@@ -299,7 +158,7 @@ async function theFetcher() {
       })
       .catch(error => console.log('Failed to fetch neighbors of own node.'));
 
-      axios(IRI_SERVICE.createIriRequest(iriIp, IRI_PORT, 'getNodeInfo'))
+      axios(IRI_SERVICE.createIriRequest(IRI_SERVICE.iriIp, IRI_SERVICE.IRI_PORT, 'getNodeInfo'))
       .then(nodeInfoResponse => {
         currentOwnNodeInfo = nodeInfoResponse.data;
       })
