@@ -213,8 +213,8 @@ app.post(`${BASE_URL}/host-node-ip`, (req, res) => {
     });
   } else if (!password) {
     iriIp = newIriIp;
-    const updateHostIp = db.prepare(`REPLACE INTO host_node (id, ip) VALUES(?, ?)`);
-    updateHostIp.run(0, iriIp);
+    const updateHostIp = db.prepare(`UPDATE host_node SET ip = ? WHERE id = ?`);
+    updateHostIp.run(iriIp, 0);
 
     res.status(200).send();
   } else {
