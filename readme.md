@@ -53,6 +53,9 @@ I'm not poor and I have a job. But if you want to show some love, I always appre
 - Proper error component routing
 - Improve further for mobile (currently desktop has prio)
 
+### Bugs
+- If node is not reachable once, then it can't get back into a "healthy" state. A the prompt requesting another IP won't go away after following successful calls.
+
 ### Supported
 ✓ View neighbors
 ✓ Add / Remove neighbors
