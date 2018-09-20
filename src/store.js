@@ -95,6 +95,7 @@ const actions = {
         if (response.data.token) {
           commit('SET_TOKEN', response.data.token)
           commit('USER_AUTHENTICATED', true);
+          commit('SET_IRI_IP', ipAndPw.nodeIp);
         } else {
           commit('USER_AUTHENTICATED', false);
         }
