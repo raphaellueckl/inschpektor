@@ -92,8 +92,8 @@ const actions = {
     let nodeIp = ipAndPw.nodeIp;
     let port = '14265';
     if (nodeIp.includes(':')) {
-      nodeIp = nodeIp.substring(0, iriIp.indexOf(':'));
-      port = nodeIp.substring(iriIp.indexOf(':') + 1);
+      port = nodeIp.substring(nodeIp.indexOf(':') + 1);
+      nodeIp = nodeIp.substring(0, nodeIp.indexOf(':'));
     }
     axios.post('/api/host-node-ip', {nodeIp, port, password: ipAndPw.password})
     .then(response => {
