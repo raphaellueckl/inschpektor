@@ -49,9 +49,11 @@
 
   export default {
     name: 'NodeInfo',
-
     computed: {
       ...mapGetters(['nodeInfo', 'hostNode'])
+    },
+    created() {
+      this.$store.dispatch("fetchIriIp");
     },
     filters: {
       timespan: function (unixTimestampNum) {
