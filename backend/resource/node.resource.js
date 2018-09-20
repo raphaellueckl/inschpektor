@@ -39,20 +39,20 @@ class NodeResource {
 
       if (password && bcrypt.compareSync(password, USER_RESOURCE.hashedPw)) {
         IRI_SERVICE.iriIp = newIriIp;
-        IRI_SERVICE.IRI_PORT = port;
+        IRI_SERVICE.iriPort = port;
         this.loginToken = new Date().toString().split('').reverse().join('');
 
         const updateHostIp = db.prepare(`REPLACE INTO host_node (id, ip, port, hashed_pw, login_token) VALUES(?, ?, ?, ?, ?)`);
-        updateHostIp.run(0, IRI_SERVICE.iriIp, IRI_SERVICE.IRI_PORT, USER_RESOURCE.hashedPw, this.loginToken);
+        updateHostIp.run(0, IRI_SERVICE.iriIp, IRI_SERVICE.iriPort, USER_RESOURCE.hashedPw, this.loginToken);
 
         res.json({
           token: this.loginToken
         });
       } else if (!password) {
         IRI_SERVICE.iriIp = newIriIp;
-        IRI_SERVICE.IRI_PORT = port;
+        IRI_SERVICE.iriPort = port;
         const updateHostIp = db.prepare(`UPDATE host_node SET ip = ?, port = ? WHERE id = ?`);
-        updateHostIp.run(IRI_SERVICE.iriIp, IRI_SERVICE.IRI_PORT, 0);
+        updateHostIp.run(IRI_SERVICE.iriIp, IRI_SERVICE.iriPort, 0);
 
         res.status(200).send();
       } else {

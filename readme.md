@@ -34,12 +34,12 @@ I'm not poor and I have a job. But if you want to show some love, I always appre
 
 ### Features/Improves on the roadmap
 
+- Support https nodes
 - Permanently add neighbor (by writing to iri file)
 - Unit tests
 - Mock data
 - Add 'reset db' functionality
 - Mark 'quality neighbors'
-- Support https nodes
 - Restart node when out of sync
 - Highlight static neighbors (compared to nelson ones)
 - Improve db queries (promises, parallel fetching instead of serial => especially the getNeighbor queries)

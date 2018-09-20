@@ -70,7 +70,7 @@ NODE_RESOURCE.init(app, db);
   const sql = 'select * from host_node';
   db.get(sql, [], (err, row) => {
     IRI_SERVICE.iriIp = row ? row.ip : null;
-    IRI_SERVICE.IRI_PORT = row ? row.port : null;
+    IRI_SERVICE.iriPort = row ? row.port : null;
     USER_RESOURCE.hashedPw = row ? row.hashed_pw : null;
     NODE_RESOURCE.loginToken = row ? row.login_token : null;
   });

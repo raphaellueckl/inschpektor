@@ -8,10 +8,10 @@ import axios from 'axios';
 axios.defaults.headers.common['Authorization'] = localStorage.getItem('token');
 
 let iriIp = null;
-const IRI_PORT = '14265';
+let iriPort = null;
 
 const state = {
-  hostNode: `${iriIp}:${IRI_PORT}`,
+  hostNode: `${iriIp}:${iriPort}`,
   token: null,
   loading: false,
   nodeInfo: null,
@@ -31,7 +31,7 @@ const mutations = {
   },
   SET_IRI_IP(state, ip) {
     state.iriIp = ip;
-    state.hostNode = `${ip}:${IRI_PORT}`;
+    state.hostNode = `${ip}:${iriPort}`;
   },
   SET_NEIGHBORS(state, neighbors) {
     state.neighbors = neighbors;
@@ -97,7 +97,8 @@ const actions = {
     }
     axios.post('/api/host-node-ip', {nodeIp, port, password: ipAndPw.password})
     .then(response => {
-      iriIp = ipAndPw.nodeIp;
+      iriIp = nodeIp;
+      iriPort = port;
       if (response.data.token) {
         commit('SET_TOKEN', response.data.token);
         commit('USER_AUTHENTICATED', true);
