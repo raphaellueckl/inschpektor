@@ -29,9 +29,9 @@ const mutations = {
   SET_NODE_INFO(state, info) {
     state.nodeInfo = info;
   },
-  SET_IRI_IP(state, ip) {
-    state.iriIp = ip;
-    state.hostNode = `${ip}:${iriPort}`;
+  SET_IRI_IP(state, ipAndPort) {
+    state.iriIp = ipAndPort.ip;
+    state.hostNode = `${ipAndPort.ip}:${ipAndPort.port}`;
   },
   SET_NEIGHBORS(state, neighbors) {
     state.neighbors = neighbors;

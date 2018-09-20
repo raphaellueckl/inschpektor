@@ -61,7 +61,10 @@ class NodeResource {
     });
 
     app.get(`${BASE_URL}/iri-ip`, (req, res) => {
-      res.send(IRI_SERVICE.iriIp);
+      res.send({
+        ip: IRI_SERVICE.iriIp,
+        port: IRI_SERVICE.iriPort
+      });
     });
   }
 
