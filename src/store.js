@@ -89,7 +89,13 @@ const actions = {
     });
   },
   setHostNodeIp({dispatch, commit}, ipAndPw) {
-    axios.post('/api/host-node-ip', {nodeIp: ipAndPw.nodeIp, password: ipAndPw.password})
+    let nodeIp = ipAndPw.nodeIp;
+    let port = '14265';
+    if (nodeIp.includes(':')) {
+      nodeIp = nodeIp.substring(0, iriIp.indexOf(':'));
+      port = nodeIp.substring(iriIp.indexOf(':') + 1);
+    }
+    axios.post('/api/host-node-ip', {nodeIp, port, password: ipAndPw.password})
     .then(response => {
       iriIp = ipAndPw.nodeIp;
       if (response.data.token) {

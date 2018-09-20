@@ -17,9 +17,9 @@
     <nav class="level">
       <div class="level-item has-text-centered">
         <div class="field">
-          <label class="label">Host-Node IP:</label>
+          <label class="label">Host-Node IP / Domain (Port only if non-default):</label>
           <div class="control">
-            <input v-model="nodeIp" class="input" type="text" placeholder="E.g. 192.168.1.111">
+            <input v-model="nodeIp" class="input" type="text" placeholder="E.g. 192.168.1.111 or my-domain.com:12345">
           </div>
         </div>
       </div>

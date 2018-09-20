@@ -37,7 +37,7 @@ class NeighborResource {
     app.get('/api/neighbors', (req, res) => {
       const resultNeighbors = [];
 
-      axios(IRI_SERVICE.createIriRequest(IRI_SERVICE.iriIp, IRI_SERVICE.IRI_PORT, 'getNeighbors'))
+      axios(IRI_SERVICE.createIriRequest('getNeighbors'))
       .then(iriNeighborsResponse => {
         const activeNeighbors = iriNeighborsResponse.data.neighbors;
 
@@ -45,7 +45,7 @@ class NeighborResource {
           function doCallAndPrepareCallForNext(activeNeighbors, currentIndex) {
             const activeNeighbor = activeNeighbors[currentIndex];
 
-            axios(IRI_SERVICE.createIriRequest(activeNeighbor.address.split(':')[0], IRI_SERVICE.IRI_PORT, 'getNodeInfo'))
+            axios(IRI_SERVICE.createIriRequest('getNodeInfo', activeNeighbor.address.split(':')[0]))
             .then(nodeInfoResponse => {
               let nodeInfo = nodeInfoResponse.data;
               const oldestEntry = rows.find(row => activeNeighbor.address === row.address);
@@ -109,7 +109,7 @@ class NeighborResource {
       const name = req.body.name;
       const fullAddress = req.body.address;
 
-      const addNeighborRequest = IRI_SERVICE.createIriRequest(IRI_SERVICE.iriIp, IRI_SERVICE.IRI_PORT, 'addNeighbors');
+      const addNeighborRequest = IRI_SERVICE.createIriRequest('addNeighbors');
       addNeighborRequest.data.uris = [fullAddress];
 
       axios(addNeighborRequest)
@@ -129,7 +129,7 @@ class NeighborResource {
 
     app.delete(`${BASE_URL}/neighbor`, (req, res) => {
       const address = req.body.address;
-      const removeNeighborRequest = IRI_SERVICE.createIriRequest(IRI_SERVICE.iriIp, IRI_SERVICE.IRI_PORT, 'removeNeighbors');
+      const removeNeighborRequest = IRI_SERVICE.createIriRequest('removeNeighbors');
       removeNeighborRequest.data.uris = [address];
 
       axios(removeNeighborRequest)

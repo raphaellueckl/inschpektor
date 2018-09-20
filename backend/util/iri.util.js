@@ -2,12 +2,12 @@ class IriUtil {
 
   constructor() {
     this.iriIp = null;
-    this.IRI_PORT = '14265';
+    this.IRI_PORT = null;
   }
 
-  createIriRequest(iriIp, iriPort, command) {
+  createIriRequest(command, ip = this.iriIp) {
     return {
-      url: `http://${iriIp}:${iriPort}`,
+      url: `http://${ip}:${this.IRI_PORT}`,
       data: {command},
       method: 'post',
       headers: {

@@ -51,6 +51,7 @@ NODE_RESOURCE.init(app, db);
         `CREATE TABLE IF NOT EXISTS host_node (
         id INTEGER PRIMARY KEY,
         ip TEXT,
+        port TEXT,
         hashed_pw TEXT,
         login_token TEXT
       )`
@@ -69,6 +70,7 @@ NODE_RESOURCE.init(app, db);
   const sql = 'select * from host_node';
   db.get(sql, [], (err, row) => {
     IRI_SERVICE.iriIp = row ? row.ip : null;
+    IRI_SERVICE.IRI_PORT = row ? row.port : null;
     USER_RESOURCE.hashedPw = row ? row.hashed_pw : null;
     NODE_RESOURCE.loginToken = row ? row.login_token : null;
   });
@@ -87,7 +89,7 @@ app.listen(app.get('port'), () => {
 async function theFetcher() {
   function fetch() {
     if (IRI_SERVICE.iriIp) {
-      axios(IRI_SERVICE.createIriRequest(IRI_SERVICE.iriIp, IRI_SERVICE.IRI_PORT, 'getNeighbors'))
+      axios(IRI_SERVICE.createIriRequest('getNeighbors'))
       .then(response => {
         const neighbors = response.data.neighbors;
 
@@ -108,7 +110,7 @@ async function theFetcher() {
       })
       .catch(error => console.log('Failed to fetch neighbors of own node.'));
 
-      axios(IRI_SERVICE.createIriRequest(IRI_SERVICE.iriIp, IRI_SERVICE.IRI_PORT, 'getNodeInfo'))
+      axios(IRI_SERVICE.createIriRequest('getNodeInfo'))
       .then(nodeInfoResponse => {
         currentOwnNodeInfo = nodeInfoResponse.data;
       })
