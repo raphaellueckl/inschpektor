@@ -19,47 +19,48 @@
       : neighbor.isSynced ? '✔' : '❌'}}️
     </div>
     <div class="column">
-      <a class="button is-danger is-rounded" :class="{'is-loading': submitted}" @click="remove"><i class="far fa-trash-alt"/></a>
+      <a class="button is-danger is-rounded" :class="{'is-loading': submitted}" @click="remove"><i
+        class="far fa-trash-alt"/></a>
     </div>
   </div>
 </template>
 
 <script>
-import {mapActions} from 'vuex';
+  import {mapActions} from 'vuex';
 
-export default {
-  name: "NeighborRow",
-  props: ["neighbor"],
-  data: () => {
-    return {
-      submitted: false
-    };
-  },
-  methods: {
-    ...mapActions(['addNeighborNick']),
-    remove() {
-      this.submitted = true;
-      this.$store.dispatch("removeNeighbor", this.neighbor);
+  export default {
+    name: 'NeighborRow',
+    props: ['neighbor'],
+    data: () => {
+      return {
+        submitted: false
+      };
+    },
+    methods: {
+      ...mapActions(['addNeighborNick']),
+      remove() {
+        this.submitted = true;
+        this.$store.dispatch('removeNeighbor', this.neighbor);
+      }
     }
-  }
-};
+  };
 </script>
 
 <style scoped>
-.columns {
-  background-color: rgb(0, 159, 255, 0.85);
-  color: #fff;
-  margin-top: 4px;
-  border-radius: 4px;
-}
+  .columns {
+    background-color: rgb(0, 159, 255, 0.85);
+    color: #fff;
+    margin-top: 4px;
+    border-radius: 4px;
+  }
 
-.horizontal-grid {
-  display: grid;
-  grid-template-columns: 10fr 1fr;
-  grid-gap: 10px;
-}
+  .horizontal-grid {
+    display: grid;
+    grid-template-columns: 10fr 1fr;
+    grid-gap: 10px;
+  }
 
-.center-checkmark {
-  padding-top: 100%;
-}
+  .center-checkmark {
+    padding-top: 100%;
+  }
 </style>

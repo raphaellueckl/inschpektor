@@ -20,8 +20,10 @@
                   <div class="field">
                     <label class="label">IP-Address</label>
                     <div class="control has-icons-right">
-                      <input v-model="ipAddress" class="input" :class="[ipAddress ? isCorrectAddress ? 'is-success' : 'is-danger' : '']"
-                             type="text" placeholder="E.g. udp://123.32.123.123:14600 or tcp://neighbor-domain.net:15600">
+                      <input v-model="ipAddress" class="input"
+                             :class="[ipAddress ? isCorrectAddress ? 'is-success' : 'is-danger' : '']"
+                             type="text"
+                             placeholder="E.g. udp://123.32.123.123:14600 or tcp://neighbor-domain.net:15600">
                       <span v-if="isCorrectAddress" class="icon is-small is-right" :key="0">
                         <i class="fas fa-check"></i>
                       </span>
@@ -34,7 +36,9 @@
 
                   <div class="field is-grouped">
                     <div class="control">
-                      <button class="button is-link" :disabled="ipAddress && !isCorrectAddress" @click="addNeighbor({name, address: ipAddress}); clearFields()">Submit</button>
+                      <button class="button is-link" :disabled="ipAddress && !isCorrectAddress"
+                              @click="addNeighbor({name, address: ipAddress}); clearFields()">Submit
+                      </button>
                     </div>
                     <div class="control">
                       <button class="button is-text" @click="clearFields">Cancel</button>

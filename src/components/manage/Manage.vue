@@ -15,7 +15,7 @@
       AddNeighbor,
       NeighborTable
     }
-  }
+  };
 </script>
 
 <style scoped>

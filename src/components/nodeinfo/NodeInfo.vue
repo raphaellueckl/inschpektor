@@ -53,7 +53,7 @@
       ...mapGetters(['nodeInfo', 'hostNode'])
     },
     created() {
-      this.$store.dispatch("fetchIriIp");
+      this.$store.dispatch('fetchIriIp');
     },
     filters: {
       timespan: function (unixTimestampNum) {

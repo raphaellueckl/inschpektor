@@ -31,7 +31,7 @@ const mutations = {
   },
   SET_IRI_IP(state, ip) {
     state.iriIp = ip;
-    state.hostNode = `${ip}:${IRI_PORT}`
+    state.hostNode = `${ip}:${IRI_PORT}`;
   },
   SET_NEIGHBORS(state, neighbors) {
     state.neighbors = neighbors;
@@ -48,91 +48,91 @@ const mutations = {
 };
 
 const actions = {
-  login({ commit }, passwordOrToken) {
+  login({commit}, passwordOrToken) {
     return axios.post('/api/login', {passwordOrToken})
-      .then(response => {
-        localStorage.setItem('token', response.data.token);
-        axios.defaults.headers.common['Authorization'] = localStorage.getItem('token');
-        commit('SET_TOKEN', response.data.token);
-        commit('USER_AUTHENTICATED', true);
-      })
-      .catch(error => console.log('Unsuccessful login attempt.'));
+    .then(response => {
+      localStorage.setItem('token', response.data.token);
+      axios.defaults.headers.common['Authorization'] = localStorage.getItem('token');
+      commit('SET_TOKEN', response.data.token);
+      commit('USER_AUTHENTICATED', true);
+    })
+    .catch(error => console.log('Unsuccessful login attempt.'));
   },
-  logout({ commit }) {
+  logout({commit}) {
     return new Promise((resolve) => {
       localStorage.removeItem('token');
       commit('SET_TOKEN', null);
       resolve();
     });
   },
-  fetchNodeInfo({ commit }) {
+  fetchNodeInfo({commit}) {
     axios('/api/node-info')
-      .then(response => {
-        commit('SET_NODE_INFO', response.data);
-      })
-      .catch(error => {
-        commit('SET_NODE_INFO', null);
-        commit('SET_ERROR', error.response.data);
-      });
+    .then(response => {
+      commit('SET_NODE_INFO', response.data);
+    })
+    .catch(error => {
+      commit('SET_NODE_INFO', null);
+      commit('SET_ERROR', error.response.data);
+    });
   },
-  fetchIriIp({ commit }) {
+  fetchIriIp({commit}) {
     axios('/api/iri-ip')
-      .then(response => {
-        commit('SET_IRI_IP', response.data);
-      })
-      .catch(error => {
-      });
+    .then(response => {
+      commit('SET_IRI_IP', response.data);
+    })
+    .catch(error => {
+    });
   },
-  fetchNeighbors({ commit }) {
+  fetchNeighbors({commit}) {
     axios('/api/neighbors').then(response => {
       commit('SET_NEIGHBORS', response.data);
     });
   },
-  setHostNodeIp({ dispatch, commit }, ipAndPw) {
-    axios.post('/api/host-node-ip', { nodeIp: ipAndPw.nodeIp, password: ipAndPw.password })
-      .then(response => {
-        iriIp = ipAndPw.nodeIp;
-        if (response.data.token) {
-          commit('SET_TOKEN', response.data.token)
-          commit('USER_AUTHENTICATED', true);
-          commit('SET_IRI_IP', ipAndPw.nodeIp);
-        } else {
-          commit('USER_AUTHENTICATED', false);
-        }
-        commit('SET_ERROR', null);
-        dispatch('fetchNeighbors');
-        dispatch('fetchNodeInfo');
-      })
-      .catch(error => console.log('error setting node ip'));
+  setHostNodeIp({dispatch, commit}, ipAndPw) {
+    axios.post('/api/host-node-ip', {nodeIp: ipAndPw.nodeIp, password: ipAndPw.password})
+    .then(response => {
+      iriIp = ipAndPw.nodeIp;
+      if (response.data.token) {
+        commit('SET_TOKEN', response.data.token);
+        commit('USER_AUTHENTICATED', true);
+        commit('SET_IRI_IP', ipAndPw.nodeIp);
+      } else {
+        commit('USER_AUTHENTICATED', false);
+      }
+      commit('SET_ERROR', null);
+      dispatch('fetchNeighbors');
+      dispatch('fetchNodeInfo');
+    })
+    .catch(error => console.log('error setting node ip'));
   },
-  addNeighbor({ dispatch, commit }, neighborSubmission) {
-    axios.post('/api/neighbor', { name: neighborSubmission.name, address: neighborSubmission.address })
-      .then(response => {
-        dispatch('fetchNeighbors');
-      })
-      .catch(error => console.log('Error adding neighbor'));
+  addNeighbor({dispatch, commit}, neighborSubmission) {
+    axios.post('/api/neighbor', {name: neighborSubmission.name, address: neighborSubmission.address})
+    .then(response => {
+      dispatch('fetchNeighbors');
+    })
+    .catch(error => console.log('Error adding neighbor'));
   },
-  addNeighborNick({ commit }, neighbor) {
+  addNeighborNick({commit}, neighbor) {
     axios.post('/api/neighbor/nick', {name: neighbor.name, fullAddress: `${neighbor.protocol}://${neighbor.address}`})
     .then(response => {
     })
     .catch(error => console.log('Error when setting nick for neighbor'));
   },
-  removeNeighbor({ dispatch, commit }, neighbor) {
+  removeNeighbor({dispatch, commit}, neighbor) {
     const address = `${neighbor.protocol}://${neighbor.address}`;
-    axios.delete('/api/neighbor', { data: { address } })
-      .then(response => {
-        dispatch('fetchNeighbors');
-      })
-      .catch(error => console.log('Error deleting neighbor'));
+    axios.delete('/api/neighbor', {data: {address}})
+    .then(response => {
+      dispatch('fetchNeighbors');
+    })
+    .catch(error => console.log('Error deleting neighbor'));
   },
-  addNickname({ dispatch }, neighbor) {
+  addNickname({dispatch}, neighbor) {
     const address = `${neighbor.protocol}://${neighbor.address}`;
-    axios.delete('/api/neighbor', { data: { address } })
-      .then(response => {
-        dispatch('fetchNeighbors');
-      })
-      .catch(error => console.log('Error deleting neighbor'));
+    axios.delete('/api/neighbor', {data: {address}})
+    .then(response => {
+      dispatch('fetchNeighbors');
+    })
+    .catch(error => console.log('Error deleting neighbor'));
   },
   loadPeriodically({dispatch}) {
     dispatch('fetchNeighbors');

@@ -9,7 +9,7 @@
     <div v-else>
       <h2 class="subtitle">There appears to be problems reaching your node. If the IP changed, please update it down
         below. Otherwise, you have to fix the node itself.</h2>
-        <h2 class="subtitle">Currently set IP: {{iriIp}}</h2>
+      <h2 class="subtitle">Currently set IP: {{iriIp}}</h2>
     </div>
 
     <br>
@@ -39,9 +39,9 @@
       <div class="level-item has-text-centered">
         <div class="control">
           <button class="button is-link"
-            :class="{'is-loading': submitted}"
-            @click="setHostNodeIp({nodeIp, password}); submitted = true"
-            :disabled="code === 'NODE_NOT_SET' ? !password || !nodeIp : !nodeIp">
+                  :class="{'is-loading': submitted}"
+                  @click="setHostNodeIp({nodeIp, password}); submitted = true"
+                  :disabled="code === 'NODE_NOT_SET' ? !password || !nodeIp : !nodeIp">
             Submit
           </button>
         </div>
@@ -52,37 +52,37 @@
 </template>
 
 <script>
-import { mapGetters } from "vuex";
-import { mapActions } from "vuex";
+  import {mapGetters} from 'vuex';
+  import {mapActions} from 'vuex';
 
-export default {
-  name: "Error",
-  props: ["code"],
-  data: () => {
-    return {
-      nodeIp: undefined,
-      password: undefined,
-      submitted: false
-    };
-  },
-  methods: {
-    ...mapActions(["setHostNodeIp"])
-  },
-  computed: {
-    ...mapGetters(["iriIp"])
-  },
-  created() {
-    this.$store.dispatch("fetchIriIp");
-  }
-};
+  export default {
+    name: 'Error',
+    props: ['code'],
+    data: () => {
+      return {
+        nodeIp: undefined,
+        password: undefined,
+        submitted: false
+      };
+    },
+    methods: {
+      ...mapActions(['setHostNodeIp'])
+    },
+    computed: {
+      ...mapGetters(['iriIp'])
+    },
+    created() {
+      this.$store.dispatch('fetchIriIp');
+    }
+  };
 </script>
 
 <style scoped>
-input {
-  max-width: 400px;
-}
+  input {
+    max-width: 400px;
+  }
 
-button {
-  margin-top: 20px;
-}
+  button {
+    margin-top: 20px;
+  }
 </style>

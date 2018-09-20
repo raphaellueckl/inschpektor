@@ -24,9 +24,9 @@
       <div class="level-item has-text-centered">
         <div class="control">
           <button class="button is-success"
-            @click="login(password); submitted = true"
-            :class="{'is-loading': submitted}"
-            :disabled="!password">
+                  @click="login(password); submitted = true"
+                  :class="{'is-loading': submitted}"
+                  :disabled="!password">
             Submit
           </button>
         </div>
@@ -36,36 +36,27 @@
 </template>
 
 <script>
-import { mapActions } from "vuex";
-import axios from "axios";
+  import {mapActions} from 'vuex';
 
-export default {
-  name: "Login",
-  methods: {
-    login() {
-      // axios.get('/api/iri/getNeighbors').then(response => {console.log(response)});
+  export default {
+    name: 'Login',
+    methods: {
+      ...mapActions(['login'])
     },
-    ...mapActions(["login"])
-  },
-  data: () => {
-    return {
-      password: undefined,
-      submitted: false
-    };
-  },
-  computed: {
-    // ...mapGetters([
-    // 'nodeInfo'
-    // ])
-  },
-  created() {
-    this.$store.subscribe( (mutation, state) => {
-      if (mutation.type === 'USER_AUTHENTICATED') {
-        this.$router.push('/');
-      }
-    })
-  }
-};
+    data: () => {
+      return {
+        password: undefined,
+        submitted: false
+      };
+    },
+    created() {
+      this.$store.subscribe((mutation, state) => {
+        if (mutation.type === 'USER_AUTHENTICATED') {
+          this.$router.push('/');
+        }
+      });
+    }
+  };
 </script>
 
 <style scoped>

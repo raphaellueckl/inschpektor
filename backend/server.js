@@ -48,7 +48,7 @@ NODE_RESOURCE.init(app, db);
     );
 
     db.run(
-      `CREATE TABLE IF NOT EXISTS host_node (
+        `CREATE TABLE IF NOT EXISTS host_node (
         id INTEGER PRIMARY KEY,
         ip TEXT,
         hashed_pw TEXT,
@@ -57,7 +57,7 @@ NODE_RESOURCE.init(app, db);
     );
 
     db.run(
-      `CREATE TABLE IF NOT EXISTS neighbor_data (
+        `CREATE TABLE IF NOT EXISTS neighbor_data (
         address TEXT PRIMARY KEY,
         name TEXT
       )`

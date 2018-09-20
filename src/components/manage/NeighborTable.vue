@@ -35,7 +35,7 @@
     computed: {
       ...mapGetters(['neighbors'])
     }
-  }
+  };
 </script>
 
 <style scoped>
