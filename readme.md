@@ -34,7 +34,6 @@ I'm not poor and I have a job. But if you want to show some love, I always appre
 
 ### Features/Improves on the roadmap
 
-- Manage non-UDP neighbors
 - Permanently add neighbor (by writing to iri file)
 - Unit tests
 - Mock data
