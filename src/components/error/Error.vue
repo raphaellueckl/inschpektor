@@ -34,13 +34,23 @@
         </div>
       </div>
     </nav>
+    <nav v-if="code === 'NODE_NOT_SET'" class="level">
+      <div class="level-item has-text-centered">
+        <div class="field">
+          <label class="label">Path to iri config:</label>
+          <div class="control">
+            <input v-model="iriPath" class="input" type="text" placeholder="E.g. /home/user/iri.txt">
+          </div>
+        </div>
+      </div>
+    </nav>
 
     <nav class="level">
       <div class="level-item has-text-centered">
         <div class="control">
           <button class="button is-link"
                   :class="{'is-loading': submitted}"
-                  @click="setHostNodeIp({nodeIp, password}); submitted = true"
+                  @click="setHostNodeIp({nodeIp, password, iriPath}); submitted = true"
                   :disabled="code === 'NODE_NOT_SET' ? !password || !nodeIp : !nodeIp">
             Submit
           </button>
@@ -62,6 +72,7 @@
       return {
         nodeIp: undefined,
         password: undefined,
+        iriPath: undefined,
         submitted: false
       };
     },

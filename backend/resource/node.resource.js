@@ -32,6 +32,7 @@ class NodeResource {
       const newIriIp = req.body.nodeIp;
       const port = req.body.port;
       const password = req.body.password;
+      IRI_SERVICE.iriFileLocation = req.body.iriPath;
 
       if (!newIriIp || !port) res.status(404).send();
 
@@ -42,8 +43,8 @@ class NodeResource {
         IRI_SERVICE.iriPort = port;
         this.loginToken = new Date().toString().split('').reverse().join('');
 
-        const updateHostIp = db.prepare(`REPLACE INTO host_node (id, ip, port, hashed_pw, login_token) VALUES(?, ?, ?, ?, ?)`);
-        updateHostIp.run(0, IRI_SERVICE.iriIp, IRI_SERVICE.iriPort, USER_RESOURCE.hashedPw, this.loginToken);
+        const updateHostIp = db.prepare(`REPLACE INTO host_node (id, ip, port, hashed_pw, iri_path, login_token) VALUES(?, ?, ?, ?, ?, ?)`);
+        updateHostIp.run(0, IRI_SERVICE.iriIp, IRI_SERVICE.iriPort, USER_RESOURCE.hashedPw, IRI_SERVICE.iriFileLocation, this.loginToken);
 
         res.json({
           token: this.loginToken

@@ -88,21 +88,21 @@ const actions = {
       commit('SET_NEIGHBORS', response.data);
     });
   },
-  setHostNodeIp({dispatch, commit}, ipAndPw) {
-    let nodeIp = ipAndPw.nodeIp;
+  setHostNodeIp({dispatch, commit}, nodeSubmission) {
+    let nodeIp = nodeSubmission.nodeIp;
     let port = '14265';
     if (nodeIp.includes(':')) {
       port = nodeIp.substring(nodeIp.indexOf(':') + 1);
       nodeIp = nodeIp.substring(0, nodeIp.indexOf(':'));
     }
-    axios.post('/api/host-node-ip', {nodeIp, port, password: ipAndPw.password})
+    axios.post('/api/host-node-ip', {nodeIp, port, password: nodeSubmission.password, iriPath: nodeSubmission.iriPath})
     .then(response => {
       iriIp = nodeIp;
       iriPort = port;
       if (response.data.token) {
         commit('SET_TOKEN', response.data.token);
         commit('USER_AUTHENTICATED', true);
-        commit('SET_IRI_IP', ipAndPw.nodeIp);
+        commit('SET_IRI_IP', nodeSubmission.nodeIp);
       } else {
         commit('USER_AUTHENTICATED', false);
       }

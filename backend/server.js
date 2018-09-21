@@ -2,8 +2,8 @@
 
 const IRI_SERVICE = require('./util/iri.util.js');
 const USER_RESOURCE = require('./resource/user.resource.js');
-const NEIGHBOR_RESOURCE = require('./resource/neighbor.resource.js');
 const NODE_RESOURCE = require('./resource/node.resource.js');
+const NEIGHBOR_RESOURCE = require('./resource/neighbor.resource.js');
 
 const express = require('express');
 const axios = require('axios');
@@ -29,8 +29,8 @@ let currentOwnNodeInfo = {};
 const db = new sqlite3.Database(__dirname + '/db');
 
 USER_RESOURCE.init(app, db);
-NEIGHBOR_RESOURCE.init(app, db);
 NODE_RESOURCE.init(app, db);
+NEIGHBOR_RESOURCE.init(app, db);
 
 (function createTables() {
   db.serialize(() => {
@@ -53,6 +53,7 @@ NODE_RESOURCE.init(app, db);
         ip TEXT,
         port TEXT,
         hashed_pw TEXT,
+        iri_path TEXT,
         login_token TEXT
       )`
     );
@@ -72,6 +73,7 @@ NODE_RESOURCE.init(app, db);
     IRI_SERVICE.iriIp = row ? row.ip : null;
     IRI_SERVICE.iriPort = row ? row.port : null;
     USER_RESOURCE.hashedPw = row ? row.hashed_pw : null;
+    IRI_SERVICE.iriFileLocation = row ? row.iri_path : null;
     NODE_RESOURCE.loginToken = row ? row.login_token : null;
   });
 

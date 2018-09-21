@@ -29,7 +29,6 @@ class UserResource {
       } else if (deliveredPasswordOrToken && hashedPw && bcrypt.compareSync(deliveredPasswordOrToken, hashedPw)) {
         loginToken = new Date().toString().split('').reverse().join('');
 
-        // const updateHostIp = db.prepare(`UPDATE host_node (id, login_token) VALUES(?, ?)`);
         const updateHostIp = db.prepare(`UPDATE host_node SET login_token = ? WHERE id = ?`);
         updateHostIp.run(loginToken, 0);
 
