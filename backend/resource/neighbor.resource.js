@@ -108,6 +108,7 @@ class NeighborResource {
     app.post(`${BASE_URL}/neighbor`, (req, res) => {
       const name = req.body.name;
       const fullAddress = req.body.address;
+      const writeToIriConfig = req.body.writeToIriConfig;
 
       const addNeighborRequest = IRI_SERVICE.createIriRequest('addNeighbors');
       addNeighborRequest.data.uris = [fullAddress];
@@ -118,6 +119,8 @@ class NeighborResource {
         removeNeighborEntriesWithAddress.run(fullAddress);
 
         this.addNeighborUserName(fullAddress, name);
+
+        if (writeToIriConfig) IRI_SERVICE.writeNeighborToIriConfig(fullAddress);
 
         res.status(200).send();
       })

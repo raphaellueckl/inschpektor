@@ -113,7 +113,7 @@ const actions = {
     .catch(error => console.log('error setting node ip'));
   },
   addNeighbor({dispatch, commit}, neighborSubmission) {
-    axios.post('/api/neighbor', {name: neighborSubmission.name, address: neighborSubmission.address})
+    axios.post('/api/neighbor', {name: neighborSubmission.name, address: neighborSubmission.address, writeToIriConfig: neighborSubmission.writeToIriConfig})
     .then(response => {
       dispatch('fetchNeighbors');
     })

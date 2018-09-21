@@ -34,10 +34,17 @@
                     <p v-if="!isCorrectAddress" class="help is-danger">Wrong node address format!</p>
                   </div>
 
+                  <div class="field">
+                    <label class="checkbox">
+                      <input type="checkbox" v-model="writeToIriConfig">
+                      Write neighbor to iri file
+                    </label>
+                  </div>
+
                   <div class="field is-grouped">
                     <div class="control">
                       <button class="button is-link" :disabled="ipAddress && !isCorrectAddress"
-                              @click="addNeighbor({name, address: ipAddress}); clearFields()">Submit
+                              @click="addNeighbor({name, address: ipAddress, writeToIriConfig}); clearFields()">Submit
                       </button>
                     </div>
                     <div class="control">
@@ -65,6 +72,7 @@
       return {
         name: '',
         ipAddress: '',
+        writeToIriConfig: true
       };
     },
     computed: {
