@@ -55,6 +55,7 @@ I'm not poor and I have a job. But if you want to show some love, I always appre
 
 ### Bugs
 - If node is not reachable once, then it can't get back into a "healthy" state. A the prompt requesting another IP won't go away after following successful calls.
+- Usernames for neighbors disappear after a restart of inschpektor
 
 ### Supported
 ✓ View neighbors

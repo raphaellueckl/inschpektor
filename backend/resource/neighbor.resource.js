@@ -115,6 +115,7 @@ class NeighborResource {
 
       axios(addNeighborRequest)
       .then(response => {
+        // Remove old entries to not confuse outdated data with new one, if neighbor was already added in the past.
         const removeNeighborEntriesWithAddress = db.prepare(`DELETE FROM neighbor where address=?`);
         removeNeighborEntriesWithAddress.run(fullAddress);
 
@@ -131,18 +132,20 @@ class NeighborResource {
     });
 
     app.delete(`${BASE_URL}/neighbor`, (req, res) => {
-      const address = req.body.address;
+      const fullAddress = req.body.address;
       const removeNeighborRequest = IRI_SERVICE.createIriRequest('removeNeighbors');
-      removeNeighborRequest.data.uris = [address];
+      removeNeighborRequest.data.uris = [fullAddress];
 
       axios(removeNeighborRequest)
       .then(response => {
-        const addressWithoutProtocolPrefix = address.substring(6);
+        const addressWithoutProtocolPrefix = fullAddress.substring(6);
 
         const removeNeighborEntriesWithAddress = db.prepare(`DELETE FROM neighbor where address=?`);
         removeNeighborEntriesWithAddress.run(addressWithoutProtocolPrefix);
 
-        this.removeNeighborFromUserNameTable(address);
+        this.removeNeighborFromUserNameTable(fullAddress);
+
+        IRI_SERVICE.removeNeighborToIriConfig(fullAddress);
 
         res.status(200).send();
       })

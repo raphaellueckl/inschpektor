@@ -21,6 +21,7 @@ class IriUtil {
     };
   }
 
+  // Only works if at least one neighbor is in the iri file
   writeNeighborToIriConfig(fullAddress) {
     fs.readFile(this.iriFileLocation, 'utf-8', (err, data) => {
       let neighborsKeyword = 'NEIGHBORS = ';
@@ -29,8 +30,20 @@ class IriUtil {
         const start = data.substring(0, insertLocation);
         const end = data.substring(insertLocation);
         const middle = `${fullAddress} `;
-        const iriConfigWithAddedNeighbor = start + middle + end;
-        fs.writeFile(this.iriFileLocation, iriConfigWithAddedNeighbor, (err) => {
+        const withAddedNeighbor = start + middle + end;
+        fs.writeFile(this.iriFileLocation, withAddedNeighbor, (err) => {
+          if (err) throw err;
+        });
+      }
+    });
+  }
+
+  // Only works if at least one neighbor is remaining
+  removeNeighborToIriConfig(fullAddress) {
+    fs.readFile(this.iriFileLocation, 'utf-8', (err, data) => {
+      if (data.includes(fullAddress)) {
+        const withRemovedNeighbor = data.replace(`${fullAddress} `, '');
+        fs.writeFile(this.iriFileLocation, withRemovedNeighbor, (err) => {
           if (err) throw err;
         });
       }
