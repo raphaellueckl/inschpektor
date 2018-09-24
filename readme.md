@@ -35,7 +35,6 @@ I'm not poor and I have a job. But if you want to show some love, I always appre
 ### Features/Improves on the roadmap
 
 - Support https nodes
-- Permanently add neighbor (by writing to iri file)
 - Login concept does not fully work
 - Unit tests
 - Mock data
@@ -60,5 +59,6 @@ I'm not poor and I have a job. But if you want to show some love, I always appre
 ### Supported
 ✓ View neighbors
 ✓ Add / Remove neighbors
+✓ Write directly to iri config
 ✓ NPM runnable app
 ✓ Fetch info about hosted node
