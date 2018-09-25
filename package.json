@@ -41,6 +41,7 @@
     "axios": "^0.18.0",
     "bcrypt": "^3.0.0",
     "bulma": "^0.7.1",
+    "bulma-switch": "^2.0.0",
     "connect-history-api-fallback": "^1.5.0",
     "express": "^4.16.3",
     "moment": "^2.22.2",

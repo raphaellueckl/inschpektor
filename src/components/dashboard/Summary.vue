@@ -2,15 +2,15 @@
   <div v-if="neighbors">
     <article class="message" :class="[issues(neighbors).length === 0 ? 'is-success' : 'is-warning']"
              v-on:click="showContent = !showContent">
-      <div class="message-header">
+      <div class="message-header black-text">
         <p>Summary - Neighbors: {{neighbors.length}}</p>
 
-        <a v-if="showContent" class="button" :class="[issues(neighbors).length === 0 ? 'is-success' : 'is-warning']"
+        <a v-if="showContent" class="button black-text" :class="[issues(neighbors).length === 0 ? 'is-success' : 'is-warning']"
            :key="1">
           <i class="fas fa-window-minimize"></i>
         </a>
 
-        <a v-else class="button" :class="[issues(neighbors).length === 0 ? 'is-success' : 'is-warning']" :key="0">
+        <a v-else class="button black-text" :class="[issues(neighbors).length === 0 ? 'is-success' : 'is-warning']" :key="0">
           <i class="far fa-window-maximize"></i>
         </a>
 
@@ -54,5 +54,9 @@
 <style scoped>
   div {
     padding-bottom: 10px;
+  }
+
+  .black-text {
+    color: #4a4a4a !important;
   }
 </style>

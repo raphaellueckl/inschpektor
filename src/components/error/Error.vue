@@ -16,12 +16,25 @@
 
     <nav class="level">
       <div class="level-item has-text-centered">
-        <div class="field">
-          <label class="label">Host-Node IP / Domain (Port only if non-default):</label>
-          <div class="control">
-            <input v-model="nodeIp" class="input" type="text" placeholder="E.g. 192.168.1.111 or my-domain.com:12345">
+
+        <div class="columns">
+          <div class="column">
+            <label class="label">Host-Node IP / Domain (Port only if non-default):</label>
+            <div class="columns">
+              <div class="column is-4">
+                <input id="switchRoundedSuccess" type="checkbox" name="switchRoundedSuccess"
+                       class="switch is-rounded is-success" checked="checked">
+                <label for="switchRoundedSuccess">https?</label>
+              </div>
+              <div class="column is-8">
+                <input v-model="nodeIp" class="input" type="text"
+                       placeholder="E.g. 192.168.1.111 or my-domain.com:12345">
+              </div>
+            </div>
           </div>
         </div>
+
+
       </div>
     </nav>
     <nav v-if="code === 'NODE_NOT_SET'" class="level">
@@ -96,4 +109,13 @@
   button {
     margin-top: 20px;
   }
+
+  .is-4 {
+    display: flex;
+    align-items: center;
+  }
+
+  .limit {
+    width: 60%
+   }
 </style>
