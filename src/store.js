@@ -89,13 +89,14 @@ const actions = {
     });
   },
   setHostNodeIp({dispatch, commit}, nodeSubmission) {
+    let protocol = nodeSubmission.isHttps ? 'https' : 'http';
     let nodeIp = nodeSubmission.nodeIp;
     let port = '14265';
     if (nodeIp.includes(':')) {
       port = nodeIp.substring(nodeIp.indexOf(':') + 1);
       nodeIp = nodeIp.substring(0, nodeIp.indexOf(':'));
     }
-    axios.post('/api/host-node-ip', {nodeIp, port, password: nodeSubmission.password, iriPath: nodeSubmission.iriPath})
+    axios.post('/api/host-node-ip', {protocol, nodeIp, port, password: nodeSubmission.password, iriPath: nodeSubmission.iriPath})
     .then(response => {
       iriIp = nodeIp;
       iriPort = port;
@@ -139,7 +140,7 @@ const actions = {
     .then(response => {
       dispatch('fetchNeighbors');
     })
-    .catch(error => console.log('Error deleting neighbor'));
+    .catch(error => console.log('Error adding nickname'));
   },
   loadPeriodically({dispatch}) {
     dispatch('fetchNeighbors');

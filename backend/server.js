@@ -50,6 +50,7 @@ NEIGHBOR_RESOURCE.init(app, db);
     db.run(
         `CREATE TABLE IF NOT EXISTS host_node (
         id INTEGER PRIMARY KEY,
+        protocol TEXT,
         ip TEXT,
         port TEXT,
         hashed_pw TEXT,
@@ -70,6 +71,7 @@ NEIGHBOR_RESOURCE.init(app, db);
 (function initializeState() {
   const sql = 'select * from host_node';
   db.get(sql, [], (err, row) => {
+    IRI_SERVICE.protocol = row ? row.protocol : null;
     IRI_SERVICE.iriIp = row ? row.ip : null;
     IRI_SERVICE.iriPort = row ? row.port : null;
     USER_RESOURCE.hashedPw = row ? row.hashed_pw : null;

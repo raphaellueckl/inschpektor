@@ -16,14 +16,12 @@
 
     <nav class="level">
       <div class="level-item has-text-centered">
-
         <div class="columns">
           <div class="column">
             <label class="label">Host-Node IP / Domain (Port only if non-default):</label>
             <div class="columns">
               <div class="column is-4">
-                <input id="switchRoundedSuccess" type="checkbox" name="switchRoundedSuccess"
-                       class="switch is-rounded is-success" checked="checked">
+                <input id="switchRoundedSuccess" v-model="isHttps" type="checkbox" class="switch is-rounded is-success">
                 <label for="switchRoundedSuccess">https?</label>
               </div>
               <div class="column is-8">
@@ -33,8 +31,6 @@
             </div>
           </div>
         </div>
-
-
       </div>
     </nav>
     <nav v-if="code === 'NODE_NOT_SET'" class="level">
@@ -63,7 +59,7 @@
         <div class="control">
           <button class="button is-link"
                   :class="{'is-loading': submitted}"
-                  @click="setHostNodeIp({nodeIp, password, iriPath}); submitted = true"
+                  @click="setHostNodeIp({isHttps, nodeIp, password, iriPath}); submitted = true"
                   :disabled="code === 'NODE_NOT_SET' ? !password || !nodeIp : !nodeIp">
             Submit
           </button>
@@ -83,6 +79,7 @@
     props: ['code'],
     data: () => {
       return {
+        isHttps: false,
         nodeIp: undefined,
         password: undefined,
         iriPath: undefined,
@@ -117,5 +114,5 @@
 
   .limit {
     width: 60%
-   }
+  }
 </style>
