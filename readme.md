@@ -34,7 +34,6 @@ I'm not poor and I have a job. But if you want to show some love, I always appre
 
 ### Features/Improves on the roadmap
 
-- Support https nodes
 - Login concept does not fully work
 - Unit tests
 - Mock data
@@ -44,7 +43,6 @@ I'm not poor and I have a job. But if you want to show some love, I always appre
 - Highlight static neighbors (compared to nelson ones)
 - Improve db queries (promises, parallel fetching instead of serial => especially the getNeighbor queries)
 - Update dependencies to remove the --unsafe-perm form the installation command
-- Permanent AddNeighbor functionality (write to iri config file)
 - User authentication
 - User authorization
 - Notifications
@@ -53,6 +51,7 @@ I'm not poor and I have a job. But if you want to show some love, I always appre
 - Improve further for mobile (currently desktop has prio)
 
 ### Bugs
+
 - If node is not reachable once, then it can't get back into a "healthy" state. A the prompt requesting another IP won't go away after following successful calls.
 - Usernames for neighbors disappear after a restart of inschpektor
 
@@ -61,6 +60,7 @@ I'm not poor and I have a job. But if you want to show some love, I always appre
 - Only give the option to write to iri config, if it was provided initially
 
 ### Supported
+✓ Https node support
 ✓ View neighbors
 ✓ Add / Remove neighbors
 ✓ Write directly to iri config
