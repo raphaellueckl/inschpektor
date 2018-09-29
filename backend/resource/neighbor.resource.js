@@ -42,62 +42,37 @@ class NeighborResource {
         const activeNeighbors = iriNeighborsResponse.data.neighbors;
 
         db.all('SELECT * FROM neighbor ORDER BY timestamp ASC', [], (err, rows) => {
-          function doCallAndPrepareCallForNext(activeNeighbors, currentIndex) {
-            const activeNeighbor = activeNeighbors[currentIndex];
+          const allRequests = [];
+          for (let neighbor of activeNeighbors) {
+            allRequests.push(new Promise((resolve) => {
+                axios(IRI_SERVICE.createIriRequest('getNodeInfo', neighbor.address.split(':')[0]))
+                .then(nodeInfoResponse => {
+                  let nodeInfo = nodeInfoResponse.data;
+                  const oldestEntry = rows.find(row => neighbor.address === row.address);
 
-            axios(IRI_SERVICE.createIriRequest('getNodeInfo', activeNeighbor.address.split(':')[0]))
-            .then(nodeInfoResponse => {
-              let nodeInfo = nodeInfoResponse.data;
-              const oldestEntry = rows.find(row => activeNeighbor.address === row.address);
+                  const resultNeighbor = this.createResultNeighbor(neighbor, oldestEntry, nodeInfo);
 
-              const resultNeighbor = {
-                address: activeNeighbor.address,
-                iriVersion: nodeInfo.appVersion,
-                isSynced: nodeInfo.latestSolidSubtangleMilestoneIndex >= currentOwnNodeInfo.latestMilestoneIndex - MAX_MILESTONES_BEHIND_BEFORE_UNSYNCED,
-                isActive: oldestEntry ? activeNeighbor.numberOfNewTransactions > oldestEntry.numberOfNewTransactions : null,
-                protocol: activeNeighbor.connectionType,
-                onlineTime: nodeInfo.time,
-                isFriendlyNode: activeNeighbor.numberOfInvalidTransactions < activeNeighbor.numberOfAllTransactions / 200
-              };
+                  resultNeighbors.push(resultNeighbor);
+                  resolve(resultNeighbor);
+                })
+                .catch(error => {
+                  const oldestEntry = rows.find(row => neighbor.address === row.address);
 
-              const name = neighborUsernames.get(`${resultNeighbor.protocol}://${resultNeighbor.address}`);
-              resultNeighbor.name = name ? name : null;
+                  const resultNeighbor = this.createResultNeighbor(neighbor, oldestEntry);
 
-              resultNeighbors.push(resultNeighbor);
+                  const name = neighborUsernames.get(`${resultNeighbor.protocol}://${resultNeighbor.address}`);
+                  resultNeighbor.name = name ? name : null;
 
-              if (++currentIndex < activeNeighbors.length) {
-                doCallAndPrepareCallForNext(activeNeighbors, currentIndex);
-              } else {
-                res.json(resultNeighbors);
-              }
-            })
-            .catch(error => {
-              const oldestEntry = rows.find(row => activeNeighbor.address === row.address);
-
-              const resultNeighbor = {
-                address: activeNeighbor.address,
-                iriVersion: null,
-                isSynced: null,
-                isActive: oldestEntry ? activeNeighbor.numberOfNewTransactions > oldestEntry.numberOfNewTransactions : null,
-                protocol: activeNeighbor.connectionType,
-                onlineTime: null,
-                isFriendlyNode: activeNeighbor.numberOfInvalidTransactions < activeNeighbor.numberOfAllTransactions / 200
-              };
-
-              const name = neighborUsernames.get(`${resultNeighbor.protocol}://${resultNeighbor.address}`);
-              resultNeighbor.name = name ? name : null;
-
-              resultNeighbors.push(resultNeighbor);
-
-              if (++currentIndex < activeNeighbors.length) {
-                doCallAndPrepareCallForNext(activeNeighbors, currentIndex);
-              } else {
-                res.json(resultNeighbors);
-              }
-            });
+                  resultNeighbors.push(resultNeighbor);
+                  resolve(resultNeighbor);
+                });
+              })
+            );
           }
 
-          doCallAndPrepareCallForNext(activeNeighbors, 0);
+          Promise.all(allRequests).then(evaluatedNeighbors => {
+            res.json(evaluatedNeighbors);
+          });
         });
       })
       .catch(error => {
@@ -157,6 +132,23 @@ class NeighborResource {
 
   }
 
+  createResultNeighbor(neighbor, oldestEntry, nodeInfo) {
+    const resultNeighbor = {
+      premium: true,  // If neighbor allows remote node-info query
+      address: neighbor.address,
+      iriVersion: nodeInfo ? nodeInfo.appVersion: null,
+      isSynced: nodeInfo ? nodeInfo.latestSolidSubtangleMilestoneIndex >= currentOwnNodeInfo.latestMilestoneIndex - MAX_MILESTONES_BEHIND_BEFORE_UNSYNCED : null,
+      isActive: oldestEntry ? neighbor.numberOfNewTransactions > oldestEntry.numberOfNewTransactions : null,
+      protocol: neighbor.connectionType,
+      onlineTime: nodeInfo ? nodeInfo.time : null,
+      isFriendlyNode: neighbor.numberOfInvalidTransactions < neighbor.numberOfAllTransactions / 200
+    };
+
+    const name = neighborUsernames.get(`${resultNeighbor.protocol}://${resultNeighbor.address}`);
+    resultNeighbor.name = name ? name : null;
+
+    return resultNeighbor;
+  }
 }
 
 const neighborResource = new NeighborResource();

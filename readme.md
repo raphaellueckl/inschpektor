@@ -41,7 +41,6 @@ I'm not poor and I have a job. But if you want to show some love, I always appre
 - Mark 'quality neighbors'
 - Restart node when out of sync
 - Highlight static neighbors (compared to nelson ones)
-- Improve db queries (promises, parallel fetching instead of serial => especially the getNeighbor queries)
 - Update dependencies to remove the --unsafe-perm form the installation command
 - User authentication
 - User authorization
