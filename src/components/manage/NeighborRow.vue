@@ -4,7 +4,7 @@
       <div class="horizontal-grid">
         <input v-model="neighbor.name" placeholder="N/A" class="input" type="text">
         <span class="icon is-small is-right center-checkmark" :key="0" v-on:click="addNeighborNick(neighbor)">
-          <i class="fas fa-check"></i>
+          <font-awesome-icon icon="check" />
         </span>
       </div>
     </div>
@@ -19,8 +19,9 @@
       : neighbor.isSynced ? '✔' : '❌'}}️
     </div>
     <div class="column">
-      <a class="button is-danger is-rounded" :class="{'is-loading': submitted}" @click="remove"><i
-        class="far fa-trash-alt"/></a>
+      <a class="button is-danger is-rounded" :class="{'is-loading': submitted}" @click="remove">
+        <font-awesome-icon icon="trash-alt" />
+      </a>
     </div>
   </div>
 </template>

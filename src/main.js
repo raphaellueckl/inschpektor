@@ -3,18 +3,21 @@ import App from './App.vue';
 import router from './router';
 import store from './store';
 
-import fontawesome from '@fortawesome/fontawesome';
-import farTrashAlt from '@fortawesome/fontawesome-free-regular/faTrashAlt';
-import farWindowMaximize from '@fortawesome/fontawesome-free-regular/faWindowMaximize';
-import fasFaCheck from '@fortawesome/fontawesome-free-solid/faCheck';
-import fasFaExclamationTriangle from '@fortawesome/fontawesome-free-solid/faExclamationTriangle';
-import fasWindowMinimize from '@fortawesome/fontawesome-free-solid/faWindowMinimize';
+import {library} from '@fortawesome/fontawesome-svg-core';
+import {FontAwesomeIcon} from '@fortawesome/vue-fontawesome';
+import {faTrashAlt} from '@fortawesome/free-solid-svg-icons';
+import {faWindowMinimize} from '@fortawesome/free-solid-svg-icons';
+import {faWindowMaximize} from '@fortawesome/free-solid-svg-icons';
+import {faCheck} from '@fortawesome/free-solid-svg-icons';
+import {faExclamationTriangle} from '@fortawesome/free-solid-svg-icons';
 
-fontawesome.library.add(farTrashAlt);
-fontawesome.library.add(fasWindowMinimize);
-fontawesome.library.add(farWindowMaximize);
-fontawesome.library.add(fasFaCheck);
-fontawesome.library.add(fasFaExclamationTriangle);
+library.add(faTrashAlt);
+library.add(faWindowMinimize);
+library.add(faWindowMaximize);
+library.add(faCheck);
+library.add(faExclamationTriangle);
+
+Vue.component('font-awesome-icon', FontAwesomeIcon);
 
 require('./assets/sass/main.scss');
 

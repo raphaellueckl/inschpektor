@@ -7,11 +7,11 @@
 
         <a v-if="showContent" class="button black-text" :class="[issues(neighbors).length === 0 ? 'is-success' : 'is-warning']"
            :key="1">
-          <i class="fas fa-window-minimize"></i>
+          <font-awesome-icon icon="window-minimize" />
         </a>
 
         <a v-else class="button black-text" :class="[issues(neighbors).length === 0 ? 'is-success' : 'is-warning']" :key="0">
-          <i class="far fa-window-maximize"></i>
+          <font-awesome-icon icon="window-maximize" />
         </a>
 
       </div>

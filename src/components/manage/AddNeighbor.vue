@@ -24,11 +24,11 @@
                              :class="[ipAddress ? isCorrectAddress ? 'is-success' : 'is-danger' : '']"
                              type="text"
                              placeholder="E.g. udp://123.32.123.123:14600 or tcp://neighbor-domain.net:15600">
-                      <span v-if="isCorrectAddress" class="icon is-small is-right" :key="0">
-                        <i class="fas fa-check"></i>
+                      <span v-if="this.ipAddress && isCorrectAddress" class="icon is-small is-right" :key="0">
+                        <font-awesome-icon icon="check" />
                       </span>
-                      <span v-else class="icon is-small is-right" :key="1">
-                        <i class="fas fa-exclamation-triangle"></i>
+                      <span v-if="this.ipAddress && !isCorrectAddress" class="icon is-small is-right" :key="1">
+                        <font-awesome-icon icon="exclamation-triangle" />
                       </span>
                     </div>
                     <p v-if="!isCorrectAddress" class="help is-danger">Wrong node address format!</p>
