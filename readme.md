@@ -1,4 +1,4 @@
-## INSCHPEKTOR
+## INSCHPEKTOR - Status: Early-Alpha (not officially released)
 
 This is a vuejs app that helps you managing your IOTA node neighbors.
 
