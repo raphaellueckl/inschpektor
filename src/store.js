@@ -49,6 +49,8 @@ const mutations = {
 
 const actions = {
   login({commit}, passwordOrToken) {
+    if (!passwordOrToken) passwordOrToken = localStorage.getItem('token');
+    if (!passwordOrToken) return;
     return axios.post('/api/login', {passwordOrToken})
     .then(response => {
       localStorage.setItem('token', response.data.token);
@@ -96,7 +98,13 @@ const actions = {
       port = nodeIp.substring(nodeIp.indexOf(':') + 1);
       nodeIp = nodeIp.substring(0, nodeIp.indexOf(':'));
     }
-    axios.post('/api/host-node-ip', {protocol, nodeIp, port, password: nodeSubmission.password, iriPath: nodeSubmission.iriPath})
+    axios.post('/api/host-node-ip', {
+      protocol,
+      nodeIp,
+      port,
+      password: nodeSubmission.password,
+      iriPath: nodeSubmission.iriPath
+    })
     .then(response => {
       iriIp = nodeIp;
       iriPort = port;
@@ -114,7 +122,11 @@ const actions = {
     .catch(error => console.log('error setting node ip'));
   },
   addNeighbor({dispatch, commit}, neighborSubmission) {
-    axios.post('/api/neighbor', {name: neighborSubmission.name, address: neighborSubmission.address, writeToIriConfig: neighborSubmission.writeToIriConfig})
+    axios.post('/api/neighbor', {
+      name: neighborSubmission.name,
+      address: neighborSubmission.address,
+      writeToIriConfig: neighborSubmission.writeToIriConfig
+    })
     .then(response => {
       dispatch('fetchNeighbors');
     })
