@@ -24,14 +24,12 @@
       Menu
     },
     created() {
+      this.$store.dispatch('login');
       this.$store.dispatch('loadPeriodically');
 
       setInterval(() => {
         this.$store.dispatch('loadPeriodically');
       }, 10000);
-
-      const login = localStorage.getItem('token');
-      if (login) this.$store.dispatch('login', login);
     },
     computed: {
       ...mapGetters(['nodeError'])

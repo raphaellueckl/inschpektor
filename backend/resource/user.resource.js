@@ -1,39 +1,28 @@
 const bcrypt = require('bcrypt');
 
-let loginToken;
-let hashedPw;
-
 class UserResource {
 
-  get loginToken() {
-    return loginToken;
-  }
-
-  get hashedPw() {
-    return hashedPw;
-  }
-
-  set hashedPw(newHashedPw) {
-    hashedPw = newHashedPw;
+  constructor() {
+    this.loginToken = undefined;
+    this.hashedPw = undefined;
   }
 
   init(app, db) {
     app.post('/api/login', (req, res) => {
       const deliveredPasswordOrToken = req.body.passwordOrToken;
 
-      if (deliveredPasswordOrToken && deliveredPasswordOrToken === loginToken) {
-        // TODO maybe create a new token here
+      if (deliveredPasswordOrToken && deliveredPasswordOrToken === this.loginToken) {
         res.json({
-          token: loginToken
+          token: this.loginToken
         });
-      } else if (deliveredPasswordOrToken && hashedPw && bcrypt.compareSync(deliveredPasswordOrToken, hashedPw)) {
-        loginToken = new Date().toString().split('').reverse().join('');
+      } else if (deliveredPasswordOrToken && this.hashedPw && bcrypt.compareSync(deliveredPasswordOrToken, this.hashedPw)) {
+        this.loginToken = new Date().toString().split('').reverse().join('');
 
         const updateHostIp = db.prepare(`UPDATE host_node SET login_token = ? WHERE id = ?`);
-        updateHostIp.run(loginToken, 0);
+        updateHostIp.run(this.loginToken, 0);
 
         res.json({
-          token: loginToken
+          token: this.loginToken
         });
       } else {
         res.status(404).send();
