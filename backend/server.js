@@ -75,8 +75,8 @@ NEIGHBOR_RESOURCE.init(app, db);
     IRI_SERVICE.iriIp = row ? row.ip : null;
     IRI_SERVICE.iriPort = row ? row.port : null;
     USER_RESOURCE.hashedPw = row ? row.hashed_pw : null;
+    USER_RESOURCE.loginToken = row ? row.login_token : null;
     IRI_SERVICE.iriFileLocation = row ? row.iri_path : null;
-    NODE_RESOURCE.loginToken = row ? row.login_token : null;
   });
 
   db.all('select * from neighbor_data', [], (err, rows) => {

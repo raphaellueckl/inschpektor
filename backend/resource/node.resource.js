@@ -8,10 +8,6 @@ const SALT = 11;
 
 class NodeResource {
 
-  constructor() {
-    this.loginToken = null;
-  }
-
   init(app, db) {
     app.get(`${BASE_URL}/node-info`, (req, res) => {
       let auth = req.get('Authorization');
@@ -44,13 +40,13 @@ class NodeResource {
         IRI_SERVICE.iriIp = newIriIp;
         IRI_SERVICE.iriPort = port;
         IRI_SERVICE.iriFileLocation = iriFileLocation;
-        this.loginToken = new Date().toString().split('').reverse().join('');
+        USER_RESOURCE.loginToken = new Date().toString().split('').reverse().join('');
 
         const updateHostIp = db.prepare('REPLACE INTO host_node (id, protocol, ip, port, hashed_pw, iri_path, login_token) VALUES(?, ?, ?, ?, ?, ?, ?)');
-        updateHostIp.run(0, IRI_SERVICE.protocol, IRI_SERVICE.iriIp, IRI_SERVICE.iriPort, USER_RESOURCE.hashedPw, IRI_SERVICE.iriFileLocation, this.loginToken);
+        updateHostIp.run(0, IRI_SERVICE.protocol, IRI_SERVICE.iriIp, IRI_SERVICE.iriPort, USER_RESOURCE.hashedPw, IRI_SERVICE.iriFileLocation, USER_RESOURCE.loginToken);
 
         res.json({
-          token: this.loginToken
+          token: USER_RESOURCE.loginToken
         });
       } else if (!password) {
         IRI_SERVICE.protocol = protocol;
