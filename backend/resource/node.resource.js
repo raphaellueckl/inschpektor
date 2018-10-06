@@ -1,7 +1,8 @@
 const bcrypt = require('bcrypt');
 const axios = require('axios');
-const IRI_SERVICE = require('../util/iri.util.js');
-const USER_RESOURCE = require('./user.resource.js');
+const IRI_SERVICE = require('../util/iri.util');
+const USER_RESOURCE = require('./user.resource');
+const AUTH_UTIL = require('../util/auth.util');
 
 const BASE_URL = '/api';
 const SALT = 11;
@@ -62,6 +63,7 @@ class NodeResource {
     });
 
     app.get(`${BASE_URL}/iri-ip`, (req, res) => {
+      if (!AUTH_UTIL.isUserAuthenticated(USER_RESOURCE.loginToken, req)) res.status(401).send();
       res.send({
         protocol: IRI_SERVICE.protocol,
         ip: IRI_SERVICE.iriIp,
