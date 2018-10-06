@@ -1,8 +1,10 @@
-const IRI_SERVICE = require('../util/iri.util.js');
+const IRI_SERVICE = require('../util/iri.util');
+const USER_RESOURCE = require('./user.resource');
+const AUTH_UTIL = require('../util/auth.util');
 const axios = require('axios');
 const neighborUsernames = new Map();
 const MAX_MILESTONES_BEHIND_BEFORE_UNSYNCED = 50;
-// TODO move to a config or something, since duplicated
+// TODO move to a config or something, since redundant
 const BASE_URL = '/api';
 
 let db;
@@ -26,6 +28,7 @@ class NeighborResource {
   init(app, database) {
     db = database;
     app.post('/api/neighbor/nick', (req, res) => {
+      if (!AUTH_UTIL.isUserAuthenticated(USER_RESOURCE.loginToken, req)) res.status(401).send();
       const name = req.body.name;
       const fullAddress = req.body.fullAddress;
 
@@ -81,6 +84,7 @@ class NeighborResource {
     });
 
     app.post(`${BASE_URL}/neighbor`, (req, res) => {
+      if (!AUTH_UTIL.isUserAuthenticated(USER_RESOURCE.loginToken, req)) res.status(401).send();
       const name = req.body.name;
       const fullAddress = req.body.address;
       const writeToIriConfig = req.body.writeToIriConfig;
@@ -107,6 +111,7 @@ class NeighborResource {
     });
 
     app.delete(`${BASE_URL}/neighbor`, (req, res) => {
+      if (!AUTH_UTIL.isUserAuthenticated(USER_RESOURCE.loginToken, req)) res.status(401).send();
       const fullAddress = req.body.address;
       const removeNeighborRequest = IRI_SERVICE.createIriRequest('removeNeighbors');
       removeNeighborRequest.data.uris = [fullAddress];
