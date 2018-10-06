@@ -18,7 +18,7 @@ class IriUtil {
         'Content-Type': 'application/json',
         'X-IOTA-API-Version': '1'
       },
-      timeout: 750
+      timeout: 1000
     };
   }
 
