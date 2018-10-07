@@ -34,7 +34,6 @@ I'm not poor and I have a job. But if you want to show some love, I always appre
 
 ### Features/Improves on the roadmap
 
-- Login concept does not fully work
 - Unit tests
 - Mock data
 - Add 'reset db' functionality
