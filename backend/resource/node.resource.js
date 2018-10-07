@@ -11,10 +11,9 @@ class NodeResource {
 
   init(app, db) {
     app.get(`${BASE_URL}/node-info`, (req, res) => {
-      let auth = req.get('Authorization');
-
       if (!IRI_SERVICE.iriIp) {
         res.status(404).send('NODE_NOT_SET');
+        return;
       }
       axios(IRI_SERVICE.createIriRequest('getNodeInfo'))
       .then(response => {
@@ -32,7 +31,10 @@ class NodeResource {
       const password = req.body.password;
       const iriFileLocation = req.body.iriPath;
 
-      if (!newIriIp || !port) res.status(404).send();
+      if (!newIriIp || !port) {
+        res.status(404).send();
+        return;
+      }
 
       if (!USER_RESOURCE.hashedPw && password) USER_RESOURCE.hashedPw = bcrypt.hashSync(password, SALT);
 
@@ -63,7 +65,10 @@ class NodeResource {
     });
 
     app.get(`${BASE_URL}/iri-ip`, (req, res) => {
-      if (!AUTH_UTIL.isUserAuthenticated(USER_RESOURCE.loginToken, req)) res.status(401).send();
+      if (!AUTH_UTIL.isUserAuthenticated(USER_RESOURCE.loginToken, req)) {
+        res.status(401).send();
+        return;
+      }
       res.send({
         protocol: IRI_SERVICE.protocol,
         ip: IRI_SERVICE.iriIp,
