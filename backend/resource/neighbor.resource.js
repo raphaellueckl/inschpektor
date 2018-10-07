@@ -32,13 +32,16 @@ class NeighborResource {
   init(app, database) {
     db = database;
     app.post('/api/neighbor/nick', (req, res) => {
-      if (!AUTH_UTIL.isUserAuthenticated(USER_RESOURCE.loginToken, req)) res.status(401).send();
+      if (!AUTH_UTIL.isUserAuthenticated(USER_RESOURCE.loginToken, req)) {
+        res.status(401).send();
+        return;
+      }
       const name = req.body.name;
       const fullAddress = req.body.fullAddress;
 
       this.addNeighborUserName(fullAddress, name);
 
-      res.json({});
+      res.status(200).send();
     });
 
     app.get('/api/neighbors', (req, res) => {
@@ -88,7 +91,10 @@ class NeighborResource {
     });
 
     app.post(`${BASE_URL}/neighbor`, (req, res) => {
-      if (!AUTH_UTIL.isUserAuthenticated(USER_RESOURCE.loginToken, req)) res.status(401).send();
+      if (!AUTH_UTIL.isUserAuthenticated(USER_RESOURCE.loginToken, req)) {
+        res.status(401).send();
+        return;
+      }
       const name = req.body.name;
       const fullAddress = req.body.address;
       const writeToIriConfig = req.body.writeToIriConfig;
@@ -115,7 +121,10 @@ class NeighborResource {
     });
 
     app.delete(`${BASE_URL}/neighbor`, (req, res) => {
-      if (!AUTH_UTIL.isUserAuthenticated(USER_RESOURCE.loginToken, req)) res.status(401).send();
+      if (!AUTH_UTIL.isUserAuthenticated(USER_RESOURCE.loginToken, req)) {
+        res.status(401).send();
+        return;
+      }
       const fullAddress = req.body.address;
       const removeNeighborRequest = IRI_SERVICE.createIriRequest('removeNeighbors');
       removeNeighborRequest.data.uris = [fullAddress];
