@@ -83,7 +83,7 @@ class NeighborResource {
         });
       })
       .catch(error => {
-        console.log('failed to get neighbors');
+        console.log('failed to get neighbors', error.message);
       });
     });
 
@@ -109,7 +109,7 @@ class NeighborResource {
         res.status(200).send();
       })
       .catch(error => {
-        console.log(`Couldn't add neighbor`);
+        console.log(`Couldn't add neighbor`, error.message);
         res.status(500).send();
       });
     });
@@ -134,7 +134,7 @@ class NeighborResource {
         res.status(200).send();
       })
       .catch(error => {
-        console.log(`Couldn't remove neighbor`);
+        console.log(`Couldn't remove neighbor`, error.message);
         res.status(500).send();
       });
     });
