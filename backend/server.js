@@ -22,8 +22,6 @@ if (process.env.NODE_ENV === 'dev') {
   app.use(express.static(__dirname + '/../dist'));
 }
 
-const neighborUsernames = new Map();
-
 let currentOwnNodeInfo = {};
 
 const db = new sqlite3.Database(__dirname + '/db');
@@ -81,7 +79,7 @@ NEIGHBOR_RESOURCE.init(app, db);
 
   db.all('select * from neighbor_data', [], (err, rows) => {
     rows.forEach(r => {
-      neighborUsernames.set(r.address, r.name ? r.name : null);
+      NEIGHBOR_RESOURCE.intitializeNeighborUsernname(r.address, r.name ? r.name : null);
     });
   });
 })();
