@@ -11,6 +11,10 @@ let db;
 
 class NeighborResource {
 
+  intitializeNeighborUsernname(fullAddress, name) {
+    neighborUsernames.set(fullAddress, name);
+  }
+
   removeNeighborFromUserNameTable(address) {
     neighborUsernames.delete(address);
 
