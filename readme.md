@@ -53,7 +53,7 @@ I'm not poor and I have a job. But if you want to show some love, I always appre
 ### Bugs
 
 - If node is not reachable once, then it can't get back into a "healthy" state. A the prompt requesting another IP won't go away after following successful calls.
-- Usernames for neighbors disappear after a restart of inschpektor
+- When you are entering a nickname for a node, it can vanish because the regular "getNeighbors"-call resets the list (including what the user already typed).
 
 ### Small improves
 

@@ -58,8 +58,9 @@ const actions = {
       commit('SET_TOKEN', response.data.token);
       commit('USER_AUTHENTICATED', true);
     })
-    .catch(error => console.log('Unsuccessful login attempt.'));
+    .catch(error => console.log('Unsuccessful login attempt.', error.message));
   },
+
   logout({commit}) {
     return new Promise((resolve) => {
       localStorage.removeItem('token');
