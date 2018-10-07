@@ -110,13 +110,13 @@ async function theFetcher() {
 
         db.run(`DELETE FROM neighbor WHERE timestamp <= datetime('now', '-30 minutes')`);
       })
-      .catch(error => console.log('Failed to fetch neighbors of own node.'));
+      .catch(error => console.log('Failed to fetch neighbors of own node.', error.message));
 
       axios(IRI_SERVICE.createIriRequest('getNodeInfo'))
       .then(nodeInfoResponse => {
         currentOwnNodeInfo = nodeInfoResponse.data;
       })
-      .catch(error => console.log('Failed to fetch own node info.'));
+      .catch(error => console.log('Failed to fetch own node info.', error.message));
     }
   }
 
