@@ -24,7 +24,8 @@ const state = {
 
 const mutations = {
   SET_TOKEN(state, token) {
-    axios.defaults.headers.common['Authorization'] = localStorage.getItem('token');
+    axios.defaults.headers.common['Authorization'] = token;
+    localStorage.setItem('token', token);
     state.token = token;
   },
   SET_NODE_INFO(state, info) {
@@ -54,7 +55,6 @@ const actions = {
     if (!passwordOrToken) return;
     return axios.post('/api/login', {passwordOrToken})
     .then(response => {
-      localStorage.setItem('token', response.data.token);
       commit('SET_TOKEN', response.data.token);
       commit('USER_AUTHENTICATED', true);
     })
