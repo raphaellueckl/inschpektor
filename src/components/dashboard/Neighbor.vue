@@ -1,5 +1,5 @@
 <template>
-  <article class="tile is-child notification">
+  <article class="tile is-child notification" :class="{'is-danger' : !neighbor.isFriendlyNode || neighbor.isActive === false || neighbor.isSynced === false}">
     <h1 class="title">{{neighbor.name ? neighbor.name : neighbor.address}}</h1>
     <div class="media-content">
       <div class="content">
@@ -28,12 +28,7 @@
 <script>
   export default {
     name: 'Neighbor',
-    props: ['neighbor'],
-    data() {
-      return {
-        colors: ['is-primary', 'is-link', 'is-info', 'is-success', 'is-warning', 'is-danger']
-      };
-    },
+    props: ['neighbor']
   };
 </script>
 
