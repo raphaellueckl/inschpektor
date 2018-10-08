@@ -36,7 +36,7 @@
     <nav v-if="code === 'NODE_NOT_SET'" class="level">
       <div class="level-item has-text-centered">
         <div class="field">
-          <label class="label">Password (for node interactions):</label>
+          <label class="label">Define a Password (for node interactions):</label>
           <div class="control">
             <input v-model="password" class="input" type="text" placeholder="Choose wisely...">
           </div>
