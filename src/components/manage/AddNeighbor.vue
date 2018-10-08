@@ -34,7 +34,7 @@
                     <p v-if="!isCorrectAddress" class="help is-danger">Wrong node address format!</p>
                   </div>
 
-                  <div class="field">
+                  <div class="field" v-if="iriFileLocation">
                     <label class="checkbox">
                       <input type="checkbox" v-model="writeToIriConfig">
                       Write neighbor to iri file
@@ -44,7 +44,7 @@
                   <div class="field is-grouped">
                     <div class="control">
                       <button class="button is-link" :disabled="ipAddress && !isCorrectAddress"
-                              @click="addNeighbor({name, address: ipAddress, writeToIriConfig}); clearFields()">Submit
+                              @click="addNeighbor({name, address: ipAddress, writeToIriConfig: writeToIriConfig && !!iriFileLocation}); clearFields()">Submit
                       </button>
                     </div>
                     <div class="control">
@@ -64,7 +64,7 @@
 </template>
 
 <script>
-  import {mapActions} from 'vuex';
+  import {mapActions, mapGetters} from 'vuex';
 
   export default {
     name: 'AddNeighbor',
@@ -75,7 +75,11 @@
         writeToIriConfig: true
       };
     },
+    created() {
+      this.$store.dispatch('fetchIriDetails');
+    },
     computed: {
+      ...mapGetters(['iriFileLocation']),
       isCorrectAddress: function () {
         if (!this.ipAddress) return true;
         const startRegex = new RegExp(`^(udp|tcp):\\/\\/`);

@@ -48,7 +48,7 @@
         <div class="field">
           <label class="label">Path to iri config:</label>
           <div class="control">
-            <input v-model="iriPath" class="input" type="text" placeholder="E.g. /home/user/iri.txt">
+            <input v-model="iriFileLocation" class="input" type="text" placeholder="E.g. /home/user/iri.txt">
           </div>
         </div>
       </div>
@@ -59,7 +59,7 @@
         <div class="control">
           <button class="button is-link"
                   :class="{'is-loading': submitted}"
-                  @click="setHostNodeIp({isHttps, nodeIp, password, iriPath}); submitted = true"
+                  @click="setHostNodeIp({isHttps, nodeIp, password, iriFileLocation}); submitted = true"
                   :disabled="code === 'NODE_NOT_SET' ? !password || !nodeIp : !nodeIp">
             Submit
           </button>
@@ -82,7 +82,7 @@
         isHttps: false,
         nodeIp: undefined,
         password: undefined,
-        iriPath: undefined,
+        iriFileLocation: undefined,
         submitted: false
       };
     },
@@ -93,7 +93,7 @@
       ...mapGetters(['iriIp'])
     },
     created() {
-      this.$store.dispatch('fetchIriIp');
+      this.$store.dispatch('fetchIriDetails');
     }
   };
 </script>

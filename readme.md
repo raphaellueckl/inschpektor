@@ -35,12 +35,11 @@ I'm not poor and I have a job. But if you want to show some love, I always appre
 ### Features/Improves on the roadmap
 
 - Add 'reset db' functionality
-- Only write to iri if iri was set
 - Notifiy the user when calls fail. For instance 'getNeighbors', because users will only see an empty app
+- If no node connection for once, it won't automatically get back into a healthy state
 - Unit tests
 - Mock data
 - Mark 'quality neighbors'
-- Make it clear what 'Password' means when setting the node
 - Restart node when out of sync
 - Highlight static neighbors (compared to nelson ones)
 - Update dependencies to remove the --unsafe-perm form the installation command
