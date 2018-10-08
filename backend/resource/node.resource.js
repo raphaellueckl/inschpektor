@@ -64,15 +64,16 @@ class NodeResource {
       }
     });
 
-    app.get(`${BASE_URL}/iri-ip`, (req, res) => {
+    app.get(`${BASE_URL}/iri-details`, (req, res) => {
       if (!AUTH_UTIL.isUserAuthenticated(USER_RESOURCE.loginToken, req)) {
         res.status(401).send();
         return;
       }
       res.send({
         protocol: IRI_SERVICE.protocol,
-        ip: IRI_SERVICE.iriIp,
-        port: IRI_SERVICE.iriPort
+        nodeIp: IRI_SERVICE.iriIp,
+        port: IRI_SERVICE.iriPort,
+        iriFileLocation: IRI_SERVICE.iriFileLocation
       });
     });
   }
