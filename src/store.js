@@ -12,6 +12,7 @@ let iriPort = null;
 
 const state = {
   hostNode: `${iriIp}:${iriPort}`,
+  iriFileLocation: null,
   token: null,
   loading: false,
   nodeInfo: null,
@@ -31,9 +32,10 @@ const mutations = {
   SET_NODE_INFO(state, info) {
     state.nodeInfo = info;
   },
-  SET_IRI_IP(state, ipAndPort) {
-    state.iriIp = ipAndPort.ip;
-    state.hostNode = `${ipAndPort.ip}:${ipAndPort.port}`;
+  SET_IRI_DETAILS(state, iriDetails) {
+    state.iriIp = iriDetails.nodeIp;
+    state.hostNode = `${iriDetails.nodeIp}:${iriDetails.port}`;
+    state.iriFileLocation = iriDetails.iriFileLocation;
   },
   SET_NEIGHBORS(state, neighbors) {
     state.neighbors = neighbors;
@@ -78,10 +80,10 @@ const actions = {
       commit('SET_ERROR', error.response.data);
     });
   },
-  fetchIriIp({commit}) {
-    axios('/api/iri-ip')
+  fetchIriDetails({commit}) {
+    axios('/api/iri-details')
     .then(response => {
-      commit('SET_IRI_IP', response.data);
+      commit('SET_IRI_DETAILS', response.data);
     })
     .catch(error => {
     });
@@ -104,7 +106,7 @@ const actions = {
       nodeIp,
       port,
       password: nodeSubmission.password,
-      iriPath: nodeSubmission.iriPath
+      iriPath: nodeSubmission.iriFileLocation
     })
     .then(response => {
       iriIp = nodeIp;
@@ -112,7 +114,7 @@ const actions = {
       if (response.data.token) {
         commit('SET_TOKEN', response.data.token);
         commit('USER_AUTHENTICATED', true);
-        commit('SET_IRI_IP', nodeSubmission.nodeIp);
+        commit('SET_IRI_DETAILS', nodeSubmission);
       } else {
         commit('USER_AUTHENTICATED', false);
       }
@@ -165,6 +167,7 @@ const getters = {
   token: state => state.token,
   loading: state => state.loading,
   nodeInfo: state => state.nodeInfo,
+  iriFileLocation: state => state.iriFileLocation,
   iriIp: state => state.iriIp,
   hostNode: state => state.hostNode,
   neighbors: state => state.neighbors,
