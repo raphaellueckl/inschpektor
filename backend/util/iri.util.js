@@ -33,7 +33,7 @@ class IriUtil {
         const middle = `${fullAddress} `;
         const withAddedNeighbor = start + middle + end;
         fs.writeFile(this.iriFileLocation, withAddedNeighbor, (err) => {
-          if (err) throw err;
+          if (err) console.error('Failed to add neighbor in iri. Permission error or wrong path.', err.message);
         });
       }
     });
@@ -46,7 +46,7 @@ class IriUtil {
         if (data.includes(fullAddress)) {
           const withRemovedNeighbor = data.replace(`${fullAddress} `, '');
           fs.writeFile(this.iriFileLocation, withRemovedNeighbor, (err) => {
-            if (err) throw err;
+            if (err) console.error('Failed to remove neighbor from iri. Permission error or wrong path.', err.message)
           });
         }
       });
