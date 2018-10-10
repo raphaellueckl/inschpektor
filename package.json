@@ -5,8 +5,8 @@
   "main": "backend/server.js",
   "private": false,
   "scripts": {
+    "start": "node backend/server.js",
     "start-dev": "concurrently \"NODE_ENV=dev nodemon backend/server.js\" \"npm run serve\"",
-    "start-prod": "node backend/server.js",
     "api": "NODE_ENV=dev nodemon backend/server.js",
     "serve": "vue-cli-service serve",
     "build": "vue-cli-service build"
@@ -45,7 +45,6 @@
     "express": "^4.16.3",
     "moment": "^2.22.2",
     "node-sass": "^4.9.2",
-    "nodemon": "^1.18.3",
     "sass-loader": "^7.0.3",
     "sqlite3": "^4.0.2",
     "vue": "^2.5.16",
@@ -55,7 +54,8 @@
   "devDependencies": {
     "@vue/cli-service": "^3.0.0-rc.6",
     "concurrently": "^3.6.1",
-    "vue-template-compiler": "^2.5.16"
+    "vue-template-compiler": "^2.5.16",
+    "nodemon": "^1.18.3"
   },
   "postcss": {
     "plugins": {
