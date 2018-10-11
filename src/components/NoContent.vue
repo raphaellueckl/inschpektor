@@ -1,6 +1,6 @@
 <template>
   <div>
-    <div class="lds-ellipsis">
+    <div class="loading-animation">
       <div></div>
       <div></div>
       <div></div>
@@ -19,14 +19,14 @@
 </script>
 
 <style scoped>
-  .lds-ellipsis {
+  .loading-animation {
     display: inline-block;
     position: relative;
     width: 110px;
     height: 60px;
   }
 
-  .lds-ellipsis div {
+  .loading-animation div {
     position: absolute;
     top: 27px;
     width: 11px;
@@ -36,27 +36,27 @@
     animation-timing-function: cubic-bezier(0, 1, 1, 0);
   }
 
-  .lds-ellipsis div:nth-child(1) {
+  .loading-animation div:nth-child(1) {
     left: 20px;
-    animation: lds-ellipsis1 0.6s infinite;
+    animation: loading-animation1 0.6s infinite;
   }
 
-  .lds-ellipsis div:nth-child(2) {
+  .loading-animation div:nth-child(2) {
     left: 20px;
-    animation: lds-ellipsis2 0.6s infinite;
+    animation: loading-animation2 0.6s infinite;
   }
 
-  .lds-ellipsis div:nth-child(3) {
+  .loading-animation div:nth-child(3) {
     left: 50px;
-    animation: lds-ellipsis2 0.6s infinite;
+    animation: loading-animation2 0.6s infinite;
   }
 
-  .lds-ellipsis div:nth-child(4) {
+  .loading-animation div:nth-child(4) {
     left: 80px;
-    animation: lds-ellipsis3 0.6s infinite;
+    animation: loading-animation3 0.6s infinite;
   }
 
-  @keyframes lds-ellipsis1 {
+  @keyframes loading-animation1 {
     0% {
       transform: scale(0);
     }
@@ -65,7 +65,7 @@
     }
   }
 
-  @keyframes lds-ellipsis3 {
+  @keyframes loading-animation3 {
     0% {
       transform: scale(1);
     }
@@ -74,7 +74,7 @@
     }
   }
 
-  @keyframes lds-ellipsis2 {
+  @keyframes loading-animation2 {
     0% {
       transform: translate(0, 0);
     }
