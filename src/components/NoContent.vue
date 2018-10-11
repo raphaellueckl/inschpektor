@@ -22,8 +22,8 @@
   .lds-ellipsis {
     display: inline-block;
     position: relative;
-    width: 64px;
-    height: 64px;
+    width: 110px;
+    height: 60px;
   }
 
   .lds-ellipsis div {
@@ -37,22 +37,22 @@
   }
 
   .lds-ellipsis div:nth-child(1) {
-    left: 6px;
+    left: 20px;
     animation: lds-ellipsis1 0.6s infinite;
   }
 
   .lds-ellipsis div:nth-child(2) {
-    left: 6px;
+    left: 20px;
     animation: lds-ellipsis2 0.6s infinite;
   }
 
   .lds-ellipsis div:nth-child(3) {
-    left: 26px;
+    left: 50px;
     animation: lds-ellipsis2 0.6s infinite;
   }
 
   .lds-ellipsis div:nth-child(4) {
-    left: 45px;
+    left: 80px;
     animation: lds-ellipsis3 0.6s infinite;
   }
 
@@ -79,7 +79,7 @@
       transform: translate(0, 0);
     }
     100% {
-      transform: translate(19px, 0);
+      transform: translate(30px, 0);
     }
   }
 
