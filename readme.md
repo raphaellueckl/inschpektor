@@ -32,6 +32,10 @@ IPXS9YLKJMODKUBHOXRHSUOMWYCBAKYGRCNLH9RAEP9NXRXXYPGBZBVQQWCMLNOHZQRTOGIRMTISGXAV
 
 I'm not poor and I have a job. But if you want to show some love, I always appreciate it. :)
 
+## Tips
+
+- If you get some permission errors in the console, you could either change the access-rights of your iri.config or start inschpektor with `sudo`.  
+
 ### Features/Improves on the roadmap
 
 - Add 'reset db' functionality
