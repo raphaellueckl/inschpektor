@@ -2,6 +2,9 @@
   <div>
     <Summary :neighbors="neighbors"/>
 
+    <NoContent v-if="!neighbors"></NoContent>
+    <!--<NoContent></NoContent>-->
+
     <div class="tile is-ancestor">
       <div class="tile is-vertical">
         <div class="tile">
@@ -39,12 +42,14 @@
   import {mapGetters} from 'vuex';
   import Neighbor from './Neighbor.vue';
   import Summary from './Summary.vue';
+  import NoContent from '../NoContent.vue';
 
   export default {
     name: 'Dashboard',
     components: {
+      NoContent,
+      Summary,
       Neighbor,
-      Summary
     },
     computed: {
       ...mapGetters(['neighbors'])
