@@ -1,11 +1,10 @@
 <template>
   <div>
-    <Summary :neighbors="neighbors"/>
-
     <NoContent v-if="!neighbors"></NoContent>
-    <!--<NoContent></NoContent>-->
 
-    <div class="tile is-ancestor">
+    <Summary v-if="neighbors" :neighbors="neighbors"/>
+
+    <div v-if="neighbors" class="tile is-ancestor">
       <div class="tile is-vertical">
         <div class="tile">
 
