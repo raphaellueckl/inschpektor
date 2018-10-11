@@ -18,18 +18,22 @@
       </div>
     </div>
 
-    <NeighborRow v-for="neighbor in neighbors" :neighbor="neighbor" :key="neighbor.address"/>
+    <NeighborRow v-if="neighbors" v-for="neighbor in neighbors" :neighbor="neighbor" :key="neighbor.address"/>
+
+    <NoContent v-if="!neighbors"></NoContent>
 
   </div>
 </template>
 
 <script>
   import {mapGetters} from 'vuex';
+  import NoContent from '../NoContent.vue';
   import NeighborRow from './NeighborRow';
 
   export default {
     name: 'NeighborTable',
     components: {
+      NoContent,
       NeighborRow
     },
     computed: {
