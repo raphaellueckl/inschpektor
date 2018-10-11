@@ -35,7 +35,6 @@ I'm not poor and I have a job. But if you want to show some love, I always appre
 ### Features/Improves on the roadmap
 
 - Add 'reset db' functionality
-- Notifiy the user when calls fail. For instance 'getNeighbors', because users will only see an empty app
 - If no node connection for once, it won't automatically get back into a healthy state
 - Unit tests
 - Mock data
