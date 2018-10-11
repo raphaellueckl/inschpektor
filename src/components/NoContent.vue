@@ -28,9 +28,9 @@
 
   .loading-animation div {
     position: absolute;
-    top: 27px;
-    width: 11px;
-    height: 11px;
+    top: 24px;
+    width: 13px;
+    height: 13px;
     border-radius: 50%;
     background: #000;
     animation-timing-function: cubic-bezier(0, 1, 1, 0);
