@@ -39,13 +39,12 @@ I'm not poor and I have a job. But if you want to show some love, I always appre
 ### Features/Improves on the roadmap
 
 - Add 'reset db' functionality
-- If no node connection for once, it won't automatically get back into a healthy state
 - Mark 'quality neighbors'
 - Unit tests
 - Mock data
 - Restart node when out of sync
 - Highlight static neighbors (compared to nelson ones)
-- Update dependencies to remove the --unsafe-perm form the installation command
+- Try to get rid of the --unsafe-perm flag
 - User authentication
 - User authorization
 - Notifications
@@ -55,22 +54,19 @@ I'm not poor and I have a job. But if you want to show some love, I always appre
 
 ### Bugs
 
-- If node is not reachable once, then it can't get back into a "healthy" state. A the prompt requesting another IP won't go away after following successful calls.
 - When you are entering a nickname for a node, it can vanish because the regular "getNeighbors"-call resets the list (including what the user already typed).
 
-### Small improves
-
-- Only give the option to write to iri config, if it was provided initially
-
 ### Supported
-✓ Https node support
-✓ View neighbors
-✓ Add / Remove neighbors
-✓ Write directly to iri config
-✓ NPM runnable app
-✓ Fetch info about hosted node
+- ✓ Https node support
+- ✓ View neighbors
+- ✓ Add / Remove neighbors
+- ✓ Write directly to iri config
+- ✓ NPM runnable app
+- ✓ Fetch info about hosted node
 
-## Developer infos
+-------
+
+## Developer Info
 
 ### Project setup
 ```
