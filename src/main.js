@@ -1,5 +1,6 @@
 import Vue from 'vue';
 import App from './App.vue';
+import './registerServiceWorker'
 import router from './router';
 import store from './store';
 
@@ -11,6 +12,8 @@ import {faWindowMaximize} from '@fortawesome/free-solid-svg-icons';
 import {faCheck} from '@fortawesome/free-solid-svg-icons';
 import {faExclamationTriangle} from '@fortawesome/free-solid-svg-icons';
 
+Vue.config.productionTip = false;
+
 library.add(faTrashAlt);
 library.add(faWindowMinimize);
 library.add(faWindowMaximize);
@@ -20,8 +23,6 @@ library.add(faExclamationTriangle);
 Vue.component('font-awesome-icon', FontAwesomeIcon);
 
 require('./assets/sass/main.scss');
-
-Vue.config.productionTip = false;
 
 new Vue({
   router,

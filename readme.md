@@ -40,9 +40,9 @@ I'm not poor and I have a job. But if you want to show some love, I always appre
 
 - Add 'reset db' functionality
 - If no node connection for once, it won't automatically get back into a healthy state
+- Mark 'quality neighbors'
 - Unit tests
 - Mock data
-- Mark 'quality neighbors'
 - Restart node when out of sync
 - Highlight static neighbors (compared to nelson ones)
 - Update dependencies to remove the --unsafe-perm form the installation command
@@ -69,3 +69,40 @@ I'm not poor and I have a job. But if you want to show some love, I always appre
 ✓ Write directly to iri config
 ✓ NPM runnable app
 ✓ Fetch info about hosted node
+
+## Developer infos
+
+### Project setup
+```
+npm install
+```
+
+#### Compiles and hot-reloads for development
+```
+npm run serve
+```
+
+#### Compiles and minifies for production
+```
+npm run build
+```
+
+#### Run your tests
+```
+npm run test
+```
+
+#### Lints and fixes files
+```
+npm run lint
+```
+
+#### Run your end-to-end tests
+```
+npm run test:e2e
+```
+
+#### Run your unit tests
+```
+npm run test:unit
+```
