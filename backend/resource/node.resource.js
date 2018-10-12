@@ -20,7 +20,7 @@ class NodeResource {
         res.json(response.data);
       })
       .catch(error => {
-        res.status(500).send('NODE_INFO_INANCCESSIBLE');
+        res.status(500).send('NODE_INACCESSIBLE');
       });
     });
 

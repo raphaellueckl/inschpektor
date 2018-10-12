@@ -87,6 +87,7 @@ class NeighborResource {
       })
       .catch(error => {
         console.log('failed to get neighbors', error.message);
+        res.status(500).send('NODE_INACCESSIBLE');
       });
     });
 

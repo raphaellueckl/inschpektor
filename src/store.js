@@ -62,7 +62,6 @@ const actions = {
     })
     .catch(error => console.log('Unsuccessful login attempt.', error.message));
   },
-
   logout({commit}) {
     return new Promise((resolve) => {
       localStorage.removeItem('token');
@@ -74,6 +73,7 @@ const actions = {
     axios('/api/node-info')
     .then(response => {
       commit('SET_NODE_INFO', response.data);
+      commit('SET_ERROR', null);
     })
     .catch(error => {
       commit('SET_NODE_INFO', null);
@@ -89,8 +89,13 @@ const actions = {
     });
   },
   fetchNeighbors({commit}) {
-    axios('/api/neighbors').then(response => {
+    axios('/api/neighbors')
+    .then(response => {
       commit('SET_NEIGHBORS', response.data);
+      commit('SET_ERROR', null);
+    })
+    .catch(error => {
+      commit('SET_ERROR', error.response.data);
     });
   },
   setHostNodeIp({dispatch, commit}, nodeSubmission) {
