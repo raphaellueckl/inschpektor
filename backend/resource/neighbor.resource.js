@@ -154,7 +154,6 @@ class NeighborResource {
 
   createResultNeighbor(neighbor, oldestEntry, nodeInfo) {
     const resultNeighbor = {
-      premium: true,  // If neighbor allows remote node-info query
       address: neighbor.address,
       iriVersion: nodeInfo ? nodeInfo.appVersion : null,
       isSynced: nodeInfo && NODE_RESOURCE.currentOwnNodeInfo && NODE_RESOURCE.currentOwnNodeInfo.latestMilestoneIndex ? nodeInfo.latestSolidSubtangleMilestoneIndex >= NODE_RESOURCE.currentOwnNodeInfo.latestMilestoneIndex - MAX_MILESTONES_BEHIND_BEFORE_UNSYNCED : null,
