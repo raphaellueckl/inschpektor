@@ -1,6 +1,6 @@
 <template>
   <article class="tile is-child notification" :class="{'is-danger' : !neighbor.isFriendlyNode || neighbor.isActive === false || neighbor.isSynced === false}">
-    <h1 class="title">{{neighbor.name ? neighbor.name : neighbor.address}}</h1>
+    <h1 class="title"><span v-if="neighbor.iriVersion">👑</span> {{neighbor.name ? neighbor.name : neighbor.address}}</h1>
     <div class="media-content">
       <div class="content">
         <p>
