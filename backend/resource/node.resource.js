@@ -9,6 +9,10 @@ const SALT = 11;
 
 class NodeResource {
 
+  constructor(props) {
+    this.currentOwnNodeInfo = undefined;
+  }
+
   init(app, db) {
     app.get(`${BASE_URL}/node-info`, (req, res) => {
       if (!IRI_SERVICE.iriIp) {

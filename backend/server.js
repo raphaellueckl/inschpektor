@@ -22,8 +22,6 @@ if (process.env.NODE_ENV === 'dev') {
   app.use(express.static(__dirname + '/../dist'));
 }
 
-let currentOwnNodeInfo = {};
-
 const db = new sqlite3.Database(__dirname + '/db');
 
 USER_RESOURCE.init(app, db);
@@ -114,7 +112,7 @@ async function theFetcher() {
 
       axios(IRI_SERVICE.createIriRequest('getNodeInfo'))
       .then(nodeInfoResponse => {
-        currentOwnNodeInfo = nodeInfoResponse.data;
+        NODE_RESOURCE.currentOwnNodeInfo = nodeInfoResponse.data;
       })
       .catch(error => console.log('Failed to fetch own node info.', error.message));
     }

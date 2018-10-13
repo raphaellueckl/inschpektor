@@ -1,6 +1,7 @@
 const IRI_SERVICE = require('../util/iri.util');
 const USER_RESOURCE = require('./user.resource');
 const AUTH_UTIL = require('../util/auth.util');
+const NODE_RESOURCE = require('./node.resource.js');
 const axios = require('axios');
 const neighborUsernames = new Map();
 const MAX_MILESTONES_BEHIND_BEFORE_UNSYNCED = 50;
@@ -155,8 +156,8 @@ class NeighborResource {
     const resultNeighbor = {
       premium: true,  // If neighbor allows remote node-info query
       address: neighbor.address,
-      iriVersion: nodeInfo ? nodeInfo.appVersion: null,
-      isSynced: nodeInfo ? nodeInfo.latestSolidSubtangleMilestoneIndex >= currentOwnNodeInfo.latestMilestoneIndex - MAX_MILESTONES_BEHIND_BEFORE_UNSYNCED : null,
+      iriVersion: nodeInfo ? nodeInfo.appVersion : null,
+      isSynced: nodeInfo && NODE_RESOURCE.currentOwnNodeInfo && NODE_RESOURCE.currentOwnNodeInfo.latestMilestoneIndex ? nodeInfo.latestSolidSubtangleMilestoneIndex >= NODE_RESOURCE.currentOwnNodeInfo.latestMilestoneIndex - MAX_MILESTONES_BEHIND_BEFORE_UNSYNCED : null,
       isActive: oldestEntry ? neighbor.numberOfNewTransactions > oldestEntry.numberOfNewTransactions : null,
       protocol: neighbor.connectionType,
       onlineTime: nodeInfo ? nodeInfo.time : null,
