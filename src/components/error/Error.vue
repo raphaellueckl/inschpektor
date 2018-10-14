@@ -46,7 +46,7 @@
     <nav v-if="code === 'NODE_NOT_SET'" class="level">
       <div class="level-item has-text-centered">
         <div class="field">
-          <label class="label">Path to iri config:</label>
+          <label class="label">Path to iri config (optional, but recommended):</label>
           <div class="control">
             <input v-model="iriFileLocation" class="input" type="text" placeholder="E.g. /home/user/iri.txt">
           </div>
