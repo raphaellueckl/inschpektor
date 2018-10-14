@@ -86,12 +86,13 @@ class NodeResource {
       });
     });
 
-    app.get(`${BASE_URL}/persisted-neighbors`, (req, res) => {
+    app.get(`${BASE_URL}/persisted-neighbors`, async (req, res) => {
       if (!AUTH_UTIL.isUserAuthenticated(USER_RESOURCE.loginToken, req)) {
         res.status(401).send();
         return;
       }
-      return IRI_SERVICE.readPersistedNeighbors();
+      const persistedNeighbors = await IRI_SERVICE.readPersistedNeighbors();
+      res.send(persistedNeighbors);
     });
   }
 
