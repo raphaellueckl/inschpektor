@@ -46,6 +46,6 @@
   }
 
   .is-premium {
-    background-color: rgba(255,215,0, 0.6);
+    background-color: hsl(141, 71%, 75%)
   }
 </style>
