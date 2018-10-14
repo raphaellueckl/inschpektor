@@ -90,6 +90,7 @@ const actions = {
       commit('SET_IRI_DETAILS', response.data);
     })
     .catch(error => {
+      console.log('Error fetching iri details.')
     });
   },
   fetchNeighbors({commit}) {
@@ -167,11 +168,13 @@ const actions = {
     .catch(error => console.log('Error adding nickname'));
   },
   fetchPersistedIriNeighbors({commit}) {
-    axios.get('/api/persisted-neighbors')
+    axios('/api/persisted-neighbors')
     .then(response => {
       commit('SET_PERSISTED_IRI_NEIGHBORS', response.data);
     })
-    .catch(error => console.log('Error fetching persisted iri neighbors'));
+    .catch(error => {
+      console.log('Error fetching persisted iri neighbors')
+    });
   },
   loadPeriodically({dispatch}) {
     dispatch('fetchNeighbors');

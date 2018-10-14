@@ -53,18 +53,20 @@ class IriUtil {
     }
   }
 
-  readPersistedNeighbors() {
-    if (fs.existsSync(this.iriFileLocation)) {
-      fs.readFile(this.iriFileLocation, 'utf-8', (err, data) => {
-        const searchTerm = 'NEIGHBORS = ';
-        const startIndex = data.indexOf(searchTerm) + searchTerm.length;
-        const fromStartOfStaticNeighbors = data.substring(startIndex);
-        const allNeighbors = fromStartOfStaticNeighbors.split('\n')[0].split(' ');
-        return allNeighbors;
-      });
-    } else {
-      return [];
-    }
+  async readPersistedNeighbors() {
+    return new Promise((resolve, reject) => {
+      if (fs.existsSync(this.iriFileLocation)) {
+        fs.readFile(this.iriFileLocation, 'utf-8', (err, data) => {
+          const searchTerm = 'NEIGHBORS = ';
+          const startIndex = data.indexOf(searchTerm) + searchTerm.length;
+          const fromStartOfStaticNeighbors = data.substring(startIndex);
+          const allNeighbors = fromStartOfStaticNeighbors.split('\n')[0].split(' ');
+          resolve(allNeighbors)
+        });
+      } else {
+        reject();
+      }
+    });
   }
 
 }
