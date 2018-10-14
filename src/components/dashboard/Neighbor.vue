@@ -3,6 +3,7 @@
     <h1 class="title"><span v-if="neighbor.iriVersion">👑</span> {{neighbor.name ? neighbor.name : neighbor.address}}</h1>
     <div class="media-content">
       <div class="content">
+        {{persistedNeighbors}}
         <p>
           <strong>Protocol:</strong><span class="align__right">{{neighbor.protocol === null ? 'N/A' : neighbor.protocol.toUpperCase()}}</span>
         </p>
@@ -26,9 +27,14 @@
 </template>
 
 <script>
+  import {mapGetters} from 'vuex';
+
   export default {
     name: 'Neighbor',
-    props: ['neighbor']
+    props: ['neighbor'],
+    computed: {
+      ...mapGetters(['persistedNeighbors'])
+    }
   };
 </script>
 
