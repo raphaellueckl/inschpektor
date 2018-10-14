@@ -1,9 +1,8 @@
 <template>
   <article class="tile is-child notification" :class="{'is-danger' : !neighbor.isFriendlyNode || neighbor.isActive === false || neighbor.isSynced === false, 'is-premium': neighbor.iriVersion}">
-    <h1 class="title"><span v-if="neighbor.iriVersion">👑</span> {{neighbor.name ? neighbor.name : neighbor.address}}</h1>
+    <h1 class="title"><span v-if="neighbor.iriVersion">👑</span><span v-if="isUnpersistedNeighbor">👽</span> {{neighbor.name ? neighbor.name : neighbor.address}}</h1>
     <div class="media-content">
       <div class="content">
-        {{persistedNeighbors}}
         <p>
           <strong>Protocol:</strong><span class="align__right">{{neighbor.protocol === null ? 'N/A' : neighbor.protocol.toUpperCase()}}</span>
         </p>
@@ -33,7 +32,10 @@
     name: 'Neighbor',
     props: ['neighbor'],
     computed: {
-      ...mapGetters(['persistedNeighbors'])
+      ...mapGetters(['persistedNeighbors']),
+      isUnpersistedNeighbor: function () {
+        return this.$store.getters.persistedNeighbors && !this.$store.getters.persistedNeighbors.includes(`${this.neighbor.protocol}://${this.neighbor.address}`);
+      }
     }
   };
 </script>
