@@ -32,7 +32,7 @@ class NeighborResource {
 
   init(app, database) {
     db = database;
-    app.post('/api/neighbor/nick', (req, res) => {
+    app.post(`${BASE_URL}/neighbor/nick`, (req, res) => {
       if (!AUTH_UTIL.isUserAuthenticated(USER_RESOURCE.loginToken, req)) {
         res.status(401).send();
         return;
@@ -45,7 +45,7 @@ class NeighborResource {
       res.status(200).send();
     });
 
-    app.get('/api/neighbors', (req, res) => {
+    app.get(`${BASE_URL}/neighbors`, (req, res) => {
       const resultNeighbors = [];
 
       axios(IRI_SERVICE.createIriRequest('getNeighbors'))
@@ -88,7 +88,11 @@ class NeighborResource {
       })
       .catch(error => {
         console.log('failed to get neighbors', error.message);
-        res.status(500).send('NODE_INACCESSIBLE');
+        if (!IRI_SERVICE.iriIp) {
+          res.status(404).send('NODE_NOT_SET');
+        } else {
+          res.status(500).send('NODE_INACCESSIBLE');
+        }
       });
     });
 

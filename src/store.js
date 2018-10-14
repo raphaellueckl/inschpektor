@@ -21,6 +21,7 @@ const state = {
   nodeError: null,
   authenticated: false,
   password: null,
+  persistedNeighbors: null
 };
 
 const mutations = {
@@ -48,6 +49,9 @@ const mutations = {
   },
   USER_AUTHENTICATED(state, authenticated) {
     state.authenticated = authenticated;
+  },
+  SET_PERSISTED_IRI_NEIGHBORS(state, persistedNeighbors) {
+    state.persistedNeighbors = persistedNeighbors;
   },
 };
 
@@ -162,6 +166,13 @@ const actions = {
     })
     .catch(error => console.log('Error adding nickname'));
   },
+  fetchPersistedIriNeighbors({commit}) {
+    axios.get('/api/persisted-neighbors')
+    .then(response => {
+      commit('SET_PERSISTED_IRI_NEIGHBORS', response.data);
+    })
+    .catch(error => console.log('Error fetching persisted iri neighbors'));
+  },
   loadPeriodically({dispatch}) {
     dispatch('fetchNeighbors');
     dispatch('fetchNodeInfo');
@@ -177,7 +188,8 @@ const getters = {
   hostNode: state => state.hostNode,
   neighbors: state => state.neighbors,
   nodeError: state => state.nodeError,
-  authenticated: state => state.authenticated
+  authenticated: state => state.authenticated,
+  persistedNeighbors: state => state.persistedNeighbors
 };
 
 const storeModule = {

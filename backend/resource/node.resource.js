@@ -11,6 +11,7 @@ class NodeResource {
 
   constructor(props) {
     this.currentOwnNodeInfo = undefined;
+    this.persistedNeighbors = undefined;
   }
 
   init(app, db) {
@@ -24,7 +25,11 @@ class NodeResource {
         res.json(response.data);
       })
       .catch(error => {
-        res.status(500).send('NODE_INACCESSIBLE');
+        if (!IRI_SERVICE.iriIp) {
+          res.status(500).send('NODE_NOT_SET');
+        } else {
+          res.status(500).send('NODE_INACCESSIBLE');
+        }
       });
     });
 
@@ -79,6 +84,14 @@ class NodeResource {
         port: IRI_SERVICE.iriPort,
         iriFileLocation: IRI_SERVICE.iriFileLocation
       });
+    });
+
+    app.get(`${BASE_URL}/persisted-neighbors`, (req, res) => {
+      if (!AUTH_UTIL.isUserAuthenticated(USER_RESOURCE.loginToken, req)) {
+        res.status(401).send();
+        return;
+      }
+      return IRI_SERVICE.readPersistedNeighbors();
     });
   }
 

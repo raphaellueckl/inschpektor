@@ -52,6 +52,9 @@
     },
     computed: {
       ...mapGetters(['neighbors'])
+    },
+    created() {
+      this.$store.dispatch('fetchPersistedIriNeighbors');
     }
   };
 </script>
