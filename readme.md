@@ -18,7 +18,7 @@ Run `sudo npm i -g inschpektor --unsafe-perm`
 
 Always run this command: `inschpektor`.
 
-As soon as it is running, you find it in your browser @ <http://localhost:8732>
+As soon as it is running, you find it in your browser @ <http://localhost:8732> (only Chrome and Firefox due to very leading edge features. If you sucessfully run it on other browsers, please hit me up on telegram).
 
 ### Update
 
