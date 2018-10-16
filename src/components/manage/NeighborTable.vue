@@ -1,5 +1,5 @@
 <template>
-  <div>
+  <div class="bottom-margin">
     <div class="columns header">
       <div class="column is-one-fifth">
         Username
@@ -49,5 +49,9 @@
     border-radius: 4px;
     margin-top: 4px;
     font-weight: bold;
+  }
+
+  .bottom-margin {
+    margin-bottom: 25px;
   }
 </style>

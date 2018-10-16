@@ -176,6 +176,14 @@ const actions = {
       console.log('Error fetching persisted iri neighbors')
     });
   },
+  resetDatabase({commit, dispatch}) {
+    return axios.post('/api/reset-database')
+    .then(response => {
+      commit('USER_AUTHENTICATED', false);
+      dispatch('fetchNodeInfo');
+    })
+    .catch(error => console.log('Unsuccessful reset-database attempt.', error.message));
+  },
   loadPeriodically({dispatch}) {
     dispatch('fetchNeighbors');
     dispatch('fetchNodeInfo');
