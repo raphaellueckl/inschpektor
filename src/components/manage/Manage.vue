@@ -2,16 +2,19 @@
   <div>
     <AddNeighbor/>
     <NeighborTable/>
+    <DangerZone/>
   </div>
 </template>
 
 <script>
   import AddNeighbor from './AddNeighbor';
   import NeighborTable from './NeighborTable';
+  import DangerZone from './DangerZone';
 
   export default {
     name: 'Manage',
     components: {
+      DangerZone,
       AddNeighbor,
       NeighborTable
     }
