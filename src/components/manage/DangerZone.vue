@@ -3,9 +3,9 @@
     <div class="tile is-vertical">
       <div class="tile">
         <div class="tile is-parent is-vertical">
-          <article class="tile is-child notification is-danger">
+          <article class="tile is-child notification is-dark">
             <h1 class="title">Danger Zone</h1>
-            <a class="button is-warning" @click="resetDatabase">Reset inschpektor</a>
+            <a class="button is-danger" @click="resetDatabase">Reset inschpektor</a>
           </article>
         </div>
 
