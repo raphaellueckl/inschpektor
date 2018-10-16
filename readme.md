@@ -12,8 +12,6 @@ Check https://nodejs.org/en/download/ and download & install the version for you
 
 Run `sudo npm i -g inschpektor --unsafe-perm`
 
-(Keep in mind that this is a very early stage of development and the boot process will be subject to change.)
-
 ### Running after installation
 
 Always run this command: `inschpektor`.
