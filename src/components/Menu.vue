@@ -32,13 +32,13 @@
       </div>
     </div>
     <div class="navbar-end">
-        <span v-if="nodeInfo" class="navbar-item __online"
-              :class="{__offline: nodeInfo.latestSolidSubtangleMilestoneIndex < nodeInfo.latestMilestoneIndex - 1}">
-            {{nodeInfo.latestSolidSubtangleMilestoneIndex}} / {{nodeInfo.latestMilestoneIndex}}
-        </span>
-      <span v-else>
+      <span v-if="nodeInfo" class="navbar-item __online"
+            :class="{__offline: nodeInfo.latestSolidSubtangleMilestoneIndex < nodeInfo.latestMilestoneIndex - 1}">
+          {{nodeInfo.latestSolidSubtangleMilestoneIndex}} / {{nodeInfo.latestMilestoneIndex}}
+      </span>
+      <span v-else class="navbar-item __offline">
           Node seems offline!
-        </span>
+      </span>
     </div>
   </nav>
 </template>
