@@ -39,7 +39,7 @@ I'm not poor and I have a job. But if you want to show some love, I always appre
 ### Features/Improves on the roadmap
 
 - Add 'reset db' functionality
-- Mark 'quality neighbors'
+- Restart node
 - Unit tests
 - Mock data
 - Restart node when out of sync
