@@ -1,15 +1,16 @@
 #!/usr/bin/env node
-
-const IRI_SERVICE = require('./util/iri.util.js');
-const USER_RESOURCE = require('./resource/user.resource.js');
-const NODE_RESOURCE = require('./resource/node.resource.js');
-const NEIGHBOR_RESOURCE = require('./resource/neighbor.resource.js');
+const fs = require('fs');
 
 const express = require('express');
 const axios = require('axios');
 const history = require('connect-history-api-fallback');
 const sqlite3 = require('sqlite3').verbose();
 const bcrypt = require('bcrypt');
+
+const IRI_SERVICE = require('./util/iri.util.js');
+const USER_RESOURCE = require('./resource/user.resource.js');
+const NODE_RESOURCE = require('./resource/node.resource.js');
+const NEIGHBOR_RESOURCE = require('./resource/neighbor.resource.js');
 
 const app = express();
 app.set('port', (process.env.PORT || 8732));
@@ -22,13 +23,13 @@ if (process.env.NODE_ENV === 'dev') {
   app.use(express.static(__dirname + '/../dist'));
 }
 
-const db = new sqlite3.Database(__dirname + '/db');
+let db = new sqlite3.Database(__dirname + '/db');
 
 USER_RESOURCE.init(app, db);
 NODE_RESOURCE.init(app, db);
 NEIGHBOR_RESOURCE.init(app, db);
 
-(function createTables() {
+const createTables = () => {
   db.serialize(() => {
     db.run(
       'CREATE TABLE IF NOT EXISTS neighbor (' +
@@ -62,9 +63,11 @@ NEIGHBOR_RESOURCE.init(app, db);
       )`
     );
   });
-})();
+};
 
-(function initializeState() {
+createTables();
+
+const initializeState = () => {
   const sql = 'select * from host_node';
   db.get(sql, [], (err, row) => {
     IRI_SERVICE.protocol = row ? row.protocol : null;
@@ -80,7 +83,44 @@ NEIGHBOR_RESOURCE.init(app, db);
       NEIGHBOR_RESOURCE.intitializeNeighborUsernname(r.address, r.name ? r.name : null);
     });
   });
-})();
+};
+
+initializeState();
+
+const dropAllTables = () => {
+  return new Promise((resolve, reject) => {
+    db.run('drop table IF EXISTS neighbor', (err) => {
+      if (err) {
+        console.log('Error deleting neighbor table', err.message);
+        reject();
+        return;
+      }
+      db.run('drop table IF EXISTS host_node', (err) => {
+        if (err) {
+          console.log('Error deleting host_node table', err.message);
+          reject();
+          return;
+        }
+        db.run('drop table IF EXISTS neighbor_data', (err) => {
+          if (err) {
+            console.log('Error deleting host_node table', err.message);
+            reject();
+            return;
+          }
+          resolve();
+        });
+      });
+    });
+  });
+};
+
+app.post(`/api/reset-database`, async (req, res) => {
+  await dropAllTables();
+  db = new sqlite3.Database(__dirname + '/db');
+  createTables();
+  initializeState();
+  res.status(200).send();
+});
 
 app.listen(app.get('port'), () => {
   console.log(`Find the server at: http://localhost:${app.get('port')}/`);
