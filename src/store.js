@@ -188,7 +188,14 @@ const actions = {
       commit('SET_ERROR', 'NODE_NOT_SET');
       commit('DELETE_STATE');
     })
-    .catch(error => console.log('Unsuccessful reset-database attempt.', error.message));
+    .catch(error => console.log('Unsuccessful reset-database attempt.'));
+  },
+  restartNode({commit, dispatch}) {
+    return axios.post('/api/restart-node')
+    .then(response => {
+      console.log('restarted')
+    })
+    .catch(error => console.log('Unsuccessful restart-node attempt.'));
   },
   loadPeriodically({dispatch}) {
     dispatch('fetchNeighbors');

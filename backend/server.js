@@ -8,6 +8,7 @@ const sqlite3 = require('sqlite3').verbose();
 const bcrypt = require('bcrypt');
 
 const IRI_SERVICE = require('./util/iri.util.js');
+const AUTH_UTIL = require('./util/auth.util.js');
 const USER_RESOURCE = require('./resource/user.resource.js');
 const NODE_RESOURCE = require('./resource/node.resource.js');
 const NEIGHBOR_RESOURCE = require('./resource/neighbor.resource.js');
@@ -115,6 +116,10 @@ const dropAllTables = () => {
 };
 
 app.post(`/api/reset-database`, async (req, res) => {
+  if (!AUTH_UTIL.isUserAuthenticated(USER_RESOURCE.loginToken, req)) {
+    res.status(401).send();
+    return;
+  }
   await dropAllTables();
   db = new sqlite3.Database(__dirname + '/db');
   createTables();

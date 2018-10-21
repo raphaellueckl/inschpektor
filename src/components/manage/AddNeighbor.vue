@@ -43,7 +43,7 @@
 
                   <div class="field is-grouped">
                     <div class="control">
-                      <button class="button is-link" :disabled="ipAddress && !isCorrectAddress"
+                      <button class="button is-link is-rounded" :disabled="ipAddress && !isCorrectAddress"
                               @click="addNeighbor({name, address: ipAddress, writeToIriConfig: writeToIriConfig && !!iriFileLocation}); clearFields()">Submit
                       </button>
                     </div>

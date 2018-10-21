@@ -36,8 +36,8 @@ I'm not poor and I have a job. But if you want to show some love, I always appre
 
 ### Features/Improves on the roadmap
 
-- Add 'reset db' functionality
 - Restart node
+- Export database to not always re-setup after update
 - Unit tests
 - Mock data
 - Restart node when out of sync
