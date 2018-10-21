@@ -53,6 +53,11 @@ const mutations = {
   SET_PERSISTED_IRI_NEIGHBORS(state, persistedNeighbors) {
     state.persistedNeighbors = persistedNeighbors;
   },
+  DELETE_STATE(state) {
+    Object.entries(state).forEach(([key, value]) =>
+      state[key] = null
+    );
+  }
 };
 
 const actions = {
@@ -180,7 +185,8 @@ const actions = {
     return axios.post('/api/reset-database')
     .then(response => {
       commit('USER_AUTHENTICATED', false);
-      dispatch('fetchNodeInfo');
+      commit('SET_ERROR', 'NODE_NOT_SET');
+      commit('DELETE_STATE');
     })
     .catch(error => console.log('Unsuccessful reset-database attempt.', error.message));
   },
