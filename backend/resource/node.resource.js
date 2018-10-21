@@ -1,3 +1,4 @@
+const exec = require("child_process").exec;
 const bcrypt = require('bcrypt');
 const axios = require('axios');
 const IRI_SERVICE = require('../util/iri.util');
@@ -93,6 +94,24 @@ class NodeResource {
       }
       const persistedNeighbors = await IRI_SERVICE.readPersistedNeighbors();
       res.send(persistedNeighbors);
+    });
+
+    app.post(`${BASE_URL}/restart-node`, async (req, res) => {
+      if (!AUTH_UTIL.isUserAuthenticated(USER_RESOURCE.loginToken, req)) {
+        res.status(401).send();
+        return;
+      }
+      exec("ls", (error, stdout, stderr) => {
+        console.log('out', stdout)
+        console.log('stderror', stderr)
+        console.log('error', error)
+        if (error || stderr) {
+          res.status(500).send();
+          return;
+        }
+        res.status(200).send();
+      })
+
     });
   }
 
