@@ -53,7 +53,8 @@ const createTables = () => {
         port TEXT,
         hashed_pw TEXT,
         iri_path TEXT,
-        login_token TEXT
+        login_token TEXT,
+        restart_node_command TEXT
       )`
     );
 
@@ -77,6 +78,7 @@ const initializeState = () => {
     USER_RESOURCE.hashedPw = row ? row.hashed_pw : null;
     USER_RESOURCE.loginToken = row ? row.login_token : null;
     IRI_SERVICE.iriFileLocation = row ? row.iri_path : null;
+    NODE_RESOURCE.restartNodeCommand = row ? row.restart_node_command : null;
   });
 
   db.all('select * from neighbor_data', [], (err, rows) => {

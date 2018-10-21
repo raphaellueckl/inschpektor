@@ -1,4 +1,4 @@
-const exec = require("child_process").exec;
+const exec = require('child_process').exec;
 const bcrypt = require('bcrypt');
 const axios = require('axios');
 const IRI_SERVICE = require('../util/iri.util');
@@ -13,6 +13,7 @@ class NodeResource {
   constructor(props) {
     this.currentOwnNodeInfo = undefined;
     this.persistedNeighbors = undefined;
+    this.restartNodeCommand = undefined;
   }
 
   init(app, db) {
@@ -40,6 +41,7 @@ class NodeResource {
       const port = req.body.port;
       const password = req.body.password;
       const iriFileLocation = req.body.iriPath;
+      this.restartNodeCommand = req.body.restartNodeCommand;
 
       if (!newIriIp || !port) {
         res.status(404).send();
@@ -55,8 +57,8 @@ class NodeResource {
         IRI_SERVICE.iriFileLocation = iriFileLocation;
         USER_RESOURCE.loginToken = new Date().toString().split('').reverse().join('');
 
-        const updateHostIp = db.prepare('REPLACE INTO host_node (id, protocol, ip, port, hashed_pw, iri_path, login_token) VALUES(?, ?, ?, ?, ?, ?, ?)');
-        updateHostIp.run(0, IRI_SERVICE.protocol, IRI_SERVICE.iriIp, IRI_SERVICE.iriPort, USER_RESOURCE.hashedPw, IRI_SERVICE.iriFileLocation, USER_RESOURCE.loginToken);
+        const updateHostIp = db.prepare('REPLACE INTO host_node (id, protocol, ip, port, hashed_pw, iri_path, login_token, restart_node_command) VALUES(?, ?, ?, ?, ?, ?, ?, ?)');
+        updateHostIp.run(0, IRI_SERVICE.protocol, IRI_SERVICE.iriIp, IRI_SERVICE.iriPort, USER_RESOURCE.hashedPw, IRI_SERVICE.iriFileLocation, USER_RESOURCE.loginToken, this.restartNodeCommand);
 
         res.json({
           token: USER_RESOURCE.loginToken
@@ -101,10 +103,7 @@ class NodeResource {
         res.status(401).send();
         return;
       }
-      exec("ls", (error, stdout, stderr) => {
-        console.log('out', stdout)
-        console.log('stderror', stderr)
-        console.log('error', error)
+      exec(this.restartNodeCommand, (error, stdout, stderr) => {
         if (error || stderr) {
           res.status(500).send();
           return;

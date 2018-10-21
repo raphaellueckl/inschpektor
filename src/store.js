@@ -121,7 +121,8 @@ const actions = {
       nodeIp,
       port,
       password: nodeSubmission.password,
-      iriPath: nodeSubmission.iriFileLocation
+      iriPath: nodeSubmission.iriFileLocation,
+      restartNodeCommand: nodeSubmission.restartNodeCommand
     })
     .then(response => {
       iriIp = nodeIp;
