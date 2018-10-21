@@ -53,13 +53,23 @@
         </div>
       </div>
     </nav>
+    <nav v-if="code === 'NODE_NOT_SET'" class="level">
+      <div class="level-item has-text-centered">
+        <div class="field">
+          <label class="label">Command to restart node (optional):</label>
+          <div class="control">
+            <input v-model="restartNodeCommand" class="input" type="text" placeholder="E.g. systemctl restart iota">
+          </div>
+        </div>
+      </div>
+    </nav>
 
     <nav class="level">
       <div class="level-item has-text-centered">
         <div class="control">
           <button class="button is-link"
                   :class="{'is-loading': submitted}"
-                  @click="setHostNodeIp({isHttps, nodeIp, password, iriFileLocation}); submitted = true"
+                  @click="setHostNodeIp({isHttps, nodeIp, password, iriFileLocation, restartNodeCommand}); submitted = true"
                   :disabled="code === 'NODE_NOT_SET' ? !password || !nodeIp : !nodeIp">
             Submit
           </button>
@@ -83,6 +93,7 @@
         nodeIp: undefined,
         password: undefined,
         iriFileLocation: undefined,
+        restartNodeCommand: undefined,
         submitted: false
       };
     },
