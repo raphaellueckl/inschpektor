@@ -1,5 +1,4 @@
 <template>
-
   <div class="tile is-ancestor">
     <div class="tile is-vertical">
       <div class="tile">
