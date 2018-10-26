@@ -2,6 +2,10 @@
   <div>
     <img src="../../assets/logo.png">
     <p>
+      <strong>Version:</strong> {{version}}
+    </p>
+    <br>
+    <p>
       This is an open source app, that can be found @ <a href="https://github.com/codepleb/inschpektor">Github</a>.
     </p>
     <p>
@@ -34,6 +38,11 @@
 
   export default {
     name: 'About',
+    data: () =>{
+      return {
+        version: VERSION
+      }
+    },
     components: {
       Donation
     }

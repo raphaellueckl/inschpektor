@@ -1,3 +1,5 @@
+var webpack = require('webpack');
+
 module.exports = {
   devServer: {
     proxy: {
@@ -9,5 +11,12 @@ module.exports = {
         }
       }
     }
+  },
+  configureWebpack: {
+    plugins: [
+      new webpack.DefinePlugin({
+        VERSION: JSON.stringify(require("./package.json").version)
+      })
+    ]
   }
-}
+};
