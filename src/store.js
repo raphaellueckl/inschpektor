@@ -194,7 +194,6 @@ const actions = {
   restartNode({commit, dispatch}) {
     return axios.post('/api/restart-node')
     .then(response => {
-      console.log('restarted')
     })
     .catch(error => console.log('Unsuccessful restart-node attempt.'));
   },

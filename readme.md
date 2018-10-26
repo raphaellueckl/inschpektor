@@ -33,15 +33,13 @@ I'm not poor and I have a job. But if you want to show some love, I always appre
 ## Tips
 
 - If you get some permission errors in the console, you could either change the access-rights of your iri.config or start inschpektor with `sudo`.  
-
+- If you want to increase the performance, serve inschpektor over HTTPS. This way, the service worker will get enabled and be able to put a lot of calls and the site skeleton into the cache.
 ### Features/Improves on the roadmap
 
 - Export database to not always re-setup after update
 - Support for multiple nodes
 - Unit tests
 - Mock data
-- Restart node when out of sync
-- Highlight static neighbors (compared to nelson ones)
 - Try to get rid of the --unsafe-perm flag
 - User authentication
 - User authorization
