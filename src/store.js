@@ -192,7 +192,7 @@ const actions = {
       console.log('Error fetching persisted iri neighbors');
     });
   },
-  resetDatabase({commit, dispatch}) {
+  resetDatabase({commit}) {
     return axios.post('/api/reset-database')
     .then(response => {
       commit('USER_AUTHENTICATED', false);
@@ -201,7 +201,7 @@ const actions = {
     })
     .catch(error => console.log('Unsuccessful reset-database attempt.'));
   },
-  restartNode({commit, dispatch}) {
+  restartNode({commit}) {
     return axios.post('/api/restart-node')
     .then(response => {
     })
@@ -210,7 +210,10 @@ const actions = {
   loadPeriodically({dispatch}) {
     dispatch('fetchNeighbors');
     dispatch('fetchNodeInfo');
-  }
+  },
+  saveDatabase({commit}) {
+
+  },
 };
 
 const getters = {
