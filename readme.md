@@ -6,7 +6,7 @@ The app isn't officially released yet, so I don't write a big readme here.
 
 ### Features
 
-For the features, head over to my medium article: https://medium.com/@codepleb4/inschpektor-the-new-peer-manager-for-your-node-ae4f5b6283d9
+For the features, head over to my medium article: <coming soon>
 
 ### Installation
 
