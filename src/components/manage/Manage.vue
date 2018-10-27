@@ -2,6 +2,7 @@
   <div>
     <AddNeighbor/>
     <NeighborTable/>
+    <DatabaseSync/>
     <DangerZone/>
   </div>
 </template>
@@ -10,13 +11,15 @@
   import AddNeighbor from './AddNeighbor';
   import NeighborTable from './NeighborTable';
   import DangerZone from './DangerZone';
+  import DatabaseSync from './DatabaseSync';
 
   export default {
     name: 'Manage',
     components: {
       DangerZone,
       AddNeighbor,
-      NeighborTable
+      NeighborTable,
+      DatabaseSync
     }
   };
 </script>
