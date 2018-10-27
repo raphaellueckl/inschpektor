@@ -23,7 +23,7 @@
     <h3 class="title is-3">Donations</h3>
     <p>If you like this app and you want to support me, use the following IOTA address:</p>
 
-    <Donation address="IPXS9YLKJMODKUBHOXRHSUOMWYCBAKYGRCNLH9RAEP9NXRXXYPGBZBVQQWCMLNOHZQRTOGIRMTISGXAVAGASBFLAUB" class="asd"/>
+    <Donation address="IPXS9YLKJMODKUBHOXRHSUOMWYCBAKYGRCNLH9RAEP9NXRXXYPGBZBVQQWCMLNOHZQRTOGIRMTISGXAVAGASBFLAUB"/>
 
     <br>
     <p>
