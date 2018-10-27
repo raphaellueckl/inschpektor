@@ -4,6 +4,10 @@ This is a vuejs app that helps you managing your IOTA node neighbors.
 
 The app isn't officially released yet, so I don't write a big readme here.
 
+### Features
+
+For the features, head over to my medium article: https://medium.com/@codepleb4/inschpektor-the-new-peer-manager-for-your-node-ae4f5b6283d9
+
 ### Installation
 
 You need a recent version of node to successfully run this app (10.8+):
@@ -30,9 +34,9 @@ IPXS9YLKJMODKUBHOXRHSUOMWYCBAKYGRCNLH9RAEP9NXRXXYPGBZBVQQWCMLNOHZQRTOGIRMTISGXAV
 
 I'm not poor and I have a job. But if you want to show some love, I always appreciate it. :)
 
-## Tips
+## Tips & Help
 
-- If you get some permission errors in the console, you could either change the access-rights of your iri.config or start inschpektor with `sudo`.  
+- Permission errors: When you get permission errors on the console, it might be that your iota.ini file has wrong access rights or that your node runs as a service and only the root user can change it without a password prompt. If you want to restart your node over inschpektor, I advise you to use your root user to start inschpektor (type `sudo -s` into the console, pass your password and type `inschpektor` afterwards to start it as root user). Running inschpektor as a normal user is also possible, but depending on your system configuration, without the extra features like writing neighbors directly to the iri file or restarting the node. This is risky and you should never run any application as root user, just as a general remark! This is the easy way out and should be your last option.
 - If you want to increase the performance, serve inschpektor over HTTPS. This way, the service worker will get enabled and be able to put a lot of calls and the site skeleton into the cache.
 
 ### Features/Improves on the roadmap
@@ -49,15 +53,7 @@ I'm not poor and I have a job. But if you want to show some love, I always appre
 
 ### Bugs
 
-- When you are entering a nickname for a node, it can vanish because the regular "getNeighbors"-call resets the list (including what the user already typed).
-
-### Supported
-- ✓ Https node support
-- ✓ View neighbors
-- ✓ Add / Remove neighbors
-- ✓ Write directly to iri config
-- ✓ NPM runnable app
-- ✓ Fetch info about hosted node
+- When you are entering a nickname for a node, it can vanish because the regular "getNeighbors"-call resets the list (including what you already typed).
 
 -------
 
