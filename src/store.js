@@ -7,6 +7,16 @@ import axios from 'axios';
 
 axios.defaults.headers.common['Authorization'] = localStorage.getItem('token');
 
+axios.interceptors.response.use(function (response) {
+  return response;
+}, function (error) {
+  if (401 === error.response.status) {
+    state.authenticated = false;
+  } else {
+    return Promise.reject(error);
+  }
+});
+
 let iriIp = null;
 let iriPort = null;
 
@@ -95,7 +105,7 @@ const actions = {
       commit('SET_IRI_DETAILS', response.data);
     })
     .catch(error => {
-      console.log('Error fetching iri details.')
+      console.log('Error fetching iri details.');
     });
   },
   fetchNeighbors({commit}) {
@@ -179,7 +189,7 @@ const actions = {
       commit('SET_PERSISTED_IRI_NEIGHBORS', response.data);
     })
     .catch(error => {
-      console.log('Error fetching persisted iri neighbors')
+      console.log('Error fetching persisted iri neighbors');
     });
   },
   resetDatabase({commit, dispatch}) {
