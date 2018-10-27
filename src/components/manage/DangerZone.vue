@@ -5,10 +5,8 @@
         <div class="tile is-parent is-vertical">
           <article class="tile is-child notification is-dark">
             <h1 class="title">Danger Zone</h1>
-            <div class="margin-container">
-              <a class="button is-danger is-rounded" @click="restartNode">Restart node</a>
-              <a class="button is-danger is-rounded" @click="resetDatabase">Reset inschpektor</a>
-            </div>
+            <a class="button is-danger is-rounded" @click="restartNode">Restart node</a>
+            <a class="button is-danger is-rounded" @click="resetDatabase">Reset inschpektor</a>
           </article>
         </div>
       </div>

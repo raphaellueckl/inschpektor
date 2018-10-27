@@ -11,6 +11,8 @@ import {faWindowMinimize} from '@fortawesome/free-solid-svg-icons';
 import {faWindowMaximize} from '@fortawesome/free-solid-svg-icons';
 import {faCheck} from '@fortawesome/free-solid-svg-icons';
 import {faExclamationTriangle} from '@fortawesome/free-solid-svg-icons';
+import {faUpload} from '@fortawesome/free-solid-svg-icons';
+import {faDownload} from '@fortawesome/free-solid-svg-icons';
 
 Vue.config.productionTip = false;
 
@@ -19,6 +21,8 @@ library.add(faWindowMinimize);
 library.add(faWindowMaximize);
 library.add(faCheck);
 library.add(faExclamationTriangle);
+library.add(faUpload);
+library.add(faDownload);
 
 Vue.component('font-awesome-icon', FontAwesomeIcon);
 
