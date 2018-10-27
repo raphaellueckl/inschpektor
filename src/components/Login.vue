@@ -3,7 +3,7 @@
     <div class="container">
       <h1 class="title">Login</h1>
       <h2 class="subtitle">
-        To manage your neighbors, you need to login first.
+        To manage your neighbors or view the state of your node, you need to login first.
       </h2>
     </div>
 
