@@ -22,7 +22,7 @@
                   </label>
 
                   <label class="file-label">
-                    <input class="file-input" type="file" name="resume" ref="savePath" @change="saveDatabase">
+                    <input class="file-input" type="file" name="resume" @change="saveDatabase">
                     <span class="file-cta">
                       <span class="file-icon">
                         <font-awesome-icon icon="download"/>
@@ -50,13 +50,6 @@
     name: 'DatabaseSync',
     methods: {
       saveDatabase() {
-        const a = window.URL.createObjectURL(this.$refs.savePath.files[0]);
-        console.log(a);
-        var reader = new FileReader();
-        console.log(reader.readAsDataURL(a));
-        // fetch(this.$refs.savePath.files[0])
-        // .then(response => response.json())
-        // .then(jsonResponse => console.log(jsonResponse));
         this.$store.dispatch('saveDatabase');
       },
       loadDatabase() {
