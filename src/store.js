@@ -212,6 +212,22 @@ const actions = {
     dispatch('fetchNodeInfo');
   },
   saveDatabase({commit}) {
+    const data = {test: 2};
+    const c = JSON.stringify(data);
+    const blob = new Blob([c], {type: 'text/json'});
+    const fileName = 'inschpektor-backup.json';
+
+    const a = document.createElement('a'),
+    url = URL.createObjectURL(blob);
+    a.href = url;
+    a.download = fileName;
+    document.body.appendChild(a);
+    a.click();
+
+    setTimeout(function () {
+      document.body.removeChild(a);
+      window.URL.revokeObjectURL(url);
+    }, 0);
 
   },
   loadDatabase({commit}, neighborNicknames) {
