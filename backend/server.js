@@ -8,6 +8,7 @@ const sqlite3 = require('sqlite3').verbose();
 const bcrypt = require('bcrypt');
 
 const IRI_SERVICE = require('./util/iri.util.js');
+const DB_UTIL = require('./util/db.util.js');
 const AUTH_UTIL = require('./util/auth.util.js');
 const USER_RESOURCE = require('./resource/user.resource.js');
 const NODE_RESOURCE = require('./resource/node.resource.js');
@@ -30,102 +31,18 @@ USER_RESOURCE.init(app, db);
 NODE_RESOURCE.init(app, db);
 NEIGHBOR_RESOURCE.init(app, db);
 
-const createTables = () => {
-  db.serialize(() => {
-    db.run(
-      'CREATE TABLE IF NOT EXISTS neighbor (' +
-      'timestamp DATETIME DEFAULT CURRENT_TIMESTAMP,' +
-      'address TEXT,' +
-      'numberOfAllTransactions INTEGER,' +
-      'numberOfRandomTransactionRequests INTEGER,' +
-      'numberOfNewTransactions INTEGER,' +
-      'numberOfInvalidTransactions INTEGER,' +
-      'numberOfSentTransactions INTEGER,' +
-      'connectionType TEXT' +
-      ')'
-    );
-
-    db.run(
-        `CREATE TABLE IF NOT EXISTS host_node (
-        id INTEGER PRIMARY KEY,
-        protocol TEXT,
-        ip TEXT,
-        port TEXT,
-        hashed_pw TEXT,
-        iri_path TEXT,
-        login_token TEXT,
-        restart_node_command TEXT
-      )`
-    );
-
-    db.run(
-        `CREATE TABLE IF NOT EXISTS neighbor_data (
-        address TEXT PRIMARY KEY,
-        name TEXT
-      )`
-    );
-  });
-};
-
-createTables();
-
-const initializeState = () => {
-  const sql = 'select * from host_node';
-  db.get(sql, [], (err, row) => {
-    IRI_SERVICE.protocol = row ? row.protocol : null;
-    IRI_SERVICE.iriIp = row ? row.ip : null;
-    IRI_SERVICE.iriPort = row ? row.port : null;
-    USER_RESOURCE.hashedPw = row ? row.hashed_pw : null;
-    USER_RESOURCE.loginToken = row ? row.login_token : null;
-    IRI_SERVICE.iriFileLocation = row ? row.iri_path : null;
-    NODE_RESOURCE.restartNodeCommand = row ? row.restart_node_command : null;
-  });
-
-  db.all('select * from neighbor_data', [], (err, rows) => {
-    rows.forEach(r => {
-      NEIGHBOR_RESOURCE.intitializeNeighborUsernname(r.address, r.name ? r.name : null);
-    });
-  });
-};
-
-initializeState();
-
-const dropAllTables = () => {
-  return new Promise((resolve, reject) => {
-    db.run('drop table IF EXISTS neighbor', (err) => {
-      if (err) {
-        console.log('Error deleting neighbor table', err.message);
-        reject();
-        return;
-      }
-      db.run('drop table IF EXISTS host_node', (err) => {
-        if (err) {
-          console.log('Error deleting host_node table', err.message);
-          reject();
-          return;
-        }
-        db.run('drop table IF EXISTS neighbor_data', (err) => {
-          if (err) {
-            console.log('Error deleting host_node table', err.message);
-            reject();
-            return;
-          }
-          resolve();
-        });
-      });
-    });
-  });
-};
+DB_UTIL.createTables(db);
+DB_UTIL.initializeState(db);
 
 app.post(`/api/reset-database`, async (req, res) => {
   if (!AUTH_UTIL.isUserAuthenticated(USER_RESOURCE.loginToken, req)) {
     res.status(401).send();
     return;
   }
-  await dropAllTables();
+  await DB_UTIL.dropAllTables(db);
   db = new sqlite3.Database(__dirname + '/db');
-  createTables();
-  initializeState();
+  DB_UTIL.createTables();
+  DB_UTIL.initializeState();
   res.status(200).send();
 });
 
