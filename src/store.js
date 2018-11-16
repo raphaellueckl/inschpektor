@@ -214,6 +214,9 @@ const actions = {
   saveDatabase({commit}) {
 
   },
+  loadDatabase({commit}, neighborNicknames) {
+    // Persist nicknames to db
+  }
 };
 
 const getters = {
