@@ -41,19 +41,17 @@ I'm not poor and I have a job. But if you want to show some love, I always appre
 
 ### Features/Improves on the roadmap
 
-- Export database to not always re-setup after update
 - Support for multiple nodes
 - Unit tests
 - Mock data
 - Try to get rid of the --unsafe-perm flag
 - Notifications
-- Fix manage-neighbor mobile table
+- Improve mobile layout
 - Proper error component routing
-- Improve further for mobile (currently desktop has prio)
 
-### Bugs
+### Known Bugs
 
-- When you are entering a nickname for a node, it can vanish because the regular "getNeighbors"-call resets the list (including what you already typed).
+- When you are entering a nickname for a node, it can vanish because the regular "getNeighbors"-call resets the list (including what you already typed). This is currently by design.
 
 -------
 
