@@ -22,7 +22,7 @@
                   </label>
 
                   <label class="file-label">
-                    <input class="file-input" type="file" name="resume" @change="saveDatabase">
+                    <input class="file-input" type="button" @click="saveDatabase">
                     <span class="file-cta">
                       <span class="file-icon">
                         <font-awesome-icon icon="download"/>
