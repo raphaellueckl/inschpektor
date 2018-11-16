@@ -212,15 +212,8 @@ const actions = {
     dispatch('fetchNodeInfo');
   },
   saveDatabase({commit}) {
-    const neighborNicks = state.neighbors.map(n => {
-        return {
-          name: n.name,
-          address: n.address
-        };
-      }
-    );
-    const neighborNicksAsString = JSON.stringify(neighborNicks);
-    const blob = new Blob([neighborNicksAsString], {type: 'text/json'});
+    const neighborsToBackup = JSON.stringify(state.neighbors);
+    const blob = new Blob([neighborsToBackup], {type: 'text/json'});
     const fileName = 'inschpektor-backup.json';
 
     const tempElement = document.createElement('a');
@@ -235,8 +228,11 @@ const actions = {
       window.URL.revokeObjectURL(url);
     });
   },
-  loadDatabase({commit}, neighborNicknames) {
-    // Persist nicknames to db
+  loadDatabase({commit}, restoredNeighbors) {
+    axios.post('/api/neighbor/nicks', restoredNeighbors)
+    .then(response => {
+    })
+    .catch(error => console.log('Error when trying to restore neighbor nicks'));
   }
 };
 

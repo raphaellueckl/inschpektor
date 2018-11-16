@@ -45,6 +45,17 @@ class NeighborResource {
       res.status(200).send();
     });
 
+    app.post(`${BASE_URL}/neighbor/nicks`, (req, res) => {
+      if (!AUTH_UTIL.isUserAuthenticated(USER_RESOURCE.loginToken, req)) {
+        res.status(401).send();
+        return;
+      }
+      const neighbors = req.body;
+      neighbors.forEach(n => this.addNeighborUserName(`${n.protocol}://${n.address}`, n.name));
+
+      res.status(200).send();
+    });
+
     app.get(`${BASE_URL}/neighbors`, (req, res) => {
       const resultNeighbors = [];
 
