@@ -8,19 +8,21 @@
               <h1 class="title">Save & Load</h1>
               <div class="field" style="display: flex; justify-content: center">
                 <div class="file is-link">
+
                   <label class="file-label">
-                    <input class="file-input" type="file" name="resume">
+                    <input class="file-input" type="file" name="resume" ref="loadPath" @change="loadDatabase">
                     <span class="file-cta">
                       <span class="file-icon">
                         <font-awesome-icon icon="upload"/>
                       </span>
                       <span class="file-label">
-                        Feed database
+                        Restore database
                       </span>
                     </span>
                   </label>
+
                   <label class="file-label">
-                    <input class="file-input" type="file" name="resume">
+                    <input class="file-input" type="file" name="resume" ref="savePath" @change="saveDatabase">
                     <span class="file-cta">
                       <span class="file-icon">
                         <font-awesome-icon icon="download"/>
@@ -30,6 +32,7 @@
                       </span>
                     </span>
                   </label>
+
                 </div>
               </div>
             </article>
@@ -41,14 +44,35 @@
 </template>
 
 <script>
+  import {mapGetters} from 'vuex';
+
   export default {
     name: 'DatabaseSync',
     methods: {
       saveDatabase() {
+        const a = window.URL.createObjectURL(this.$refs.savePath.files[0]);
+        console.log(a);
+        var reader = new FileReader();
+        console.log(reader.readAsDataURL(a));
+        // fetch(this.$refs.savePath.files[0])
+        // .then(response => response.json())
+        // .then(jsonResponse => console.log(jsonResponse));
         this.$store.dispatch('saveDatabase');
       },
       loadDatabase() {
-        this.$store.dispatch('loadDatabase');
+        const file = this.$refs.loadPath.files[0];
+        const reader = new FileReader();
+
+        const store = this.$store;
+
+        reader.addEventListener('load', function () {
+          const fileContent = JSON.parse(reader.result);
+          store.dispatch('loadDatabase', fileContent);
+        }, false);
+
+        if (file) {
+          reader.readAsText(file);
+        }
       }
     }
   };
