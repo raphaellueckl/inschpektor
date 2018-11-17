@@ -36,7 +36,7 @@
                   <div class="field" v-if="iriFileLocation">
                     <label class="checkbox">
                       <input type="checkbox" v-model="writeToIriConfig">
-                      Write neighbor to iri file
+                      Write neighbor to iri config
                     </label>
                   </div>
 
