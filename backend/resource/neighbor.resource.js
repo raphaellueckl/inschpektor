@@ -92,9 +92,11 @@ class NeighborResource {
             );
           }
 
-          Promise.all(allRequests).then(evaluatedNeighbors => {
+          Promise.all(allRequests)
+          .then(evaluatedNeighbors => {
             res.json(evaluatedNeighbors);
-          });
+          })
+          .catch(e => console.log(e.message));
         });
       })
       .catch(error => {
