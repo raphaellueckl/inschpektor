@@ -203,8 +203,6 @@ const actions = {
   },
   restartNode({commit}) {
     return axios.post('/api/restart-node')
-    .then(response => {
-    })
     .catch(error => console.log('Unsuccessful restart-node attempt.'));
   },
   loadPeriodically({dispatch}) {
@@ -230,8 +228,6 @@ const actions = {
   },
   loadDatabase({commit}, restoredNeighbors) {
     axios.post('/api/neighbor/nicks', restoredNeighbors)
-    .then(response => {
-    })
     .catch(error => console.log('Error when trying to restore neighbor nicks'));
   }
 };
