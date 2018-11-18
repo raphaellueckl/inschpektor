@@ -6,7 +6,7 @@ The app isn't officially released yet, so I don't write a big readme here.
 
 ### Features
 
-For the features, head over to my medium article: <coming soon>
+For the features, head over to my medium article: https://medium.com/@codepleb4/inschpektor-the-user-friendly-peer-manager-for-your-iota-node-c820d5243964
 
 ### Installation
 
