@@ -1,18 +1,21 @@
 <template>
   <nav class="navbar" role="navigation" aria-label="main navigation">
-    <router-link to="/" class="navbar-brand">
-      <figure class="image is-128x128" style="margin-left: 6px; margin-right: 6px">
-        <img src="@/assets/logo.png">
-      </figure>
 
-      <a role="button" class="navbar-burger" aria-label="menu" aria-expanded="false">
+    <div class="logo" style="display: flex">
+      <router-link to="/" class="navbar-brand">
+        <figure class="image is-96x96" style="margin-left: 6px; margin-right: 6px">
+          <img src="@/assets/logo.png">
+        </figure>
+      </router-link>
+      <a role="button" class="navbar-burger" :class="{'is-active': burgerOpen}" @click="burgerOpen = !burgerOpen"
+         aria-label="menu" aria-expanded="false">
         <span aria-hidden="true"></span>
         <span aria-hidden="true"></span>
         <span aria-hidden="true"></span>
       </a>
-    </router-link>
+    </div>
 
-    <div class="navbar-menu is-active">
+    <div class="navbar-menu" :class="{'is-active': burgerOpen}">
       <div class="navbar-start">
         <router-link to="/" class="navbar-item">
           Dashboard
@@ -48,6 +51,11 @@
 
   export default {
     name: 'Menu',
+    data() {
+      return {
+        burgerOpen: false
+      };
+    },
     computed: {
       ...mapGetters(['nodeInfo', 'authenticated'])
     }
