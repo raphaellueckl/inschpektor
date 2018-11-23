@@ -1,4 +1,4 @@
-## INSCHPEKTOR - Status: Early-Alpha (not officially released)
+## INSCHPEKTOR - Status: Beta
 
 This is a vuejs app that helps you managing your IOTA node neighbors.
 
@@ -6,7 +6,7 @@ The app isn't officially released yet, so I don't write a big readme here.
 
 ### Features
 
-For the features, head over to my medium article: <coming soon>
+For the features, head over to my medium article: https://medium.com/@codepleb4/inschpektor-the-user-friendly-peer-manager-for-your-iota-node-c820d5243964
 
 ### Installation
 
@@ -21,6 +21,15 @@ Run `sudo npm i -g inschpektor --unsafe-perm`
 Always run this command: `inschpektor`.
 
 As soon as it is running, you find it in your browser @ <http://localhost:8732> (only Chrome and Firefox due to very leading edge features. If you sucessfully run it on other browsers, please hit me up on telegram).
+
+### Register node
+
+When you first open the webapp, you can define your node and things related to it.
+
+- HTTPS: If you DO NOT run inschpektor on the same machine, as the your iri runs, and you generally access it over https, then enable that toggle.
+- Password: This password can be freely chosen and is not related to anything else than inschpektor.
+- Path to iri config: Please provide the full path to your iri config file, if you want to have inschpektor edit your iri config (for instance, if you add a neighbor or remove one and want to have that persisted in the iri - no more manual work needed).
+- Command to restart node: Any linux command. This will be executed upon clicking the button "Restart node" in the "Manage" view in inschpektor. In my case, the command would be "systemctl restart iota". NOTE: Don't write "sudo" or anything in here, if you run it as root user anyways. As soon as this command triggers something like a password prompt, it will not work.
 
 ### Update
 
