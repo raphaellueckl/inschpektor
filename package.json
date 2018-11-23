@@ -41,15 +41,13 @@
     "@fortawesome/vue-fontawesome": "^0.1.1",
     "axios": "^0.18.0",
     "bcrypt": "^3.0.0",
-    "bulma": "^0.7.1",
+    "bulma": "^0.7.2",
     "bulma-switch": "^2.0.0",
     "connect-history-api-fallback": "^1.5.0",
     "express": "^4.16.3",
     "moment": "^2.22.2",
-    "node-sass": "^4.9.2",
     "qrcode.vue": "^1.6.1",
     "register-service-worker": "^1.0.0",
-    "sass-loader": "^7.0.3",
     "sqlite3": "^4.0.2",
     "vue": "^2.5.17",
     "vue-router": "^3.0.1",
@@ -64,9 +62,11 @@
     "@vue/cli-service": "^3.0.0-rc.6",
     "@vue/test-utils": "^1.0.0-beta.20",
     "chai": "^4.1.2",
-    "node-sass": "^4.9.0",
-    "sass-loader": "^7.0.1",
+    "sass-loader": "^7.0.3",
     "vue-template-compiler": "^2.5.16",
-    "concurrently": "^3.6.1"
+    "concurrently": "^3.6.1",
+    "eslint": "^5.9.0",
+    "acorn": "^6.0.4",
+    "node-sass": "^4.9.2"
   }
 }
