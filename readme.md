@@ -43,6 +43,15 @@ IPXS9YLKJMODKUBHOXRHSUOMWYCBAKYGRCNLH9RAEP9NXRXXYPGBZBVQQWCMLNOHZQRTOGIRMTISGXAV
 
 I'm not poor and I have a job. But if you want to show some love, I always appreciate it. :)
 
+## Feedback
+
+Find me on Telegram @codepleb or on the iota discord codepleb.net#9990 for feedback.
+
+Also keep in mind that I run channels where I post updates:
+
+- Twitter: https://twitter.com/codepleb4
+- Telegram Group (broadcast only, no spam possible): https://twitter.com/codepleb4
+
 ## Tips & Help
 
 - Permission errors: When you get permission errors on the console, it might be that your iota.ini file has wrong access rights or that your node runs as a service and only the root user can change it without a password prompt. If you want to restart your node over inschpektor, I advise you to use your root user to start inschpektor (type `sudo -s` into the console, pass your password and type `inschpektor` afterwards to start it as root user). Running inschpektor as a normal user is also possible, but depending on your system configuration, without the extra features like writing neighbors directly to the iri file or restarting the node. This is risky and you should never run any application as root user, just as a general remark! This is the easy way out and should be your last option.
