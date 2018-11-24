@@ -25,6 +25,7 @@
     },
     created() {
       this.$store.dispatch('login');
+      this.$store.dispatch('checkForVersionUpdate');
       this.$store.dispatch('loadPeriodically');
 
       setInterval(() => {
