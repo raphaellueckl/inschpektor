@@ -6,9 +6,10 @@
           <div class="tile is-parent is-vertical">
             <article class="tile is-child notification">
               <h1 class="title">Save & Load</h1>
-              <div class="field" style="display: flex; justify-content: center">
-                <div class="file is-link">
 
+              <div class="field button-container">
+
+                <div class="file is-link">
                   <label class="file-label">
                     <input class="file-input" type="file" name="resume" ref="loadPath" @change="loadDatabase">
                     <span class="file-cta">
@@ -20,7 +21,9 @@
                       </span>
                     </span>
                   </label>
+                </div>
 
+                <div class="file is-link">
                   <label class="file-label">
                     <input class="file-input" type="button" @click="saveDatabase">
                     <span class="file-cta">
@@ -32,9 +35,10 @@
                       </span>
                     </span>
                   </label>
-
                 </div>
+
               </div>
+
             </article>
           </div>
         </div>
@@ -82,5 +86,11 @@
 
   .file-label {
     border-radius: 290486px; /* bulma default */
+  }
+
+  .button-container {
+    display: flex;
+    justify-content: center;
+    flex-wrap: wrap;
   }
 </style>
