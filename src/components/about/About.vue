@@ -2,7 +2,11 @@
   <div>
     <img src="../../assets/logo.png">
     <p>
-      <strong>Version:</strong> {{version}}
+      <strong>Installed Version:</strong> {{installedVersion}}
+    </p>
+    <p v-if="latestInschpektorVersion > installedVersion" class="update-available">
+      <strong>🌟 Update available!</strong> Version {{latestInschpektorVersion}} is ready to download! See here how to update:
+      <a href="https://github.com/codepleb/inschpektor/blob/master/readme.md" target="_blank">Update manual</a> 🌟
     </p>
     <br>
     <p>
@@ -35,13 +39,17 @@
 
 <script>
   import Donation from './Donation';
+  import {mapGetters} from 'vuex';
 
   export default {
     name: 'About',
-    data: () =>{
+    data: () => {
       return {
-        version: VERSION
-      }
+        installedVersion: VERSION
+      };
+    },
+    computed: {
+      ...mapGetters(['latestInschpektorVersion'])
     },
     components: {
       Donation
@@ -50,4 +58,7 @@
 </script>
 
 <style scoped>
+  .update-available {
+    background-color: limegreen;
+  }
 </style>
