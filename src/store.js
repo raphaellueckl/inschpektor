@@ -31,7 +31,8 @@ const state = {
   nodeError: null,
   authenticated: false,
   password: null,
-  persistedNeighbors: null
+  persistedNeighbors: null,
+  latestInschpektorVersion: null
 };
 
 const mutations = {
@@ -67,6 +68,9 @@ const mutations = {
     Object.entries(state).forEach(([key, value]) =>
       state[key] = null
     );
+  },
+  SET_INSCHPEKTOR_LATEST_VERSION(state, latestVersion) {
+    state.latestInschpektorVersion = latestVersion;
   }
 };
 
@@ -229,6 +233,15 @@ const actions = {
   loadDatabase({commit}, restoredNeighbors) {
     axios.post('/api/neighbor/nicks', restoredNeighbors)
     .catch(error => console.log('Error when trying to restore neighbor nicks'));
+  },
+  checkForVersionUpdate({commit}) {
+    axios.get('https://cors-anywhere.herokuapp.com/http://registry.npmjs.org/-/package/inschpektor/dist-tags')
+    .then((response) => {
+      if (response && response.data) {
+        commit('SET_INSCHPEKTOR_LATEST_VERSION', response.data.latest);
+      }
+    })
+    .catch(error => console.log('Could not receive information about latest inschpektor version.'));
   }
 };
 
@@ -242,7 +255,8 @@ const getters = {
   neighbors: state => state.neighbors,
   nodeError: state => state.nodeError,
   authenticated: state => state.authenticated,
-  persistedNeighbors: state => state.persistedNeighbors
+  persistedNeighbors: state => state.persistedNeighbors,
+  latestInschpektorVersion: state => state.latestInschpektorVersion
 };
 
 const storeModule = {
