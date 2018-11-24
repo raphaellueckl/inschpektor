@@ -17,7 +17,7 @@
                         <font-awesome-icon icon="upload"/>
                       </span>
                       <span class="file-label">
-                        Restore database
+                        Restore nicknames
                       </span>
                     </span>
                   </label>
@@ -31,7 +31,7 @@
                         <font-awesome-icon icon="download"/>
                       </span>
                       <span class="file-label">
-                        Save database
+                        Save nicknames
                       </span>
                     </span>
                   </label>
