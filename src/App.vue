@@ -15,7 +15,7 @@
 <script>
   import {mapGetters} from 'vuex';
   import Menu from './components/Menu';
-  import Error from './components/error/Error';
+  import Error from './components/Error';
 
   export default {
     name: 'app',

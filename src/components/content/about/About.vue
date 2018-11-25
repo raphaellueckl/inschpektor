@@ -1,6 +1,6 @@
 <template>
   <div>
-    <img src="../../assets/logo.png">
+    <img src="../../../assets/logo.png">
     <p>
       <strong>Installed Version:</strong> {{installedVersion}}
     </p>
