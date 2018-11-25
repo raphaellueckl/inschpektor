@@ -63,7 +63,6 @@ Also keep in mind that I run channels where I post updates:
 - Try to get rid of the --unsafe-perm flag
 - Notifications
 - Improve mobile layout
-- Proper error component routing
 
 ### Known Bugs
 
