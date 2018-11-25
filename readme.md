@@ -66,7 +66,7 @@ Also keep in mind that I run channels where I post updates:
 
 ### Known Bugs
 
-- When you are entering a nickname for a node, it can vanish because the regular "getNeighbors"-call resets the list (including what you already typed). This is currently by design.
+- Page refresh also leads to the login component first and then redirects to /dashboard, which is annoying if you are logged in already.
 
 -------
 
