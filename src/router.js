@@ -1,11 +1,11 @@
 import Vue from 'vue';
 import Router from 'vue-router';
 import Store from './store';
-import About from './components/about/About.vue';
-import Manage from './components/manage/Manage.vue';
-import Dashboard from './components/dashboard/Dashboard.vue';
-import Login from './components/Login.vue';
-import NodeInfo from './components/nodeinfo/NodeInfo.vue';
+import About from './components/content/about/About.vue';
+import Manage from './components/content/manage/Manage.vue';
+import Dashboard from './components/content/dashboard/Dashboard.vue';
+import Login from './components/content/Login.vue';
+import NodeInfo from './components/content/NodeInfo.vue';
 import NotFound from './components/NotFound.vue';
 
 Vue.use(Router);
