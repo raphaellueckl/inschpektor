@@ -38,7 +38,7 @@
         <div class="field">
           <label class="label">Define a Password (for node interactions):</label>
           <div class="control">
-            <input v-model="password" class="input" type="text" placeholder="Choose wisely...">
+            <input v-model="password" class="input" type="password" placeholder="Choose wisely...">
           </div>
         </div>
       </div>
