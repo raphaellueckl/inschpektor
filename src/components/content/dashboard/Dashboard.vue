@@ -5,33 +5,10 @@
     <Summary v-if="neighbors" :neighbors="neighbors"/>
 
     <div v-if="neighbors" class="tile is-ancestor">
-      <div class="tile is-vertical">
-        <div class="tile">
-
-          <div class="tile is-parent is-vertical">
-            <div v-for="(neighbor, index) in neighbors" v-if="index < neighbors.length / 3">
-              <Neighbor :neighbor="neighbor"/>
-              <br>
-            </div>
-          </div>
-
-          <div class="tile is-parent is-vertical">
-            <div v-for="(neighbor, index) in neighbors"
-                 v-if="index >= neighbors.length / 3 && index < neighbors.length * 2 / 3">
-              <Neighbor :neighbor="neighbor"/>
-              <br>
-            </div>
-          </div>
-
-          <div class="tile is-parent is-vertical">
-            <div v-for="(neighbor, index) in neighbors"
-                 v-if="index >= neighbors.length * 2 / 3">
-              <Neighbor :neighbor="neighbor"/>
-              <br>
-            </div>
-          </div>
-
-        </div>
+      <div class="tile is-parent">
+        <Neighbor :neighbor="neighbor"
+                  v-for="(neighbor, index) in neighbors"
+                  v-if="index < neighbors.length"/>
       </div>
     </div>
   </div>
@@ -60,4 +37,7 @@
 </script>
 
 <style scoped>
+  .tile.is-parent {
+    flex-wrap: wrap;
+  }
 </style>
