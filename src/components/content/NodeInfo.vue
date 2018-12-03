@@ -64,8 +64,9 @@
 </script>
 
 <style scoped>
-  progress {
+  progress.progress.is-success {
     max-width: 300px;
-    display: inline-flex;
+    display: inline-block;
+    margin-bottom: 0px;
   }
 </style>
