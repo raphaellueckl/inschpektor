@@ -1,6 +1,6 @@
 <template>
   <article class="tile is-child notification" :class="{'is-danger' : !neighbor.isFriendlyNode || neighbor.isActive === false || neighbor.isSynced === false, 'is-premium': neighbor.iriVersion}">
-    <h1 class="title"><span v-if="neighbor.iriVersion">👑</span><span v-if="isUnpersistedNeighbor">👽</span> {{neighbor.name ? neighbor.name : neighbor.address}}</h1>
+    <h2 class="title"><span v-if="neighbor.iriVersion">👑</span><span v-if="isUnpersistedNeighbor">👽</span> {{neighbor.name ? neighbor.name : neighbor.address}}</h2>
     <div class="media-content">
       <div class="content">
         <p>
@@ -47,5 +47,11 @@
 
   .is-premium {
     background-color: hsl(141, 71%, 75%)
+  }
+
+  .tile.is-child.notification {
+    flex-basis: 30%;
+    margin: 5px !important;
+    word-wrap: break-word;
   }
 </style>
