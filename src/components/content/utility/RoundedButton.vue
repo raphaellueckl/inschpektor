@@ -1,5 +1,5 @@
 <template>
-  <button class="button is-rounded" :class="[buttonType]" :disabled="disabled" @click="click()">
+  <button class="button is-rounded" :class="[isLoading ? 'is-loading' : '', buttonType]" :disabled="disabled" @click="click(); isLoading = true">
     <slot></slot>
   </button>
 </template>
@@ -10,13 +10,15 @@
     props: {
       click: Function,
       disabled: Boolean,
-      type: String
+      type: String,
+      spin: Number
     },
     data: function () {
       return {
+        isLoading: false,
         buttonType: this.type === 'ok' ? 'is-link' : this.type === 'danger' ? 'is-danger' : ''
       };
-    }
+    },
   };
 </script>
 
