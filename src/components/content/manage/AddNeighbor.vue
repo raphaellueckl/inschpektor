@@ -24,10 +24,10 @@
                              type="text"
                              placeholder="E.g. udp://123.32.123.123:14600 or tcp://neighbor-domain.net:15600">
                       <span v-if="this.ipAddress && isCorrectAddress" class="icon is-small is-right" :key="0">
-                        <font-awesome-icon icon="check" />
+                        <font-awesome-icon icon="check"/>
                       </span>
                       <span v-if="this.ipAddress && !isCorrectAddress" class="icon is-small is-right" :key="1">
-                        <font-awesome-icon icon="exclamation-triangle" />
+                        <font-awesome-icon icon="exclamation-triangle"/>
                       </span>
                     </div>
                     <p v-if="!isCorrectAddress" class="help is-danger">Wrong node address format!</p>
@@ -42,12 +42,12 @@
 
                   <div class="field is-grouped">
                     <div class="control">
-                      <button class="button is-link is-rounded" :disabled="ipAddress && !isCorrectAddress"
-                              @click="addNeighbor({name, address: ipAddress, writeToIriConfig: writeToIriConfig && !!iriFileLocation}); clearFields()">Submit
-                      </button>
+                      <RoundedButton text="Submit" :disabled="ipAddress && !isCorrectAddress" :click="addNeighborAndClearFields" type="ok">
+                      </RoundedButton>
                     </div>
                     <div class="control">
-                      <button class="button is-text" @click="clearFields">Cancel</button>
+                      <RoundedButton text="Cancel" :click="clearFields">
+                      </RoundedButton>
                     </div>
                   </div>
                 </div>
@@ -64,6 +64,7 @@
 
 <script>
   import {mapActions, mapGetters} from 'vuex';
+  import RoundedButton from '../utility/RoundedButton'
 
   export default {
     name: 'AddNeighbor',
@@ -88,10 +89,17 @@
     },
     methods: {
       ...mapActions(['addNeighbor']),
+      addNeighborAndClearFields: function () {
+        this.addNeighbor({name, address: this.ipAddress, writeToIriConfig: this.writeToIriConfig && !!this.iriFileLocation});
+        this.clearFields();
+      },
       clearFields: function () {
         this.name = '';
         this.ipAddress = '';
       },
+    },
+    components: {
+      RoundedButton
     }
   };
 </script>
