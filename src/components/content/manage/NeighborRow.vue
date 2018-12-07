@@ -14,18 +14,20 @@
       : neighbor.isSynced ? '✔' : '❌'}}️
     </div>
     <div class="column">
-      <a class="button is-danger is-rounded" :class="{'is-loading': submitted}" @click="remove">
+      <RoundedButton :click="remove" type="danger">
         <font-awesome-icon icon="trash-alt"/>
-      </a>
+      </RoundedButton>
     </div>
   </div>
 </template>
 
 <script>
   import {mapActions} from 'vuex';
+  import RoundedButton from '../utility/RoundedButton';
 
   export default {
     name: 'NeighborRow',
+    components: {RoundedButton},
     props: ['neighbor'],
     data: () => {
       return {
