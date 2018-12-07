@@ -1,6 +1,6 @@
 <template>
   <button class="button is-rounded" :class="[buttonType]" :disabled="disabled" @click="click()">
-    {{text}}
+    <slot></slot>
   </button>
 </template>
 
@@ -10,12 +10,11 @@
     props: {
       click: Function,
       disabled: Boolean,
-      text: String,
       type: String
     },
     data: function () {
       return {
-        buttonType: this.type === 'ok' ? 'is-link' : ''
+        buttonType: this.type === 'ok' ? 'is-link' : this.type === 'danger' ? 'is-danger' : ''
       };
     }
   };
