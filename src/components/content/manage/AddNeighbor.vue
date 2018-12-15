@@ -42,7 +42,7 @@
 
                   <div class="field is-grouped">
                     <div class="control">
-                      <RoundedButton :disabled="ipAddress && !isCorrectAddress" :click="addNeighborAndClearFields" type="ok">
+                      <RoundedButton :disabled="ipAddress && !isCorrectAddress" :click="addNeighborAndClearFields" type="ok" spin="2000">
                         Submit
                       </RoundedButton>
                     </div>
