@@ -1,5 +1,6 @@
 <template>
-  <button class="button is-rounded" :class="[isLoading ? 'is-loading' : '', buttonType]" :disabled="disabled" @click="click(); isLoading = true">
+  <button class="button is-rounded" :class="[isLoading ? 'is-loading' : '', buttonType]" :disabled="disabled"
+          @click="click(); showSpinner()">
     <slot></slot>
   </button>
 </template>
@@ -19,6 +20,14 @@
         buttonType: this.type === 'ok' ? 'is-link' : this.type === 'danger' ? 'is-danger' : ''
       };
     },
+    methods: {
+      showSpinner() {
+        this.isLoading = true;
+        setTimeout(() => {
+          this.isLoading = false
+        }, this.spin ? this.spin : 500);
+      },
+    }
   };
 </script>
 
