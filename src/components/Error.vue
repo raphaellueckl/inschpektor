@@ -1,7 +1,8 @@
 <template>
   <div>
 
-    <h1 class="title">Hi :)</h1>
+    <h1 v-if="code === 'NODE_NOT_SET'" class="title">Hi :)</h1>
+    <h1 v-else class="title">Oops 😐</h1>
     <div v-if="code === 'NODE_NOT_SET'">
       <h2 class="subtitle">Looks like you didn't link your node yet. Please provide the IP / Domain below.</h2>
     </div>
