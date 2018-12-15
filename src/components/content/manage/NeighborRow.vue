@@ -1,7 +1,7 @@
 <template>
   <div class="columns">
     <div class="column is-one-fifth">
-      <input v-model="neighbor.name" placeholder="N/A" class="input" type="text" @input="addNeighborNick(neighbor)">
+      <input v-model="neighbor.name" placeholder="Enter nickname..." class="input" type="text" @input="addNeighborNick(neighbor)">
     </div>
     <div class="column is-two-fifths">
       {{neighbor.address}}
