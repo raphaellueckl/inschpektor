@@ -1,3 +1,4 @@
+require('console-stamp')(console, { pattern: 'dd/mm/yyyy HH:MM:ss.l' });
 const IRI_SERVICE = require('../util/iri.util');
 const USER_RESOURCE = require('./user.resource');
 const AUTH_UTIL = require('../util/auth.util');

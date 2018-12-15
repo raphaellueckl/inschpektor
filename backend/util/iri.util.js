@@ -1,3 +1,4 @@
+require('console-stamp')(console, { pattern: 'dd/mm/yyyy HH:MM:ss.l' });
 const fs = require('fs');
 
 class IriUtil {
