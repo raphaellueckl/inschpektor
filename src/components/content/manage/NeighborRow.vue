@@ -14,7 +14,7 @@
       : neighbor.isSynced ? '✔' : '❌'}}️
     </div>
     <div class="column">
-      <RoundedButton :click="remove" type="danger">
+      <RoundedButton :click="remove" type="danger" spin="10000">
         <font-awesome-icon icon="trash-alt"/>
       </RoundedButton>
     </div>
