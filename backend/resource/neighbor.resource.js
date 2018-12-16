@@ -13,24 +13,6 @@ let db;
 
 class NeighborResource {
 
-  intitializeNeighborUsernname(fullAddress, name) {
-    neighborUsernames.set(fullAddress, name);
-  }
-
-  removeNeighborFromUserNameTable(address) {
-    neighborUsernames.delete(address);
-
-    const removeNeighborEntriesWithAddress = db.prepare('DELETE FROM neighbor_data where address=?');
-    removeNeighborEntriesWithAddress.run(address);
-  }
-
-  addNeighborUserName(fullAddress, name) {
-    neighborUsernames.set(fullAddress, name);
-
-    const stmt = db.prepare('REPLACE INTO neighbor_data (address, name) VALUES (?, ?)');
-    stmt.run(fullAddress, name);
-  }
-
   init(app, database) {
     db = database;
     app.post(`${BASE_URL}/neighbor/nick`, (req, res) => {
@@ -168,6 +150,28 @@ class NeighborResource {
       });
     });
 
+  }
+
+  intitializeNeighborUsernname(fullAddress, name) {
+    neighborUsernames.set(fullAddress, name);
+  }
+
+  removeNeighborFromUserNameTable(address) {
+    neighborUsernames.delete(address);
+
+    const removeNeighborEntriesWithAddress = db.prepare('DELETE FROM neighbor_data where address=?');
+    removeNeighborEntriesWithAddress.run(address);
+  }
+
+  addNeighborUserName(fullAddress, name) {
+    neighborUsernames.set(fullAddress, name);
+
+    const stmt = db.prepare('REPLACE INTO neighbor_data (address, name) VALUES (?, ?)');
+    stmt.run(fullAddress, name);
+  }
+
+  deleteNeighborHistory() {
+    db.run(`DELETE FROM neighbor`);
   }
 
   createResultNeighbor(neighbor, oldestEntry, nodeInfo) {
