@@ -3,6 +3,7 @@ const bcrypt = require('bcrypt');
 const axios = require('axios');
 const IRI_SERVICE = require('../util/iri.util');
 const USER_RESOURCE = require('./user.resource');
+const NEIGHBOR_RESOURCE = require('./neighbor.resource');
 const AUTH_UTIL = require('../util/auth.util');
 
 const BASE_URL = '/api';
@@ -108,6 +109,7 @@ class NodeResource {
           res.status(500).send();
           return;
         }
+        NEIGHBOR_RESOURCE.deleteNeighborHistory();
         res.status(200).send();
       })
 
