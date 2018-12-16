@@ -59,6 +59,7 @@
 
 <style scoped>
   .update-available {
-    background-color: limegreen;
+    background: hsl(141, 71%, 48%);
+    border-radius: 1vh;
   }
 </style>
