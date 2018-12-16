@@ -77,6 +77,7 @@ class NeighborResource {
 
           Promise.all(allRequests)
           .then(evaluatedNeighbors => {
+            evaluatedNeighbors.sort((a, b) => a.address.localeCompare(b.address));
             res.json(evaluatedNeighbors);
           })
           .catch(e => console.log(e.message));
