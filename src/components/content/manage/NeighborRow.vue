@@ -3,18 +3,18 @@
     <div class="column is-one-fifth">
       <input v-model="neighbor.name" placeholder="Enter nickname..." class="input" type="text" @input="addNeighborNick(neighbor)">
     </div>
-    <div class="column is-two-fifths">
+    <div class="column is-two-fifths white-text">
       {{neighbor.address}}
     </div>
-    <div class="column">
+    <div class="column white-text">
       {{neighbor.isActive === null ? 'N/A' : neighbor.isActive ? '✔️' : '❌' }}
     </div>
-    <div class="column">
+    <div class="column white-text">
       {{neighbor.isSynced === null ? 'N/A'
       : neighbor.isSynced ? '✔' : '❌'}}️
     </div>
     <div class="column">
-      <RoundedButton :click="remove" type="danger" spin="10000">
+      <RoundedButton :click="remove" type="danger" spin="10000" modal-text="This action will remove the neighbor from your node.">
         <font-awesome-icon icon="trash-alt"/>
       </RoundedButton>
     </div>
@@ -47,9 +47,13 @@
 <style scoped>
   .columns {
     background-color: rgb(0, 159, 255, 0.85);
-    color: #fff;
+
     margin-top: 4px;
     border-radius: 4px;
+  }
+
+  .white-text {
+    color: #fff;
   }
 
   .horizontal-grid {
