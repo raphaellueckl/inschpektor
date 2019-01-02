@@ -12,7 +12,7 @@
     "build": "vue-cli-service build",
     "test:e2e": "vue-cli-service test:e2e",
     "test:unit": "vue-cli-service test:unit",
-    "postinstall": "cd backend && npm install --unsafe-perm && cd .."
+    "postinstall": "cd backend && npm install && cd .."
   },
   "bin": {
     "inschpektor": "backend/server.js"
