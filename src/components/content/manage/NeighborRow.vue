@@ -1,20 +1,22 @@
 <template>
   <div class="columns">
     <div class="column is-one-fifth">
-      <input v-model="neighbor.name" placeholder="Enter nickname..." class="input" type="text" @input="addNeighborNick(neighbor)">
+      <input v-model="neighbor.name" placeholder="Enter nickname..." class="input" type="text"
+             @input="addNeighborNick(neighbor)">
     </div>
-    <div class="column is-two-fifths white-text">
+    <div class="column is-two-fifths">
       {{neighbor.address}}
     </div>
-    <div class="column white-text">
+    <div class="column">
       {{neighbor.isActive === null ? 'N/A' : neighbor.isActive ? '✔️' : '❌' }}
     </div>
-    <div class="column white-text">
+    <div class="column">
       {{neighbor.isSynced === null ? 'N/A'
       : neighbor.isSynced ? '✔' : '❌'}}️
     </div>
     <div class="column">
-      <RoundedButton :click="remove" type="danger" spin="10000" modal-text="This action will remove the neighbor from your node.">
+      <RoundedButton :click="remove" type="danger" spin="2000"
+                     modal-text="This action will remove the selected neighbor from your node.">
         <font-awesome-icon icon="trash-alt"/>
       </RoundedButton>
     </div>
@@ -27,7 +29,9 @@
 
   export default {
     name: 'NeighborRow',
-    components: {RoundedButton},
+    components: {
+      RoundedButton
+    },
     props: ['neighbor'],
     data: () => {
       return {
@@ -47,13 +51,9 @@
 <style scoped>
   .columns {
     background-color: rgb(0, 159, 255, 0.85);
-
+    color: #fff;
     margin-top: 4px;
     border-radius: 4px;
-  }
-
-  .white-text {
-    color: #fff;
   }
 
   .horizontal-grid {
