@@ -42,8 +42,8 @@ app.post(`/api/reset-database`, async (req, res) => {
   }
   await DB_UTIL.dropAllTables(db);
   db = new sqlite3.Database(__dirname + '/db');
-  DB_UTIL.createTables();
-  DB_UTIL.initializeState();
+  DB_UTIL.createTables(db);
+  DB_UTIL.initializeState(db);
   res.status(200).send();
 });
 
