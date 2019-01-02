@@ -11,14 +11,14 @@
           {{modalText}}
         </section>
         <footer class="modal-card-foot">
-          <button class="button is-success" @click="click(); openModal=false">Yes</button>
+          <button class="button is-success" @click="click(); openModal=false; showSpinner()">Yes</button>
           <button class="button" @click="openModal=false">Cancel</button>
         </footer>
       </div>
     </div>
 
     <button class="button is-rounded" :class="[isLoading ? 'is-loading' : '', buttonType]" :disabled="disabled"
-            @click="modalText ? openModal = true : click(); showSpinner()">
+            @click="buttonClicked()">
       <slot></slot>
     </button>
   </div>
@@ -42,6 +42,14 @@
       };
     },
     methods: {
+      buttonClicked() {
+        if (this.modalText) {
+          this.openModal = true;
+        } else {
+          this.click();
+          this.showSpinner();
+        }
+      },
       showSpinner() {
         this.isLoading = true;
         setTimeout(() => {
