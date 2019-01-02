@@ -1,6 +1,6 @@
 {
   "name": "inschpektor",
-  "version": "0.9.0",
+  "version": "0.9.1",
   "description": "An IOTA neighbor manager for your node.",
   "main": "backend/server.js",
   "private": false,
@@ -12,7 +12,7 @@
     "build": "vue-cli-service build",
     "test:e2e": "vue-cli-service test:e2e",
     "test:unit": "vue-cli-service test:unit",
-    "postinstall": "cd backend && npm install && cd .."
+    "postinstall": "cd backend && npm install --unsafe-perm && cd .."
   },
   "bin": {
     "inschpektor": "backend/server.js"
