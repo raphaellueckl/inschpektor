@@ -53,5 +53,7 @@
 </script>
 
 <style scoped>
-
+  .modal-card-body {
+    color: #000;
+  }
 </style>

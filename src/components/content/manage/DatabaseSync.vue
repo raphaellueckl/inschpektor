@@ -1,46 +1,44 @@
 <template>
-  <div>
-    <div class="tile is-ancestor">
-      <div class="tile is-vertical">
-        <div class="tile">
-          <div class="tile is-parent is-vertical">
-            <article class="tile is-child notification">
-              <h1 class="title">Save & Load</h1>
+  <div class="tile is-ancestor">
+    <div class="tile is-vertical">
+      <div class="tile">
+        <div class="tile is-parent is-vertical">
+          <article class="tile is-child notification">
+            <h1 class="title">Save & Load</h1>
 
-              <div class="field button-container">
+            <div class="field button-container">
 
-                <div class="file is-link">
-                  <label class="file-label">
-                    <input class="file-input" type="file" name="resume" ref="loadPath" @change="loadDatabase">
-                    <span class="file-cta">
+              <div class="file is-link">
+                <label class="file-label">
+                  <input class="file-input" type="file" name="resume" ref="loadPath" @change="loadDatabase">
+                  <span class="file-cta">
                       <span class="file-icon">
                         <font-awesome-icon icon="upload"/>
                       </span>
                       <span class="file-label">
-                        Restore nicknames
+                        Restore Nicknames
                       </span>
                     </span>
-                  </label>
-                </div>
+                </label>
+              </div>
 
-                <div class="file is-link">
-                  <label class="file-label">
-                    <input class="file-input" type="button" @click="saveDatabase">
-                    <span class="file-cta">
+              <div class="file is-link">
+                <label class="file-label">
+                  <input class="file-input" type="button" @click="saveDatabase">
+                  <span class="file-cta">
                       <span class="file-icon">
                         <font-awesome-icon icon="download"/>
                       </span>
                       <span class="file-label">
-                        Save nicknames
+                        Save Nicknames
                       </span>
                     </span>
-                  </label>
-                </div>
-
+                </label>
               </div>
 
-            </article>
-          </div>
+            </div>
+
+          </article>
         </div>
       </div>
     </div>
