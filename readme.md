@@ -1,6 +1,6 @@
 ## INSCHPEKTOR - Status: Beta
 
-This is a vuejs app that helps you managing your IOTA node neighbors.
+This is a manager for your IOTA node with focus on simplicity and user experience. It will take a lot of manual work off your shoulders. :)
 
 ### Features
 
@@ -14,20 +14,22 @@ Check https://nodejs.org/en/download/ and download & install the version for you
 
 Run `sudo npm i -g inschpektor --unsafe-perm`
 
+`--unsafe-perm` is needed on linux. It was not needed on my macos and I'm not sure about windows. The reason are the submodules that need to run with sudo permissions too.
+
 ### Running after installation
 
-Always run this command: `inschpektor`.
+Always run this command in a terminal: `sudo inschpektor` (it is recommended to start inschpektor with `sudo` permissions. The reason is, that depending on how you setup your IOTA node, inschpektor cannot restart your IOTA node and probably cannot write to your iri config file upon adding/removing neighbors).
 
-As soon as it is running, you find it in your browser @ <http://localhost:8732> (only Chrome and Firefox due to very leading edge features. If you sucessfully run it on other browsers, please hit me up on telegram).
+After that, you will find it in your browser @ <http://{YOUR-IP}:8732> (tested on Google Chrome and Firefox, desktop and mobile).
 
 ### Register node
 
-When you first open the webapp, you can define your node and things related to it.
+When you first open the webapp (or when you clicked the 'Reset Inschpektor' button), you can define your node and things related to it.
 
 - HTTPS: If you DO NOT run inschpektor on the same machine, as the your iri runs, and you generally access it over https, then enable that toggle.
 - Password: This password can be freely chosen and is not related to anything else than inschpektor.
-- Path to iri config: Please provide the full path to your iri config file, if you want to have inschpektor edit your iri config (for instance, if you add a neighbor or remove one and want to have that persisted in the iri - no more manual work needed).
-- Command to restart node: Any linux command. This will be executed upon clicking the button "Restart node" in the "Manage" view in inschpektor. In my case, the command would be "systemctl restart iota". NOTE: Don't write "sudo" or anything in here, if you run it as root user anyways. As soon as this command triggers something like a password prompt, it will not work.
+- Path to iri config (Optional): Please provide the full path to your iri config file, if you want to have inschpektor edit your iri config (for instance, if you add a neighbor or remove one and want to have that persisted in the iri - no more manual work needed).
+- Command to restart node (Optional): Any linux command. This will be executed upon clicking the button 'Restart Node' in the 'Manage' view in inschpektor. In my case, the command would be `systemctl restart iota`. NOTE: Don't write `sudo` or anything in here. As soon as this command triggers something like a password prompt, it will not work. If you started inschpektor with `sudo`, it will be sufficient.
 
 ### Update
 
@@ -35,32 +37,30 @@ To get the newest version (or ignore, if you already have it), you can just run 
 
 ### Donations
 
-You can get an address within the "About" section or use this one:
+You can find an address within the 'About' section of inschpektor or use this one:
 
 IPXS9YLKJMODKUBHOXRHSUOMWYCBAKYGRCNLH9RAEP9NXRXXYPGBZBVQQWCMLNOHZQRTOGIRMTISGXAVAGASBFLAUB
 
-I'm not poor and I have a job. But if you want to show some love, I always appreciate it. :)
+If you want to show some love, I always appreciate it. :)
 
 ### Feedback
 
-Find me on Telegram @codepleb or on the iota discord codepleb.net#9990 for feedback.
+Find me on Telegram @codepleb or on the iota discord codepleb.net#9990 for direct feedback.
 
 Also keep in mind that I run channels where I post updates:
 
 - Twitter: https://twitter.com/codepleb4
-- Telegram Group (broadcast only, no spam possible): https://twitter.com/codepleb4
+- Telegram Broadcast: https://twitter.com/codepleb4
 
 ## Tips & Help
 
-- Permission errors: When you get permission errors on the console, it might be that your iota.ini file has wrong access rights or that your node runs as a service and only the root user can change it without a password prompt. If you want to restart your node over inschpektor, I advise you to use your root user to start inschpektor (type `sudo -s` into the console, pass your password and type `inschpektor` afterwards to start it as root user). Running inschpektor as a normal user is also possible, but depending on your system configuration, without the extra features like writing neighbors directly to the iri file or restarting the node. This is risky and you should never run any application as root user, just as a general remark! This is the easy way out and should be your last option.
-- If you want to increase the performance, serve inschpektor over HTTPS. This way, the service worker will get enabled and be able to put a lot of calls and the site skeleton into the cache.
+- **Permission errors:** When you get permission errors on the console, it might be that your iota.ini file has wrong access rights or that your node runs as a service and only the root user can handle it without a password prompt (or various other permission reasons). You can just run `inschpektor` as root user (before running inschpektor, type `sudo -s` and enter your password) in this case. That will work, but I want to say that doing this is generally a very bad habit which can make your computer vulnerable. 
+- **Performance:** If you want to increase the performance, serve inschpektor over HTTPS. This way, the service worker will get enabled and be able to put a lot of calls and the site skeleton into the cache.
 
 ### Features/Improves on the roadmap
 
 - Support for multiple nodes
-- Unit tests
-- Mock data
-- Try to get rid of the --unsafe-perm flag
+- Unit tests 😳
 - Notifications
 - Improve mobile layout
 
