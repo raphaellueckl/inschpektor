@@ -12,9 +12,11 @@ You need a recent version of node to successfully run this app (10.8+):
 
 Check https://nodejs.org/en/download/ and download & install the version for your system.
 
-Run `sudo npm i -g inschpektor --unsafe-perm`
+**Ubuntu users only:** You need to install the `build-essentail` package first, if you do not already have it: `sudo apt install build-essential`
 
-`--unsafe-perm` is needed on linux. It was not needed on my macos and I'm not sure about windows. The reason are the submodules that need to run with sudo permissions too.
+**Install inschpektor:** Run `sudo npm i -g inschpektor --unsafe-perm`
+
+`--unsafe-perm` is needed on linux. It was not needed on my MacOS and I'm not sure about windows. The reason are the npm submodules that need to run with sudo permissions too (because of the bcrypt dependency).
 
 ### Running after installation
 
