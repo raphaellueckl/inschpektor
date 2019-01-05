@@ -29,7 +29,7 @@ const state = {
   iriIp: null,
   neighbors: null,
   nodeError: null,
-  authenticated: false,
+  authenticated: null,
   password: null,
   persistedNeighbors: null,
   latestInschpektorVersion: null
