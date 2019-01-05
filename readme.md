@@ -68,7 +68,7 @@ Also keep in mind that I run channels where I post updates:
 
 ### Known Bugs
 
-- Page refresh also leads to the login component first and then redirects to /dashboard, which is annoying if you are logged in already.
+- The iri file currently needs to contain at least one neighbor, for inschpektor being able to add and remove neighbors.
 
 -------
 
