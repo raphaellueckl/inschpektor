@@ -31,7 +31,7 @@
       click: Function,
       disabled: Boolean,
       type: String,
-      spin: Number,
+      spin: String,
       modalText: String
     },
     data: function () {
@@ -54,7 +54,7 @@
         this.isLoading = true;
         setTimeout(() => {
           this.isLoading = false;
-        }, this.spin ? this.spin : 500);
+        }, this.spin ? Number(this.spin) : 500);
       },
     }
   };
