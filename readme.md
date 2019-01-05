@@ -62,9 +62,9 @@ Also keep in mind that I run channels where I post updates:
 ### Features/Improves on the roadmap
 
 - Support for multiple nodes
-- Unit tests 😳
 - Notifications
 - Improve mobile layout
+- Unit tests 😳
 
 ### Known Bugs
 
