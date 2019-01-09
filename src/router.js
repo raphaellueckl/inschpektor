@@ -19,6 +19,7 @@ const loginNecessary = (to, from, next) => {
 
 const router = new Router({
   mode: 'history',
+  linkExactActiveClass: 'is-active',
   routes: [
     {
       path: '/',
