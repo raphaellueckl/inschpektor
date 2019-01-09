@@ -3,7 +3,7 @@
 
     <div class="logo" style="display: flex">
       <router-link to="/" class="navbar-brand">
-        <figure class="image is-96x96" style="margin-left: 6px; margin-right: 6px">
+        <figure class="image is-96x75" style="margin-left: 6px; margin-right: 6px">
           <img src="@/assets/logo.png">
         </figure>
       </router-link>
@@ -77,5 +77,10 @@
 
   a.navbar-item.is-active {
     background-color: hsl(0, 0%, 96%) !important;
+  }
+
+  .image.is-96x75 {
+    height: 75px;
+    width: 96px;
   }
 </style>
