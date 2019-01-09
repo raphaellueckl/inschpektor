@@ -14,7 +14,7 @@
         <div class="field">
           <label class="label">Password:</label>
           <div class="control">
-            <input v-model="password" class="input" type="password" placeholder="Choose wisely...">
+            <input v-model="password" class="input" type="password" placeholder="Enter Password...">
           </div>
         </div>
       </div>
