@@ -141,7 +141,7 @@ class NeighborResource {
 
         this.removeNeighborFromUserNameTable(fullAddress);
 
-        IRI_SERVICE.removeNeighborToIriConfig(fullAddress);
+        IRI_SERVICE.removeNeighborFromIriConfig(fullAddress);
 
         res.status(200).send();
       })
