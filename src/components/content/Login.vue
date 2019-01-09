@@ -20,28 +20,26 @@
       </div>
     </nav>
 
-    <nav class="level">
-      <div class="level-item has-text-centered">
-        <div class="control">
-          <button class="button is-success"
-                  @click="login(password); submitted = true"
-                  :class="{'is-loading': submitted}"
-                  :disabled="!password">
-            Submit
-          </button>
-        </div>
-      </div>
-    </nav>
+    <RoundedButton type="ok" :click="loginClicked" :disabled="!password">
+      Login
+    </RoundedButton>
   </div>
 </template>
 
 <script>
   import {mapActions} from 'vuex';
+  import RoundedButton from './utility/RoundedButton';
 
   export default {
     name: 'Login',
+    components: {
+      RoundedButton
+    },
     methods: {
-      ...mapActions(['login'])
+      ...mapActions(['login']),
+      loginClicked: function () {
+        this.login(this.password);
+      }
     },
     data: () => {
       return {
