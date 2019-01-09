@@ -112,7 +112,6 @@ class NodeResource {
         NEIGHBOR_RESOURCE.deleteNeighborHistory();
         res.status(200).send();
       })
-
     });
   }
 
