@@ -40,4 +40,8 @@
   p {
     word-wrap: break-word;
   }
+
+  article {
+    background: rgb(0, 0, 0, 0);
+  }
 </style>
