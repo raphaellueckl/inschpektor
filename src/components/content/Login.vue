@@ -10,17 +10,22 @@
     <br>
 
     <nav class="level">
-      <div class="level-item has-text-centered">
-        <div class="field">
-          <label class="label">Password:</label>
-          <div class="control">
-            <input v-model="password" class="input" type="password" placeholder="Enter Password...">
-          </div>
-        </div>
+      <div class="level-item">
+    <div class="field">
+      <label class="label">Password</label>
+      <div class="control has-icons-right">
+        <input v-model="password" class="input"
+               :class="[authenticated === false && loginAttempted ? 'is-danger' : '']"
+               type="text"
+               placeholder="Enter Password...">
+        <span v-if="authenticated === false && loginAttempted" class="icon is-small is-right" :key="1">
+                        <font-awesome-icon icon="exclamation-triangle"/>
+                      </span>
+      </div>
+      <p v-if="authenticated === false && loginAttempted" class="help is-danger">Wrong Password!</p>
+    </div>
       </div>
     </nav>
-
-    <h2 v-if="authenticated === false && loginAttempted">Sorry, wrong PW!</h2>
 
     <RoundedButton type="ok" :click="loginClicked" :disabled="!password">
       Login
