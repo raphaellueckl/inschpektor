@@ -74,4 +74,8 @@
   .navbar-item {
     border-bottom-left-radius: 20px;
   }
+
+  a.navbar-item.is-active {
+    background-color: hsl(0, 0%, 96%) !important;
+  }
 </style>
