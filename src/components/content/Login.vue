@@ -20,6 +20,8 @@
       </div>
     </nav>
 
+    <h2 v-if="authenticated === false && loginAttempted">Sorry, wrong PW!</h2>
+
     <RoundedButton type="ok" :click="loginClicked" :disabled="!password">
       Login
     </RoundedButton>
@@ -28,6 +30,7 @@
 
 <script>
   import {mapActions} from 'vuex';
+  import {mapGetters} from 'vuex';
   import RoundedButton from './utility/RoundedButton';
 
   export default {
@@ -39,20 +42,25 @@
       ...mapActions(['login']),
       loginClicked: function () {
         this.login(this.password);
+        this.loginAttempted = true;
       }
     },
     data: () => {
       return {
         password: undefined,
-        submitted: false
+        submitted: false,
+        loginAttempted: false
       };
     },
     created() {
       this.$store.subscribe((mutation, state) => {
-        if (mutation.type === 'USER_AUTHENTICATED') {
+        if (mutation.type === 'USER_AUTHENTICATED' && mutation.payload === true) {
           this.$router.push('/');
         }
       });
+    },
+    computed: {
+      ...mapGetters(['authenticated'])
     }
   };
 </script>

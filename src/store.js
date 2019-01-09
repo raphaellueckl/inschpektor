@@ -83,7 +83,10 @@ const actions = {
       commit('SET_TOKEN', response.data.token);
       commit('USER_AUTHENTICATED', true);
     })
-    .catch(error => console.log('Unsuccessful login attempt.', error.message));
+    .catch(error => {
+      commit('USER_AUTHENTICATED', false);
+      console.log('Unsuccessful login attempt.', error.message);
+    });
   },
   logout({commit}) {
     return new Promise((resolve) => {
