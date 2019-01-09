@@ -68,7 +68,7 @@ Also keep in mind that I run channels where I post updates:
 
 ### Known Bugs
 
-- The iri file currently needs to contain at least one neighbor, for inschpektor being able to add and remove neighbors.
+- [Currently none]
 
 -------
 
