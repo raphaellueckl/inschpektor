@@ -7,11 +7,11 @@
             <h1 class="title">Danger Zone</h1>
 
             <div class="flex-container">
-              <RoundedButton class="centered" :click="restartNode" type="danger" spin="2000"
+              <RoundedButton class="centered" :click="restartNode" type="danger" spin="10000"
                              modal-text="This action will restart your node. This will cause some connection issues from INSCHPEKTOR, but they will resolve automatically after the node is restarted.">
                 Restart Node
               </RoundedButton>
-              <RoundedButton class="centered" :click="resetDatabase" type="danger" spin="2000"
+              <RoundedButton class="centered" :click="resetDatabase" type="danger" spin="10000"
                              modal-text="Reset inschpektor to factory default mode. This will not affect your IOTA node, but INSCHPEKTOR needs to be reconfigured and the internal data will vanish. Do not forget to do a backup of your nicknames ('Save Nicknames') first!">
                 Reset Inschpektor
               </RoundedButton>
