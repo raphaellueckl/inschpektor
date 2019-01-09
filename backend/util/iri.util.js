@@ -23,19 +23,40 @@ class IriUtil {
     };
   }
 
-  // Only works if at least one neighbor is in the iri file
   writeNeighborToIriConfig(fullAddress) {
-    fs.readFile(this.iriFileLocation, 'utf-8', (err, data) => {
-      let neighborsKeyword = 'NEIGHBORS = ';
-      if (data.includes(neighborsKeyword)) {
-        const insertLocation = data.indexOf(neighborsKeyword) + neighborsKeyword.length;
-        const start = data.substring(0, insertLocation);
-        const end = data.substring(insertLocation);
-        const middle = `${fullAddress} `;
-        const withAddedNeighbor = start + middle + end;
-        fs.writeFile(this.iriFileLocation, withAddedNeighbor, (err) => {
+    fs.readFile(this.iriFileLocation, 'utf-8', (err, iriConfigContent) => {
+      if (err) throw err;
+      let neighborsKeywordMin = 'NEIGHBORS=';
+      let neighborsKeywordMax = 'NEIGHBORS = ';
+      let iriConfigContentLowerCase = iriConfigContent.toLowerCase();
+      const allLines = iriConfigContentLowerCase.split(/\r\n|\n/);
+      let indexOfNeighborsLine = -1;
+      let currentlyPersistedNeighborsLine = '';
+      allLines.forEach((line, index) => {
+        if (line.toUpperCase().startsWith(neighborsKeywordMax)) {
+          currentlyPersistedNeighborsLine = line.substring(neighborsKeywordMax.length);
+          indexOfNeighborsLine = index;
+        } else if (line.toUpperCase().startsWith(neighborsKeywordMin)) {
+          currentlyPersistedNeighborsLine = line.substring(neighborsKeywordMin.length);
+          indexOfNeighborsLine = index;
+        }
+      });
+
+      if (indexOfNeighborsLine === -1) {
+        const newNeighborLine = `\n${neighborsKeywordMax}${fullAddress}\n`;
+        iriConfigContent += newNeighborLine;
+        fs.writeFile(this.iriFileLocation, iriConfigContent, (err) => {
           if (err) console.error('Failed to add neighbor in iri. Permission error or wrong path.', err.message);
         });
+      } else {
+        if (!currentlyPersistedNeighborsLine.includes(fullAddress)) {
+          currentlyPersistedNeighborsLine += ` ${fullAddress}`;
+          allLines[indexOfNeighborsLine] = `${neighborsKeywordMax}${currentlyPersistedNeighborsLine}`;
+          const newIriConfigContent = allLines.join('\n');
+          fs.writeFile(this.iriFileLocation, newIriConfigContent, (err) => {
+            if (err) console.error('Failed to add neighbor in iri. Permission error or wrong path.', err.message);
+          });
+        }
       }
     });
   }
@@ -44,6 +65,7 @@ class IriUtil {
   removeNeighborToIriConfig(fullAddress) {
     if (fs.existsSync(this.iriFileLocation)) {
       fs.readFile(this.iriFileLocation, 'utf-8', (err, data) => {
+        if (err) throw err;
         if (data.includes(fullAddress)) {
           const withRemovedNeighbor = data.replace(`${fullAddress} `, '');
           fs.writeFile(this.iriFileLocation, withRemovedNeighbor, (err) => {
