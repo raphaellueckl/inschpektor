@@ -37,7 +37,7 @@
     data: function () {
       return {
         isLoading: false,
-        buttonType: this.type === 'ok' ? 'is-link' : this.type === 'danger' ? 'is-danger' : '',
+        buttonType: this.type === 'ok' ? 'is-link' : this.type === 'danger' ? 'is-danger' : this.type === 'success' ? 'is-success' : '',
         openModal: false
       };
     },

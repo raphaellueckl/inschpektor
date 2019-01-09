@@ -27,7 +27,7 @@
       </div>
     </nav>
 
-    <RoundedButton type="ok" :click="loginClicked" :disabled="!password">
+    <RoundedButton type="success" :click="loginClicked" :disabled="!password">
       Login
     </RoundedButton>
   </div>
