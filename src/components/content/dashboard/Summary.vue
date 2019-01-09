@@ -1,7 +1,7 @@
 <template>
   <div v-if="neighbors">
     <article class="message" :class="[issues(neighbors).length === 0 ? 'is-success' : 'is-warning']">
-      <div class="message-header black-text" v-on:click="showContent = !showContent">
+      <div class="message-header black-text" @click="showContent = !showContent">
         <p>Summary - Neighbors: {{neighbors.length}}</p>
 
         <a v-if="showContent" class="button black-text" :class="[issues(neighbors).length === 0 ? 'is-success' : 'is-warning']"
