@@ -14,9 +14,10 @@
     <div class="field">
       <label class="label">Password</label>
       <div class="control has-icons-right">
-        <input v-model="password" class="input"
+        <input v-model="password"
+               class="input"
                :class="[authenticated === false && loginAttempted ? 'is-danger' : '']"
-               type="text"
+               type="password"
                placeholder="Enter Password...">
         <span v-if="authenticated === false && loginAttempted" class="icon is-small is-right" :key="1">
                         <font-awesome-icon icon="exclamation-triangle"/>
