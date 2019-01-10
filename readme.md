@@ -16,7 +16,7 @@ Check https://nodejs.org/en/download/ and download & install the version for you
 
 **Install inschpektor:** Run `sudo npm i -g inschpektor --unsafe-perm`
 
-`--unsafe-perm` is needed on linux. It was not needed on my MacOS and I'm not sure about windows. The reason are the npm submodules that need to run with sudo permissions too (because of the bcrypt dependency).
+`--unsafe-perm` is needed on linux. It was not needed on my MacOS and I'm not sure about windows. The reason are the npm submodules that need to run with sudo permissions too (the bcrypt dependency leads to this necessity).
 
 ### Running after installation
 
