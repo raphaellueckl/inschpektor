@@ -41,7 +41,7 @@ To get the newest version (or ignore, if you already have it), you can just run 
 
 You can find an address within the 'About' section of inschpektor or use this one:
 
-IPXS9YLKJMODKUBHOXRHSUOMWYCBAKYGRCNLH9RAEP9NXRXXYPGBZBVQQWCMLNOHZQRTOGIRMTISGXAVAGASBFLAUB
+IZ99FQWJUQJCDLBSUOEDZIVROSARFYLXJWPZNAXQPCCGAHCUWKRE9RNHMGNHZTAIZHPUDV9HMSPNJLYSXPNEPTRHUW
 
 If you want to show some love, I always appreciate it. :)
 
