@@ -1,6 +1,7 @@
 <template>
   <div class="bottom-margin">
-    <div class="columns header">
+
+    <div class="columns header not-on-mobile">
       <div class="column is-one-fifth">
         Username
       </div>
@@ -52,5 +53,11 @@
 
   .bottom-margin {
     margin-bottom: 25px;
+  }
+
+  @media screen and (max-width: 768px) {
+    .not-on-mobile {
+        display: none;
+    }
   }
 </style>

@@ -57,16 +57,6 @@
     border-radius: 4px;
   }
 
-  .horizontal-grid {
-    display: grid;
-    grid-template-columns: 10fr 1fr;
-    grid-gap: 10px;
-  }
-
-  .center-checkmark {
-    padding-top: 100%;
-  }
-
   .mobile-only {
     display: none;
   }
