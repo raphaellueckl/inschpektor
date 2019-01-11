@@ -50,8 +50,7 @@
 
 <style scoped>
   .columns {
-    background-color: rgb(0, 159, 255, 0.85);
-    color: #fff;
+    background-color: hsl(204, 20%, 73%);
     margin-top: 4px;
     border-radius: 4px;
   }
