@@ -52,7 +52,7 @@
 
 <style scoped>
   .columns {
-    background-color: hsl(204, 20%, 73%);
+    background-color: hsl(0, 0%, 75%);
     margin-top: 4px;
     border-radius: 4px;
   }
