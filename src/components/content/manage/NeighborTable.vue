@@ -45,7 +45,6 @@
 <style scoped>
   .columns.header {
     background-color: hsl(141, 71%, 48%);
-    color: #fff;
     border-radius: 4px;
     margin-top: 4px;
     font-weight: bold;
