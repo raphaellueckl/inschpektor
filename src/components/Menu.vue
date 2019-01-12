@@ -64,7 +64,7 @@
 
 <style scoped>
   .__online {
-    background: hsl(141, 71%, 48%);
+    background: hsl(141, 71%, 60%);
   }
 
   .__offline {
