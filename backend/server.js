@@ -1,6 +1,6 @@
 #!/usr/bin/env node
 
-require('console-stamp')(console, { pattern: 'dd/mm/yyyy HH:MM:ss.l' });
+require('../node_modules/console-stamp')(console, { pattern: 'dd/mm/yyyy HH:MM:ss.l' });
 const fs = require('fs');
 
 const express = require('express');
