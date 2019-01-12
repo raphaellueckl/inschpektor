@@ -68,7 +68,7 @@
   }
 
   .__offline {
-    background: hsl(348, 100%, 61%);
+    background: hsl(356, 100%, 72%);
   }
 
   .navbar-item {
