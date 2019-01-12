@@ -68,6 +68,7 @@ Also keep in mind that I run channels where I post updates:
 
 ### Known Bugs
 
+- If you upgrade to a newer version, npm often gets into a conflict that takes a lot of time to resolve. I currently cannot explain the behaviour. This has major prio and delays a final release.
 - Sometimes, for whatever reason, you add an IP address to your iri config. But what you get from "getNeighbors" is a domain resolving to that IP address. I have no idea why iri is programmed like that, but if that is the case, some neighbors will show up as "temporary neighbor" that is apparently not persisted in your iri config, which is wrong. I hope I can find an easy way around this.
 
 -------
