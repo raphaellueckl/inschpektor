@@ -50,7 +50,7 @@
   }
 
   .is-faulty {
-    background-color: hsl(356, 77%, 66%);
+    background-color: hsl(356, 100%, 72%);
   }
 
   .tile.is-child.notification {
