@@ -1,4 +1,4 @@
-require('../node_modules/console-stamp')(console, { pattern: 'dd/mm/yyyy HH:MM:ss.l' });
+require('../../node_modules/console-stamp')(console, { pattern: 'dd/mm/yyyy HH:MM:ss.l' });
 const IRI_SERVICE = require('./iri.util.js');
 const USER_RESOURCE = require('../resource/user.resource.js');
 const NODE_RESOURCE = require('../resource/node.resource.js');
