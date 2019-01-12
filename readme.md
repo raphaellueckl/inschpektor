@@ -52,7 +52,7 @@ Find me on Telegram @codepleb or on the iota discord codepleb.net#9990 for direc
 Also keep in mind that I run channels where I post updates:
 
 - Twitter: https://twitter.com/codepleb4
-- Telegram Broadcast: https://twitter.com/codepleb4
+- Telegram Broadcast: https://t.me/inschpektor
 
 ## Tips & Help
 
