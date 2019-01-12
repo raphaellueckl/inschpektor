@@ -10,7 +10,20 @@ class IriUtil {
     this.iriFileLocation = null;
   }
 
-  createIriRequest(command, ip = this.iriIp) {
+  createIriRequest(command) {
+    return {
+      url: `${this.protocol}://${this.iriIp}:${this.iriPort}`,
+      data: {command},
+      method: 'post',
+      headers: {
+        'Content-Type': 'application/json',
+        'X-IOTA-API-Version': '1'
+      },
+      timeout: 10000
+    };
+  }
+
+  createIriRequestForNeighborNode(command, ip) {
     return {
       url: `${this.protocol}://${ip}:${this.iriPort}`,
       data: {command},
