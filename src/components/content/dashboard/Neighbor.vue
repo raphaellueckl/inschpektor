@@ -46,11 +46,11 @@
   }
 
   .is-premium {
-    background-color: hsl(141, 71%, 75%)
+    background-color: hsl(141, 71%, 70%);
   }
 
   .is-faulty {
-    background-color: hsl(356, 90%, 65%);
+    background-color: hsl(356, 77%, 66%);
   }
 
   .tile.is-child.notification {
