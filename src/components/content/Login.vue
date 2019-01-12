@@ -48,7 +48,7 @@
       ...mapActions(['login']),
       loginClicked: function () {
         this.login(this.password);
-        this.loginAttempted = true;
+        setTimeout(() => this.loginAttempted = true, 500);
       }
     },
     data: () => {
