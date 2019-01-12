@@ -50,7 +50,7 @@ class NeighborResource {
           const allRequests = [];
           for (let neighbor of activeNeighbors) {
             allRequests.push(new Promise((resolve) => {
-                axios(IRI_SERVICE.createIriRequest('getNodeInfo', neighbor.address.split(':')[0]))
+                axios(IRI_SERVICE.createIriRequestForNeighborNode('getNodeInfo', neighbor.address.split(':')[0]))
                 .then(nodeInfoResponse => {
                   let nodeInfo = nodeInfoResponse.data;
                   const oldestEntry = rows.find(row => neighbor.address === row.address);
