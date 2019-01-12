@@ -7,7 +7,7 @@
       <div></div>
     </div>
     <div class="animated-info-text">
-      There might be a problem getting data from your node. If you access it remotely, please don't forget to allow at least the reading commands.
+      There might be a problem getting data from your node. If you access it remotely, please do not forget to allow at least the reading commands on your IRI.
     </div>
   </div>
 </template>
