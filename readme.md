@@ -12,7 +12,7 @@ You need a recent version of node to successfully run this app (10.8+):
 
 Check https://nodejs.org/en/download/ and download & install the version for your system.
 
-**Ubuntu users only:** You need to install the `build-essentail` package first, if you do not already have it: `sudo apt install build-essential`
+**Ubuntu users only:** You need to install the `build-essential` package first, if you do not already have it: `sudo apt install build-essential`
 
 **Install inschpektor:** Run `sudo npm i -g inschpektor --unsafe-perm`
 
@@ -52,7 +52,7 @@ Find me on Telegram @codepleb or on the iota discord codepleb.net#9990 for direc
 Also keep in mind that I run channels where I post updates:
 
 - Twitter: https://twitter.com/codepleb4
-- Telegram Broadcast: https://twitter.com/codepleb4
+- Telegram Broadcast: https://t.me/inschpektor
 
 ## Tips & Help
 
@@ -68,6 +68,7 @@ Also keep in mind that I run channels where I post updates:
 
 ### Known Bugs
 
+- If you upgrade to a newer version, npm often gets into a conflict that takes a lot of time to resolve. I currently cannot explain the behaviour. This has major prio and delays a final release.
 - Sometimes, for whatever reason, you add an IP address to your iri config. But what you get from "getNeighbors" is a domain resolving to that IP address. I have no idea why iri is programmed like that, but if that is the case, some neighbors will show up as "temporary neighbor" that is apparently not persisted in your iri config, which is wrong. I hope I can find an easy way around this.
 
 -------
