@@ -63,7 +63,6 @@ Also keep in mind that I run channels where I post updates:
 
 - Support for multiple nodes
 - Notifications
-- Improve mobile layout
 - Unit tests 😳
 
 ### Known Bugs
