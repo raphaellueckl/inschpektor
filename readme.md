@@ -12,6 +12,9 @@ You need a recent version of node to successfully run this app (10.8+):
 
 Check https://nodejs.org/en/download/ and download & install the version for your system.
 
+If you are on a debian linux system (Ubuntu for example), all you need to do is run this command: `sudo apt-get purge nodejs -y && curl -sL https://deb.nodesource.com/setup_10.x | sudo -E bash - && sudo apt-get update -yqq --fix-missing && sudo apt-get install -y nodejs && sudo npm i npm@latest -g`
+If you are not on a debian system, check this link and install nodejs for your system: https://nodejs.org/en/download/
+
 **Ubuntu users only:** You need to install the `build-essential` package first, if you do not already have it: `sudo apt install build-essential`
 
 **Install inschpektor:** Run `sudo npm i -g inschpektor --unsafe-perm`
