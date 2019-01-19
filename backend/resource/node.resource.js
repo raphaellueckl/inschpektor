@@ -11,7 +11,7 @@ const SALT = 11;
 
 class NodeResource {
 
-  constructor(props) {
+  constructor() {
     this.currentOwnNodeInfo = undefined;
     this.persistedNeighbors = undefined;
     this.restartNodeCommand = undefined;
@@ -25,6 +25,7 @@ class NodeResource {
       }
       axios(IRI_SERVICE.createIriRequest('getNodeInfo'))
       .then(response => {
+        this.currentOwnNodeInfo = response.data;
         res.json(response.data);
       })
       .catch(error => {
