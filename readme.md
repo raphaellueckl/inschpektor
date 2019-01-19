@@ -75,7 +75,7 @@ Also keep in mind that I run channels where I post updates:
 
 ### Known Bugs
 
-- Sometimes, for whatever reason, you add an IP address to your iri config. But what you get from "getNeighbors" is a domain resolving to that IP address. I have no idea why iri is programmed like that, but if that is the case, some neighbors will show up as "temporary neighbor" that is apparently not persisted in your iri config, which is wrong. I hope I can find an easy way around this.
+- If you have a premium neighbor which uses a port other than the standard 14265, you won't get the additional info from his node and he won't show up as premium in your overview. It's more like a "not fully complete" feature instead of a bug though.
 
 -------
 
