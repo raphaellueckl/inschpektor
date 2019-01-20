@@ -52,7 +52,7 @@ app.listen(app.get('port'), () => {
 });
 
 async function theFetcher() {
-  function fetch() {
+  function fetchNeighborsAndNodeInfo() {
     if (IRI_SERVICE.iriIp) {
       axios(IRI_SERVICE.createIriRequest('getNeighbors'))
       .then(response => {
@@ -84,13 +84,13 @@ async function theFetcher() {
   }
 
   while (true) {
-    fetch();
+    fetchNeighborsAndNodeInfo();
 
     let timekeeper = new Promise((resolve, reject) => {
       setTimeout(() => resolve(), 15000);
     });
 
-    let result = await timekeeper;
+    await timekeeper;
   }
 }
 
