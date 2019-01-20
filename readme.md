@@ -1,4 +1,4 @@
-## INSCHPEKTOR - Status: Beta
+## INSCHPEKTOR
 
 This is a manager for your IOTA node with focus on simplicity and user experience. It will take a lot of manual work off your shoulders. :)
 
@@ -44,6 +44,9 @@ When you first open the webapp (or when you clicked the 'Reset Inschpektor' butt
 ### Update
 
 To get the newest version (or ignore, if you already have it), you can just run the installation command again and it will do the rest for you.
+
+### Video Instructions
+I recorded videos on how to install and use inschpektor. If you want, look them up here: https://www.youtube.com/watch?v=EjXs7kpBqjQ&list=PLAjtvx6a60HLvuLDphPaFRhD3Oe0NVn9J
 
 ### Donations
 
