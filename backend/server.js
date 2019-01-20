@@ -1,20 +1,19 @@
 #!/usr/bin/env node
 
 require('../node_modules/console-stamp')(console, { pattern: 'dd/mm/yyyy HH:MM:ss.l' });
-const fs = require('fs');
 
 const express = require('express');
 const axios = require('axios');
 const history = require('connect-history-api-fallback');
 const sqlite3 = require('sqlite3').verbose();
-const bcrypt = require('bcrypt');
 
-const IRI_SERVICE = require('./util/iri.util.js');
-const DB_UTIL = require('./util/db.util.js');
-const AUTH_UTIL = require('./util/auth.util.js');
-const USER_RESOURCE = require('./resource/user.resource.js');
-const NODE_RESOURCE = require('./resource/node.resource.js');
-const NEIGHBOR_RESOURCE = require('./resource/neighbor.resource.js');
+const IRI_SERVICE = require('./util/iri.util');
+const DB_UTIL = require('./util/db.util');
+const AUTH_UTIL = require('./util/auth.util');
+const USER_RESOURCE = require('./resource/user.resource');
+const NODE_RESOURCE = require('./resource/node.resource');
+const NODE_STATE = require('./state/node.state');
+const NEIGHBOR_RESOURCE = require('./resource/neighbor.resource');
 
 const app = express();
 app.set('port', (process.env.PORT || 8732));
@@ -78,7 +77,7 @@ async function theFetcher() {
 
       axios(IRI_SERVICE.createIriRequest('getNodeInfo'))
       .then(nodeInfoResponse => {
-        NODE_RESOURCE.currentOwnNodeInfo = nodeInfoResponse.data;
+        NODE_STATE.currentOwnNodeInfo = nodeInfoResponse.data;
       })
       .catch(error => console.log('Failed to fetch own node info.', error.message));
     }

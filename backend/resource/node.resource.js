@@ -4,18 +4,13 @@ const axios = require('axios');
 const IRI_SERVICE = require('../util/iri.util');
 const USER_RESOURCE = require('./user.resource');
 const NEIGHBOR_RESOURCE = require('./neighbor.resource');
+const NODE_STATE = require('../state/node.state');
 const AUTH_UTIL = require('../util/auth.util');
 
 const BASE_URL = '/api';
 const SALT = 11;
 
 class NodeResource {
-
-  constructor() {
-    this.currentOwnNodeInfo = undefined;
-    this.persistedNeighbors = undefined;
-    this.restartNodeCommand = undefined;
-  }
 
   init(app, db) {
     app.get(`${BASE_URL}/node-info`, (req, res) => {
@@ -25,7 +20,7 @@ class NodeResource {
       }
       axios(IRI_SERVICE.createIriRequest('getNodeInfo'))
       .then(response => {
-        this.currentOwnNodeInfo = response.data;
+        NODE_STATE.currentOwnNodeInfo = response.data;
         res.json(response.data);
       })
       .catch(error => {
@@ -43,7 +38,7 @@ class NodeResource {
       const port = req.body.port;
       const password = req.body.password;
       const iriFileLocation = req.body.iriPath;
-      this.restartNodeCommand = req.body.restartNodeCommand;
+      NODE_STATE.restartNodeCommand = req.body.restartNodeCommand;
 
       if (!newIriIp || !port) {
         res.status(404).send();
@@ -60,7 +55,7 @@ class NodeResource {
         USER_RESOURCE.loginToken = new Date().toString().split('').reverse().join('');
 
         const updateHostIp = db.prepare('REPLACE INTO host_node (id, protocol, ip, port, hashed_pw, iri_path, login_token, restart_node_command) VALUES(?, ?, ?, ?, ?, ?, ?, ?)');
-        updateHostIp.run(0, IRI_SERVICE.protocol, IRI_SERVICE.iriIp, IRI_SERVICE.iriPort, USER_RESOURCE.hashedPw, IRI_SERVICE.iriFileLocation, USER_RESOURCE.loginToken, this.restartNodeCommand);
+        updateHostIp.run(0, IRI_SERVICE.protocol, IRI_SERVICE.iriIp, IRI_SERVICE.iriPort, USER_RESOURCE.hashedPw, IRI_SERVICE.iriFileLocation, USER_RESOURCE.loginToken, NODE_STATE.restartNodeCommand);
 
         res.json({
           token: USER_RESOURCE.loginToken
@@ -105,7 +100,7 @@ class NodeResource {
         res.status(401).send();
         return;
       }
-      exec(this.restartNodeCommand, (error, stdout, stderr) => {
+      exec(NODE_STATE.restartNodeCommand, (error, stdout, stderr) => {
         if (error || stderr) {
           res.status(500).send();
           return;
