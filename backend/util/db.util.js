@@ -1,8 +1,8 @@
 require('../../node_modules/console-stamp')(console, { pattern: 'dd/mm/yyyy HH:MM:ss.l' });
-const IRI_SERVICE = require('./iri.util.js');
-const USER_RESOURCE = require('../resource/user.resource.js');
-const NODE_RESOURCE = require('../resource/node.resource.js');
-const NEIGHBOR_RESOURCE = require('../resource/neighbor.resource.js');
+const IRI_SERVICE = require('./iri.util');
+const USER_RESOURCE = require('../resource/user.resource');
+const NODE_STATE = require('../state/node.state');
+const NEIGHBOR_RESOURCE = require('../resource/neighbor.resource');
 
 class DbUtil {
 
@@ -52,7 +52,7 @@ class DbUtil {
       USER_RESOURCE.hashedPw = row ? row.hashed_pw : null;
       USER_RESOURCE.loginToken = row ? row.login_token : null;
       IRI_SERVICE.iriFileLocation = row ? row.iri_path : null;
-      NODE_RESOURCE.restartNodeCommand = row ? row.restart_node_command : null;
+      NODE_STATE.restartNodeCommand = row ? row.restart_node_command : null;
     });
 
     db.all('select * from neighbor_data', [], (err, rows) => {
