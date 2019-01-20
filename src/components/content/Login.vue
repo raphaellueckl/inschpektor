@@ -28,7 +28,7 @@
       </div>
     </nav>
 
-    <RoundedButton type="success" :click="loginClicked" :disabled="!password">
+    <RoundedButton type="success" :click="loginClicked" :disabled="!password" spin="1000">
       Login
     </RoundedButton>
   </div>
@@ -48,7 +48,7 @@
       ...mapActions(['login']),
       loginClicked: function () {
         this.login(this.password);
-        setTimeout(() => this.loginAttempted = true, 500);
+        setTimeout(() => this.loginAttempted = true, 1000);
       }
     },
     data: () => {
