@@ -50,12 +50,14 @@ class NeighborResource {
           const allRequests = [];
           for (let neighbor of activeNeighbors) {
             allRequests.push(new Promise((resolve) => {
+              let startDate = new Date();
                 axios(IRI_SERVICE.createIriRequestForNeighborNode('getNodeInfo', neighbor.address.split(':')[0]))
                 .then(nodeInfoResponse => {
+                  let ping = new Date() - startDate;
                   let nodeInfo = nodeInfoResponse.data;
                   const oldestEntry = rows.find(row => neighbor.address === row.address);
 
-                  const resultNeighbor = this.createResultNeighbor(neighbor, oldestEntry, nodeInfo);
+                  const resultNeighbor = this.createResultNeighbor(neighbor, oldestEntry, nodeInfo, ping);
 
                   resultNeighbors.push(resultNeighbor);
                   resolve(resultNeighbor);
@@ -175,7 +177,7 @@ class NeighborResource {
     db.run(`DELETE FROM neighbor`);
   }
 
-  createResultNeighbor(neighbor, oldestEntry, nodeInfo) {
+  createResultNeighbor(neighbor, oldestEntry, nodeInfo = null, ping = null) {
     const resultNeighbor = {
       address: neighbor.address,
       iriVersion: nodeInfo ? nodeInfo.appVersion : null,
@@ -183,7 +185,8 @@ class NeighborResource {
       isActive: oldestEntry ? neighbor.numberOfNewTransactions > oldestEntry.numberOfNewTransactions : null,
       protocol: neighbor.connectionType,
       onlineTime: nodeInfo ? nodeInfo.time : null,
-      isFriendlyNode: neighbor.numberOfInvalidTransactions < neighbor.numberOfAllTransactions / 200
+      isFriendlyNode: neighbor.numberOfInvalidTransactions < neighbor.numberOfAllTransactions / 200,
+      ping: ping
     };
 
     const name = neighborUsernames.get(`${resultNeighbor.protocol}://${resultNeighbor.address}`);
