@@ -20,6 +20,9 @@
         <p>
           <strong>Iri-version:</strong><span class="align__right">{{neighbor.iriVersion === null ? 'N/A' : neighbor.iriVersion}}</span>
         </p>
+        <p>
+          <strong>Ping:</strong><span class="align__right">{{neighbor.ping === null ? 'N/A' : `${neighbor.ping} ms`}}</span>
+        </p>
       </div>
     </div>
   </article>
