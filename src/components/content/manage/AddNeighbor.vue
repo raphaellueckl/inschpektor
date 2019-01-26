@@ -37,23 +37,23 @@
                                     </div>
 
                                     <div class="field">
-                                        <label class="label">Node Port (Optional)</label>
+                                        <label class="label">Node Port</label>
                                         <div class="control has-icons-right">
-                                            <input v-model="ipAddress" class="input"
-                                                   :class="[ipAddress ? isCorrectAddress ? 'is-success' : 'is-danger' : '']"
+                                            <input v-model="port" class="input"
+                                                   :class="[portValidation === true ? 'is-success' : portValidation === false ? 'is-danger': '']"
                                                    type="text"
-                                                   placeholder="E.g. udp://123.32.123.123:14600 or tcp://neighbor-domain.net:15600">
-                                            <span v-if="this.ipAddress && isCorrectAddress"
+                                                   placeholder="E.g. 14267">
+                                            <span v-if="portValidation"
                                                   class="icon is-small is-right" :key="0">
                         <font-awesome-icon icon="check"/>
                       </span>
-                                            <span v-if="this.ipAddress && !isCorrectAddress"
+                                            <span v-if="portValidation === false"
                                                   class="icon is-small is-right" :key="1">
                         <font-awesome-icon icon="exclamation-triangle"/>
                       </span>
                                         </div>
-                                        <p v-if="!isCorrectAddress" class="help is-danger">Wrong node address
-                                            format!</p>
+                                        <p v-if="portValidation === false" class="help is-danger">Wrong format! Just
+                                            write a plain number between 0 and 65535</p>
                                     </div>
 
                                     <div class="field" v-if="iriFileLocation">
@@ -67,7 +67,7 @@
 
                                     <div class="field is-grouped">
                                         <div class="control">
-                                            <RoundedButton :disabled="ipAddress && !isCorrectAddress"
+                                            <RoundedButton :disabled="ipAddress && !isCorrectAddress || portValidation === false"
                                                            :click="addNeighborAndClearFields" type="ok" spin="2000">
                                                 Submit
                                             </RoundedButton>
@@ -100,7 +100,8 @@
             return {
                 name: '',
                 ipAddress: '',
-                writeToIriConfig: true
+                writeToIriConfig: true,
+                port: ''
             };
         },
         created() {
@@ -113,6 +114,11 @@
                 const startRegex = new RegExp(`^(udp|tcp):\\/\\/`);
                 const endRegex = new RegExp(`:[0-9]{2,5}$`);
                 return startRegex.test(this.ipAddress) && endRegex.test(this.ipAddress);
+            },
+            portValidation: function () {
+                if (this.port === '') return null;
+                else if (!isNaN(this.port) && parseInt(this.port, 10) >= 0 && parseInt(this.port, 10) <= 65535) return true;
+                else return false;
             }
         },
         methods: {
