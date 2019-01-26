@@ -26,6 +26,9 @@
                   <strong>Timestamp: </strong>{{nodeInfo.time === null ? null : nodeInfo.time | timespan}}
                 </p>
                 <p>
+                  <strong>Ping: </strong>{{nodeInfo.ping === null ? null : nodeInfo.ping}} ms
+                </p>
+                <p>
                   <strong>RAM Usage: </strong>
                   <progress class="progress is-success"
                             :value="nodeInfo.jreFreeMemory"

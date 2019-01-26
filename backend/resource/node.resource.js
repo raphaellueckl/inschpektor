@@ -18,10 +18,13 @@ class NodeResource {
         res.status(404).send('NODE_NOT_SET');
         return;
       }
+      const pingStart = new Date();
       axios(IRI_SERVICE.createIriRequest('getNodeInfo'))
       .then(response => {
+        const ping = new Date() - pingStart;
         NODE_STATE.currentOwnNodeInfo = response.data;
-        res.json(response.data);
+        NODE_STATE.currentOwnNodeInfo.ping = ping;
+        res.json(NODE_STATE.currentOwnNodeInfo);
       })
       .catch(error => {
         if (!IRI_SERVICE.iriIp) {
