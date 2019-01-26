@@ -9,11 +9,11 @@
                     <strong>Protocol:</strong><span class="align__right">{{neighbor.protocol === null ? 'N/A' : neighbor.protocol.toUpperCase()}}</span>
                 </p>
                 <p>
-                    <strong>Friendly Node:</strong><span
-                        class="align__right">{{neighbor.isFriendlyNode ? '✔️' : '❌'}}</span>
+                    <strong>Active:</strong><span class="align__right">{{neighbor.isActive === null ? 'N/A' : neighbor.isActive ? '✔️' : '❌' }}</span>
                 </p>
                 <p>
-                    <strong>Active:</strong><span class="align__right">{{neighbor.isActive === null ? 'N/A' : neighbor.isActive ? '✔️' : '❌' }}</span>
+                    <strong>Friendly Node:</strong><span
+                        class="align__right">{{neighbor.isFriendlyNode ? '✔️' : '❌'}}</span>
                 </p>
                 <!-- ## Premium neighbor information-->
                 <p v-if="neighbor.isSynced">
