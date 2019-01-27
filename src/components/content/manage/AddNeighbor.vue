@@ -125,15 +125,17 @@
             ...mapActions(['addNeighbor']),
             addNeighborAndClearFields: function () {
                 this.addNeighbor({
-                    name,
+                    name: this.name,
                     address: this.ipAddress,
-                    writeToIriConfig: this.writeToIriConfig && !!this.iriFileLocation
+                    writeToIriConfig: this.writeToIriConfig && !!this.iriFileLocation,
+                    port: this.port
                 });
                 this.clearFields();
             },
             clearFields: function () {
                 this.name = '';
                 this.ipAddress = '';
+                this.port = '';
             },
         },
         components: {

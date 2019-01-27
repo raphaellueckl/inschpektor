@@ -37,7 +37,8 @@ class DbUtil {
       db.run(
         `CREATE TABLE IF NOT EXISTS neighbor_data (
         address TEXT PRIMARY KEY,
-        name TEXT
+        name TEXT,
+        port INTEGER
       )`
       );
     });
@@ -58,6 +59,7 @@ class DbUtil {
     db.all('select * from neighbor_data', [], (err, rows) => {
       rows.forEach(r => {
         NEIGHBOR_RESOURCE.intitializeNeighborUsernname(r.address, r.name ? r.name : null);
+        NEIGHBOR_RESOURCE.intitializeNeighborIriMainPort(r.address, r.port ? r.port : null);
       });
     });
   }

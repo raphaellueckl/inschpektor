@@ -23,9 +23,9 @@ class IriUtil {
     };
   }
 
-  createIriRequestForNeighborNode(command, ip) {
+  createIriRequestForNeighborNode(command, neighbor, port) {
     return {
-      url: `${this.protocol}://${ip}:${this.iriPort}`,
+      url: `${this.protocol}://${neighbor.address.split(':')[0]}:${port ? port : '14265'}`,
       data: {command},
       method: 'post',
       headers: {

@@ -161,7 +161,8 @@ const actions = {
     axios.post('/api/neighbor', {
       name: neighborSubmission.name,
       address: neighborSubmission.address,
-      writeToIriConfig: neighborSubmission.writeToIriConfig
+      writeToIriConfig: neighborSubmission.writeToIriConfig,
+      port: neighborSubmission.port
     })
     .then(response => {
       dispatch('fetchNeighbors');
