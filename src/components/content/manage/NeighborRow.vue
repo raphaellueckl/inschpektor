@@ -1,12 +1,17 @@
 <template>
   <div class="columns">
+    <div class="column is-4">
+      <strong class="mobile-only">IP-Address:</strong> {{neighbor.address}}
+    </div>
     <div class="column is-one-fifth">
       <strong class="mobile-only">Nickname: </strong>
       <input v-model="neighbor.name" placeholder="Enter nickname..." class="input" type="text"
-             @input="addNeighborNick(neighbor)">
+             @input="addNeighborAdditionalData(neighbor)">
     </div>
-    <div class="column is-two-fifths">
-      <strong class="mobile-only">IP-Address:</strong> {{neighbor.address}}
+    <div class="column is-2">
+      <strong class="mobile-only">Node Port: </strong>
+      <input v-model="neighbor.port" placeholder="Enter port..." class="input" type="text"
+             @input="addNeighborAdditionalData(neighbor)">
     </div>
     <div class="column">
       <strong class="mobile-only">Active:</strong> {{neighbor.isActive === null ? 'N/A' : neighbor.isActive ? '✔️' : '❌' }}
@@ -41,7 +46,7 @@
       };
     },
     methods: {
-      ...mapActions(['addNeighborNick']),
+      ...mapActions(['addNeighborAdditionalData']),
       remove() {
         this.submitted = true;
         this.$store.dispatch('removeNeighbor', this.neighbor);

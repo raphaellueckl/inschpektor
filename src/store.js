@@ -169,8 +169,8 @@ const actions = {
     })
     .catch(error => console.log('Error adding neighbor'));
   },
-  addNeighborNick({commit}, neighbor) {
-    axios.post('/api/neighbor/nick', {name: neighbor.name, fullAddress: `${neighbor.protocol}://${neighbor.address}`})
+  addNeighborAdditionalData({commit}, neighbor) {
+    axios.post('/api/neighbor/additional-data', {name: neighbor.name, port: neighbor.port, fullAddress: `${neighbor.protocol}://${neighbor.address}`})
     .then(response => {
     })
     .catch(error => console.log('Error when setting nick for neighbor'));
