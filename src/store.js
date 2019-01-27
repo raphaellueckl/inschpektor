@@ -169,11 +169,17 @@ const actions = {
     })
     .catch(error => console.log('Error adding neighbor'));
   },
-  addNeighborAdditionalData({commit}, neighbor) {
-    axios.post('/api/neighbor/additional-data', {name: neighbor.name, port: neighbor.port, fullAddress: `${neighbor.protocol}://${neighbor.address}`})
+  setNeighborName({commit}, neighbor) {
+    axios.post('/api/neighbor/name', {name: neighbor.name, fullAddress: `${neighbor.protocol}://${neighbor.address}`})
     .then(response => {
     })
     .catch(error => console.log('Error when setting nick for neighbor'));
+  },
+  setNeighborPort({commit}, neighbor) {
+    axios.post('/api/neighbor/port', {port: neighbor.port, fullAddress: `${neighbor.protocol}://${neighbor.address}`})
+    .then(response => {
+    })
+    .catch(error => console.log('Error when setting port for neighbor'));
   },
   removeNeighbor({dispatch, commit}, neighbor) {
     const address = `${neighbor.protocol}://${neighbor.address}`;

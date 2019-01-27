@@ -6,12 +6,12 @@
     <div class="column is-one-fifth">
       <strong class="mobile-only">Nickname: </strong>
       <input v-model="neighbor.name" placeholder="Enter nickname..." class="input" type="text"
-             @input="addNeighborAdditionalData(neighbor)">
+             @input="setNeighborName(neighbor)">
     </div>
     <div class="column is-2">
       <strong class="mobile-only">Node Port: </strong>
       <input v-model="neighbor.port" placeholder="Enter port..." class="input" type="text"
-             @input="addNeighborAdditionalData(neighbor)">
+             @input="setNeighborPort(neighbor)">
     </div>
     <div class="column">
       <strong class="mobile-only">Active:</strong> {{neighbor.isActive === null ? 'N/A' : neighbor.isActive ? '✔️' : '❌' }}
@@ -46,7 +46,7 @@
       };
     },
     methods: {
-      ...mapActions(['addNeighborAdditionalData']),
+      ...mapActions(['setNeighborName', 'setNeighborPort']),
       remove() {
         this.submitted = true;
         this.$store.dispatch('removeNeighbor', this.neighbor);
