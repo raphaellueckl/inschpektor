@@ -16,16 +16,28 @@ class NeighborResource {
   init(app, database) {
     db = database;
 
-    app.post(`${BASE_URL}/neighbor/additional-data`, (req, res) => {
+    app.post(`${BASE_URL}/neighbor/name`, (req, res) => {
       if (!AUTH_UTIL.isUserAuthenticated(USER_RESOURCE.loginToken, req)) {
         res.status(401).send();
         return;
       }
       const name = req.body.name;
+      const fullAddress = req.body.fullAddress;
+
+      this.setNeighborName(fullAddress, name);
+
+      res.status(200).send();
+    });
+
+    app.post(`${BASE_URL}/neighbor/port`, (req, res) => {
+      if (!AUTH_UTIL.isUserAuthenticated(USER_RESOURCE.loginToken, req)) {
+        res.status(401).send();
+        return;
+      }
       const port = req.body.port;
       const fullAddress = req.body.fullAddress;
 
-      this.addNeighborAdditionalData(fullAddress, name, port);
+      this.setNeighborPort(fullAddress, port);
 
       res.status(200).send();
     });
@@ -36,7 +48,7 @@ class NeighborResource {
         return;
       }
       const neighbors = req.body;
-      neighbors.forEach(n => this.addNeighborAdditionalData(`${n.protocol}://${n.address}`, n.name, n.port));
+      neighbors.forEach(n => this.setNeighborAdditionalData(`${n.protocol}://${n.address}`, n.name, n.port));
 
       res.status(200).send();
     });
@@ -118,7 +130,7 @@ class NeighborResource {
         const removeNeighborEntriesWithAddress = db.prepare(`DELETE FROM neighbor where address=?`);
         removeNeighborEntriesWithAddress.run(fullAddress);
 
-        this.addNeighborAdditionalData(fullAddress, name, port);
+        this.setNeighborAdditionalData(fullAddress, name, port);
 
         if (writeToIriConfig) IRI_SERVICE.writeNeighborToIriConfig(fullAddress);
 
@@ -176,7 +188,7 @@ class NeighborResource {
     removeNeighborEntriesWithAddress.run(fullAddress);
   }
 
-  addNeighborAdditionalData(fullAddress, name, port) {
+  setNeighborAdditionalData(fullAddress, name, port) {
     const currentAdditionalDataForNeighbor = neighborAdditionalData.get(fullAddress);
     const oldName = currentAdditionalDataForNeighbor && currentAdditionalDataForNeighbor.name ? currentAdditionalDataForNeighbor.name : null;
     const oldPort = currentAdditionalDataForNeighbor && currentAdditionalDataForNeighbor.port ? currentAdditionalDataForNeighbor.port : null;
@@ -185,6 +197,26 @@ class NeighborResource {
 
     const stmt = db.prepare('REPLACE INTO neighbor_data (address, name, port) VALUES (?, ?, ?)');
     stmt.run(fullAddress, name, port);
+  }
+
+  setNeighborName(fullAddress, name) {
+    const currentAdditionalDataForNeighbor = neighborAdditionalData.get(fullAddress);
+    const oldPort = currentAdditionalDataForNeighbor && currentAdditionalDataForNeighbor.port ? currentAdditionalDataForNeighbor.port : null;
+
+    neighborAdditionalData.set(fullAddress, {name, port: oldPort});
+
+    const stmt = db.prepare('REPLACE INTO neighbor_data (address, name, port) VALUES (?, ?, ?)');
+    stmt.run(fullAddress, name, oldPort);
+  }
+
+  setNeighborPort(fullAddress, port) {
+    const currentAdditionalDataForNeighbor = neighborAdditionalData.get(fullAddress);
+    const oldName = currentAdditionalDataForNeighbor && currentAdditionalDataForNeighbor.name ? currentAdditionalDataForNeighbor.name : null;
+
+    neighborAdditionalData.set(fullAddress, {name: oldName, port});
+
+    const stmt = db.prepare('REPLACE INTO neighbor_data (address, name, port) VALUES (?, ?, ?)');
+    stmt.run(fullAddress, oldName, port);
   }
 
   deleteNeighborHistory() {
