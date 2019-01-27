@@ -2,11 +2,14 @@
   <div class="bottom-margin">
 
     <div class="columns header not-on-mobile">
+      <div class="column is-4">
+        IP
+      </div>
       <div class="column is-one-fifth">
         Username
       </div>
-      <div class="column is-two-fifths">
-        IP
+      <div class="column is-2">
+        Main Port
       </div>
       <div class="column">
         Active

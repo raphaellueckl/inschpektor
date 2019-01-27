@@ -15,16 +15,17 @@ class NeighborResource {
 
   init(app, database) {
     db = database;
-    app.post(`${BASE_URL}/neighbor/nick`, (req, res) => {
+
+    app.post(`${BASE_URL}/neighbor/additional-data`, (req, res) => {
       if (!AUTH_UTIL.isUserAuthenticated(USER_RESOURCE.loginToken, req)) {
         res.status(401).send();
         return;
       }
       const name = req.body.name;
+      const port = req.body.port;
       const fullAddress = req.body.fullAddress;
 
-      const currentAdditionalDataForNeighbor = neighborAdditionalData.get(fullAddress);
-      this.addNeighborAdditionalData(fullAddress, name, currentAdditionalDataForNeighbor && currentAdditionalDataForNeighbor.port ? currentAdditionalDataForNeighbor.port : null);
+      this.addNeighborAdditionalData(fullAddress, name, port);
 
       res.status(200).send();
     });
@@ -52,7 +53,7 @@ class NeighborResource {
 
           for (let neighbor of activeNeighbors) {
 
-            const additionalDataOfNeighbor = neighborAdditionalData.get(`${neighbor.protocol}://${neighbor.address.split(':')[0]}`);
+            const additionalDataOfNeighbor = neighborAdditionalData.get(`${neighbor.connectionType}://${neighbor.address}`);
 
             allRequests.push(new Promise((resolve) => {
               let startDate = new Date();
@@ -77,6 +78,7 @@ class NeighborResource {
               });
 
             }));
+
           }
 
           Promise.all(allRequests)
@@ -175,7 +177,11 @@ class NeighborResource {
   }
 
   addNeighborAdditionalData(fullAddress, name, port) {
-    neighborAdditionalData.set(fullAddress, {name, port});
+    const currentAdditionalDataForNeighbor = neighborAdditionalData.get(fullAddress);
+    const oldName = currentAdditionalDataForNeighbor && currentAdditionalDataForNeighbor.name ? currentAdditionalDataForNeighbor.name : null;
+    const oldPort = currentAdditionalDataForNeighbor && currentAdditionalDataForNeighbor.port ? currentAdditionalDataForNeighbor.port : null;
+
+    neighborAdditionalData.set(fullAddress, {name: name ? name : oldName, port: port ? port : oldPort});
 
     const stmt = db.prepare('REPLACE INTO neighbor_data (address, name, port) VALUES (?, ?, ?)');
     stmt.run(fullAddress, name, port);
