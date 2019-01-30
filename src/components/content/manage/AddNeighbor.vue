@@ -135,7 +135,7 @@
             clearFields: function () {
                 this.name = '';
                 this.ipAddress = '';
-                this.port = '';
+                this.port = '14265';
             },
         },
         components: {
