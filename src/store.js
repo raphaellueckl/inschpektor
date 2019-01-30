@@ -88,13 +88,6 @@ const actions = {
       console.log('Unsuccessful login attempt.', error.message);
     });
   },
-  logout({commit}) {
-    return new Promise((resolve) => {
-      localStorage.removeItem('token');
-      commit('SET_TOKEN', null);
-      resolve();
-    });
-  },
   fetchNodeInfo({commit}) {
     axios('/api/node-info')
     .then(response => {
@@ -189,14 +182,6 @@ const actions = {
     })
     .catch(error => console.log('Error deleting neighbor'));
   },
-  addNickname({dispatch}, neighbor) {
-    const address = `${neighbor.protocol}://${neighbor.address}`;
-    axios.delete('/api/neighbor', {data: {address}})
-    .then(response => {
-      dispatch('fetchNeighbors');
-    })
-    .catch(error => console.log('Error adding nickname'));
-  },
   fetchPersistedIriNeighbors({commit}) {
     axios('/api/persisted-neighbors')
     .then(response => {
@@ -241,8 +226,8 @@ const actions = {
     });
   },
   loadDatabase({commit}, restoredNeighbors) {
-    axios.post('/api/neighbor/nicks', restoredNeighbors)
-    .catch(error => console.log('Error when trying to restore neighbor nicks'));
+    axios.post('/api/neighbor/additional-data', restoredNeighbors)
+    .catch(error => console.log('Error when trying to restore neighbor additional data.'));
   },
   checkForVersionUpdate({commit}) {
     axios.get('https://cors-anywhere.herokuapp.com/http://registry.npmjs.org/-/package/inschpektor/dist-tags')

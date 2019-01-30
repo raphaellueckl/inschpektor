@@ -42,7 +42,7 @@ class NeighborResource {
       res.status(200).send();
     });
 
-    app.post(`${BASE_URL}/neighbor/nicks`, (req, res) => {
+    app.post(`${BASE_URL}/neighbor/additional-data`, (req, res) => {
       if (!AUTH_UTIL.isUserAuthenticated(USER_RESOURCE.loginToken, req)) {
         res.status(401).send();
         return;
