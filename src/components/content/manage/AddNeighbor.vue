@@ -101,7 +101,7 @@
                 name: '',
                 ipAddress: '',
                 writeToIriConfig: true,
-                port: ''
+                port: '14265'
             };
         },
         created() {
