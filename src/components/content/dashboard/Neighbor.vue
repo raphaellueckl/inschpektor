@@ -6,6 +6,7 @@
             {{neighbor.name ? neighbor.name : neighbor.address}}</h2>
 
         <div class="media-content">
+            <transition name="fade">
             <div v-if="showContent" class="content">
                 <p>
                     <strong>Active:</strong><span class="align__right">{{neighbor.isActive === null ? 'N/A' : neighbor.isActive ? '✔️' : '❌' }}</span>
@@ -25,7 +26,9 @@
                 </p>
                 <!-- ## -->
             </div>
-            <div v-else class="content">
+            </transition>
+            <transition name="fade">
+            <div v-if="!showContent" class="content">
                 <p>
                     <strong>Protocol:</strong><span> {{neighbor.protocol === null ? 'N/A' : neighbor.protocol.toUpperCase()}}</span>
                 </p>
@@ -48,7 +51,7 @@
                     <strong>Sent Transactions:</strong><span> {{neighbor.numberOfSentTransactions === null ? 'N/A' : neighbor.numberOfSentTransactions}}</span>
                 </p>
             </div>
-
+            </transition>
         </div>
 
     </article>
@@ -91,5 +94,14 @@
         flex-basis: 30%;
         margin: 5px !important;
         word-wrap: break-word;
+    }
+
+    .fade-enter-active {
+        transition: opacity 1s;
+    }
+
+    .fade-enter, .fade-leave-to /* .fade-leave-active below version 2.1.8 */
+    {
+        opacity: 0;
     }
 </style>
