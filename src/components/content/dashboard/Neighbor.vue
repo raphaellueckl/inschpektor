@@ -11,8 +11,7 @@
                     <strong>Active:</strong><span class="align__right">{{neighbor.isActive === null ? 'N/A' : neighbor.isActive ? '✔️' : '❌' }}</span>
                 </p>
                 <p>
-                    <strong>Healthy:</strong><span
-                        class="align__right">{{neighbor.isFriendlyNode ? '✔️' : '❌'}}</span>
+                    <strong>Healthy:</strong><span class="align__right">{{neighbor.isFriendlyNode ? '✔️' : '❌'}}</span>
                 </p>
                 <!-- ## Premium neighbor information-->
                 <p v-if="neighbor.isSynced">
@@ -28,25 +27,25 @@
             </div>
             <div v-else class="content">
                 <p>
-                    <strong>Protocol:</strong><span class=""> {{neighbor.protocol === null ? 'N/A' : neighbor.protocol.toUpperCase()}}</span>
+                    <strong>Protocol:</strong><span> {{neighbor.protocol === null ? 'N/A' : neighbor.protocol.toUpperCase()}}</span>
                 </p>
                 <p>
-                    <strong>All Transactions:</strong><span class=""> {{neighbor.numberOfAllTransactions === null ? 'N/A' : neighbor.numberOfAllTransactions}}</span>
+                    <strong>All Transactions:</strong><span> {{neighbor.numberOfAllTransactions === null ? 'N/A' : neighbor.numberOfAllTransactions}}</span>
                 </p>
                 <p>
-                    <strong>Random Transaction Requests:</strong><span class=""> {{neighbor.numberOfRandomTransactionRequests === null ? 'N/A' : neighbor.numberOfRandomTransactionRequests}}</span>
+                    <strong>Random Transaction Requests:</strong><span> {{neighbor.numberOfRandomTransactionRequests === null ? 'N/A' : neighbor.numberOfRandomTransactionRequests}}</span>
                 </p>
                 <p>
-                    <strong>New Transactions:</strong><span class=""> {{neighbor.numberOfNewTransactions === null ? 'N/A' : neighbor.numberOfNewTransactions}}</span>
+                    <strong>New Transactions:</strong><span> {{neighbor.numberOfNewTransactions === null ? 'N/A' : neighbor.numberOfNewTransactions}}</span>
                 </p>
                 <p>
-                    <strong>Invalid Transactions:</strong><span class=""> {{neighbor.numberOfInvalidTransactions === null ? 'N/A' : neighbor.numberOfInvalidTransactions}}</span>
+                    <strong>Invalid Transactions:</strong><span> {{neighbor.numberOfInvalidTransactions === null ? 'N/A' : neighbor.numberOfInvalidTransactions}}</span>
                 </p>
                 <p>
-                    <strong>Stale Transactions:</strong><span class=""> {{neighbor.numberOfStaleTransactions === null ? 'N/A' : neighbor.numberOfStaleTransactions}}</span>
+                    <strong>Stale Transactions:</strong><span> {{neighbor.numberOfStaleTransactions === null ? 'N/A' : neighbor.numberOfStaleTransactions}}</span>
                 </p>
                 <p>
-                    <strong>Sent Transactions:</strong><span class=""> {{neighbor.numberOfSentTransactions === null ? 'N/A' : neighbor.numberOfSentTransactions}}</span>
+                    <strong>Sent Transactions:</strong><span> {{neighbor.numberOfSentTransactions === null ? 'N/A' : neighbor.numberOfSentTransactions}}</span>
                 </p>
             </div>
 
@@ -62,7 +61,7 @@
 		name: 'Neighbor',
 		data: () => {
 			return {
-                showContent: true
+				showContent: true
 			};
 		},
 		props: ['neighbor'],
