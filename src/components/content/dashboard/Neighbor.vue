@@ -12,7 +12,7 @@
                     <strong>Active:</strong><span class="align__right">{{neighbor.isActive === null ? 'N/A' : neighbor.isActive ? '✔️' : '❌' }}</span>
                 </p>
                 <p>
-                    <strong>Friendly Node:</strong><span
+                    <strong>Healthy:</strong><span
                         class="align__right">{{neighbor.isFriendlyNode ? '✔️' : '❌'}}</span>
                 </p>
                 <!-- ## Premium neighbor information-->
