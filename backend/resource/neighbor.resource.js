@@ -225,7 +225,7 @@ class NeighborResource {
 
   createResultNeighbor(neighbor, oldestEntry, additionalData, nodeInfo = null, ping = null) {
     const resultNeighbor = {
-      address: neighbor.address,
+      // address: neighbor.address,
       iriVersion: nodeInfo ? nodeInfo.appVersion : null,
       isSynced: nodeInfo && NODE_STATE.currentOwnNodeInfo && NODE_STATE.currentOwnNodeInfo.latestMilestoneIndex ? nodeInfo.latestSolidSubtangleMilestoneIndex >= NODE_STATE.currentOwnNodeInfo.latestMilestoneIndex - MAX_MILESTONES_BEHIND_BEFORE_UNSYNCED : null,
       isActive: oldestEntry ? neighbor.numberOfNewTransactions > oldestEntry.numberOfNewTransactions : null,
@@ -234,7 +234,8 @@ class NeighborResource {
       isFriendlyNode: neighbor.numberOfInvalidTransactions < neighbor.numberOfAllTransactions / 200,
       ping: ping,
       name: additionalData && additionalData.name ? additionalData.name : null,
-      port: additionalData && additionalData.port ? additionalData.port : null
+      port: additionalData && additionalData.port ? additionalData.port : null,
+      ...neighbor
     };
 
     const additionalDataForNeighbor = neighborAdditionalData.get(`${resultNeighbor.protocol}://${resultNeighbor.address}`);
