@@ -1,13 +1,12 @@
 <template>
-    <article class="tile is-child notification"
+    <article @click="showContent = !showContent"
+             class="tile is-child notification"
              :class="{'is-faulty' : !neighbor.isFriendlyNode || neighbor.isActive === false || neighbor.isSynced === false, 'is-premium': neighbor.iriVersion}">
         <h2 class="title"><span v-if="neighbor.iriVersion">👑</span><span v-if="isUnpersistedNeighbor">👽</span>
             {{neighbor.name ? neighbor.name : neighbor.address}}</h2>
+
         <div class="media-content">
-            <div class="content">
-                <p>
-                    <strong>Protocol:</strong><span class="align__right">{{neighbor.protocol === null ? 'N/A' : neighbor.protocol.toUpperCase()}}</span>
-                </p>
+            <div v-if="showContent" class="content">
                 <p>
                     <strong>Active:</strong><span class="align__right">{{neighbor.isActive === null ? 'N/A' : neighbor.isActive ? '✔️' : '❌' }}</span>
                 </p>
@@ -27,23 +26,53 @@
                 </p>
                 <!-- ## -->
             </div>
+            <div v-else class="content">
+                <p>
+                    <strong>Protocol:</strong><span class=""> {{neighbor.protocol === null ? 'N/A' : neighbor.protocol.toUpperCase()}}</span>
+                </p>
+                <p>
+                    <strong>All Transactions:</strong><span class=""> {{neighbor.numberOfAllTransactions === null ? 'N/A' : neighbor.numberOfAllTransactions}}</span>
+                </p>
+                <p>
+                    <strong>Random Transaction Requests:</strong><span class=""> {{neighbor.numberOfRandomTransactionRequests === null ? 'N/A' : neighbor.numberOfRandomTransactionRequests}}</span>
+                </p>
+                <p>
+                    <strong>New Transactions:</strong><span class=""> {{neighbor.numberOfNewTransactions === null ? 'N/A' : neighbor.numberOfNewTransactions}}</span>
+                </p>
+                <p>
+                    <strong>Invalid Transactions:</strong><span class=""> {{neighbor.numberOfInvalidTransactions === null ? 'N/A' : neighbor.numberOfInvalidTransactions}}</span>
+                </p>
+                <p>
+                    <strong>Stale Transactions:</strong><span class=""> {{neighbor.numberOfStaleTransactions === null ? 'N/A' : neighbor.numberOfStaleTransactions}}</span>
+                </p>
+                <p>
+                    <strong>Sent Transactions:</strong><span class=""> {{neighbor.numberOfSentTransactions === null ? 'N/A' : neighbor.numberOfSentTransactions}}</span>
+                </p>
+            </div>
+
         </div>
+
     </article>
 </template>
 
 <script>
-    import {mapGetters} from 'vuex';
+	import {mapGetters} from 'vuex';
 
-    export default {
-        name: 'Neighbor',
-        props: ['neighbor'],
-        computed: {
-            ...mapGetters(['persistedNeighbors']),
-            isUnpersistedNeighbor: function () {
-                return this.$store.getters.persistedNeighbors && !this.$store.getters.persistedNeighbors.includes(`${this.neighbor.protocol}://${this.neighbor.address}`);
-            }
-        }
-    };
+	export default {
+		name: 'Neighbor',
+		data: () => {
+			return {
+                showContent: true
+			};
+		},
+		props: ['neighbor'],
+		computed: {
+			...mapGetters(['persistedNeighbors']),
+			isUnpersistedNeighbor: function () {
+				return this.$store.getters.persistedNeighbors && !this.$store.getters.persistedNeighbors.includes(`${this.neighbor.protocol}://${this.neighbor.address}`);
+			}
+		}
+	};
 </script>
 
 <style scoped>
