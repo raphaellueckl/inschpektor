@@ -6,51 +6,52 @@
             {{neighbor.name ? neighbor.name : neighbor.address}}</h2>
 
         <div class="media-content">
-            <transition name="fade">
-            <div v-if="showContent" class="content">
-                <p>
-                    <strong>Active:</strong><span class="align__right">{{neighbor.isActive === null ? 'N/A' : neighbor.isActive ? '✔️' : '❌' }}</span>
-                </p>
-                <p>
-                    <strong>Healthy:</strong><span class="align__right">{{neighbor.isFriendlyNode ? '✔️' : '❌'}}</span>
-                </p>
-                <!-- ## Premium neighbor information-->
-                <p v-if="neighbor.isSynced">
-                    <strong>Synced:</strong><span class="align__right">{{neighbor.isSynced ? '✔' : '❌'}}️</span>
-                </p>
-                <p v-if="neighbor.iriVersion">
-                    <strong>Iri-version:</strong><span class="align__right">{{neighbor.iriVersion}}</span>
-                </p>
-                <p v-if="neighbor.ping">
-                    <strong>Ping:</strong><span class="align__right">{{neighbor.ping}} ms</span>
-                </p>
-                <!-- ## -->
-            </div>
+            <transition name="rollup">
+                <div v-if="showContent" class="content">
+                    <p>
+                        <strong>Active:</strong><span class="align__right">{{neighbor.isActive === null ? 'N/A' : neighbor.isActive ? '✔️' : '❌' }}</span>
+                    </p>
+                    <p>
+                        <strong>Healthy:</strong><span
+                            class="align__right">{{neighbor.isFriendlyNode ? '✔️' : '❌'}}</span>
+                    </p>
+                    <!-- ## Premium neighbor information-->
+                    <p v-if="neighbor.isSynced">
+                        <strong>Synced:</strong><span class="align__right">{{neighbor.isSynced ? '✔' : '❌'}}️</span>
+                    </p>
+                    <p v-if="neighbor.iriVersion">
+                        <strong>Iri-version:</strong><span class="align__right">{{neighbor.iriVersion}}</span>
+                    </p>
+                    <p v-if="neighbor.ping">
+                        <strong>Ping:</strong><span class="align__right">{{neighbor.ping}} ms</span>
+                    </p>
+                    <!-- ## -->
+                </div>
             </transition>
-            <transition name="fade">
-            <div v-if="!showContent" class="content">
-                <p>
-                    <strong>Protocol:</strong><span> {{neighbor.protocol === null ? 'N/A' : neighbor.protocol.toUpperCase()}}</span>
-                </p>
-                <p>
-                    <strong>All Transactions:</strong><span> {{neighbor.numberOfAllTransactions === null ? 'N/A' : neighbor.numberOfAllTransactions}}</span>
-                </p>
-                <p>
-                    <strong>Random Transaction Requests:</strong><span> {{neighbor.numberOfRandomTransactionRequests === null ? 'N/A' : neighbor.numberOfRandomTransactionRequests}}</span>
-                </p>
-                <p>
-                    <strong>New Transactions:</strong><span> {{neighbor.numberOfNewTransactions === null ? 'N/A' : neighbor.numberOfNewTransactions}}</span>
-                </p>
-                <p>
-                    <strong>Invalid Transactions:</strong><span> {{neighbor.numberOfInvalidTransactions === null ? 'N/A' : neighbor.numberOfInvalidTransactions}}</span>
-                </p>
-                <p>
-                    <strong>Stale Transactions:</strong><span> {{neighbor.numberOfStaleTransactions === null ? 'N/A' : neighbor.numberOfStaleTransactions}}</span>
-                </p>
-                <p>
-                    <strong>Sent Transactions:</strong><span> {{neighbor.numberOfSentTransactions === null ? 'N/A' : neighbor.numberOfSentTransactions}}</span>
-                </p>
-            </div>
+            <transition name="rolldown">
+                <div v-if="!showContent" class="content">
+                    <p>
+                        <strong>Protocol:</strong><span> {{neighbor.protocol === null ? 'N/A' : neighbor.protocol.toUpperCase()}}</span>
+                    </p>
+                    <p>
+                        <strong>All Transactions:</strong><span> {{neighbor.numberOfAllTransactions === null ? 'N/A' : neighbor.numberOfAllTransactions}}</span>
+                    </p>
+                    <p>
+                        <strong>Random Transaction Requests:</strong><span> {{neighbor.numberOfRandomTransactionRequests === null ? 'N/A' : neighbor.numberOfRandomTransactionRequests}}</span>
+                    </p>
+                    <p>
+                        <strong>New Transactions:</strong><span> {{neighbor.numberOfNewTransactions === null ? 'N/A' : neighbor.numberOfNewTransactions}}</span>
+                    </p>
+                    <p>
+                        <strong>Invalid Transactions:</strong><span> {{neighbor.numberOfInvalidTransactions === null ? 'N/A' : neighbor.numberOfInvalidTransactions}}</span>
+                    </p>
+                    <p>
+                        <strong>Stale Transactions:</strong><span> {{neighbor.numberOfStaleTransactions === null ? 'N/A' : neighbor.numberOfStaleTransactions}}</span>
+                    </p>
+                    <p>
+                        <strong>Sent Transactions:</strong><span> {{neighbor.numberOfSentTransactions === null ? 'N/A' : neighbor.numberOfSentTransactions}}</span>
+                    </p>
+                </div>
             </transition>
         </div>
 
@@ -96,12 +97,24 @@
         word-wrap: break-word;
     }
 
-    .fade-enter-active {
-        transition: opacity 1s;
+    .rolldown-enter-active {
+        max-height: 400px;
+        transition: max-height 0.4s linear;
+        overflow: hidden;
     }
 
-    .fade-enter, .fade-leave-to /* .fade-leave-active below version 2.1.8 */
-    {
-        opacity: 0;
+    .rolldown-enter {
+        max-height: 0;
+    }
+
+
+    .rollup-enter-active {
+        min-height: 0;
+        transition: min-height 0.3s linear;
+        overflow: hidden;
+    }
+
+    .rollup-enter {
+        min-height: 288px;
     }
 </style>
