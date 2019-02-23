@@ -99,13 +99,13 @@ class NeighborResource {
 
           Promise.all(allRequests)
           .then(evaluatedNeighbors => {
-            // Sort Priority: Premium neighbors, persisted neighbors, neighbor address
+            // Sort Priority: Persisted neighbors, premium neighbors, neighbor address
             evaluatedNeighbors.sort((a, b) => {
-              if (!!(a.iriVersion !== null ^ b.iriVersion !== null)) {
-                return a.iriVersion ? -1 : 1;
-              }
               if (this.persistedNeighbors && !!(this.persistedNeighbors.includes(a.address) !== null ^ this.persistedNeighbors.includes(b.address))) {
                 return this.persistedNeighbors.includes(a.address) ? -1 : 1;
+              }
+              if (!!(a.iriVersion !== null ^ b.iriVersion !== null)) {
+                return a.iriVersion ? -1 : 1;
               }
               return a.address.localeCompare(b.address);
             });
