@@ -16,7 +16,7 @@
                             class="align__right">{{neighbor.isFriendlyNode ? '✔️' : '❌'}}</span>
                     </p>
                     <!-- ## Premium neighbor information-->
-                    <p v-if="neighbor.isSynced">
+                    <p v-if="neighbor.isSynced === true || neighbor.isSynced === false">
                         <strong>Synced:</strong><span class="align__right">{{neighbor.isSynced ? '✔' : '❌'}}️</span>
                     </p>
                     <p v-if="neighbor.iriVersion">
@@ -30,6 +30,9 @@
             </transition>
             <transition name="rolldown">
                 <div v-if="!showContent" class="content">
+                    <p>
+                        <strong>Milestone:</strong><span> {{neighbor.milestone === null ? 'N/A' : neighbor.milestone}}</span>
+                    </p>
                     <p>
                         <strong>Protocol:</strong><span> {{neighbor.protocol === null ? 'N/A' : neighbor.protocol.toUpperCase()}}</span>
                     </p>
@@ -59,23 +62,23 @@
 </template>
 
 <script>
-	import {mapGetters} from 'vuex';
+  import {mapGetters} from 'vuex';
 
-	export default {
-		name: 'Neighbor',
-		data: () => {
-			return {
-				showContent: true
-			};
-		},
-		props: ['neighbor'],
-		computed: {
-			...mapGetters(['persistedNeighbors']),
-			isUnpersistedNeighbor: function () {
-				return this.$store.getters.persistedNeighbors && !this.$store.getters.persistedNeighbors.includes(`${this.neighbor.protocol}://${this.neighbor.address}`);
-			}
-		}
-	};
+  export default {
+    name: 'Neighbor',
+    data: () => {
+      return {
+        showContent: true
+      };
+    },
+    props: ['neighbor'],
+    computed: {
+      ...mapGetters(['persistedNeighbors']),
+      isUnpersistedNeighbor: function () {
+        return this.$store.getters.persistedNeighbors && !this.$store.getters.persistedNeighbors.includes(`${this.neighbor.protocol}://${this.neighbor.address}`);
+      }
+    }
+  };
 </script>
 
 <style scoped>

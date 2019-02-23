@@ -225,9 +225,9 @@ class NeighborResource {
 
   createResultNeighbor(neighbor, oldestEntry, additionalData, nodeInfo = null, ping = null) {
     const resultNeighbor = {
-      // address: neighbor.address,
       iriVersion: nodeInfo ? nodeInfo.appVersion : null,
       isSynced: nodeInfo && NODE_STATE.currentOwnNodeInfo && NODE_STATE.currentOwnNodeInfo.latestMilestoneIndex ? nodeInfo.latestSolidSubtangleMilestoneIndex >= NODE_STATE.currentOwnNodeInfo.latestMilestoneIndex - MAX_MILESTONES_BEHIND_BEFORE_UNSYNCED : null,
+      milestone: nodeInfo ? `${nodeInfo.latestSolidSubtangleMilestoneIndex} / ${NODE_STATE.currentOwnNodeInfo.latestMilestoneIndex}` : null,
       isActive: oldestEntry ? neighbor.numberOfNewTransactions > oldestEntry.numberOfNewTransactions : null,
       protocol: neighbor.connectionType,
       onlineTime: nodeInfo ? nodeInfo.time : null,
