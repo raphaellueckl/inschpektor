@@ -95,6 +95,7 @@ class NodeResource {
         return;
       }
       const persistedNeighbors = await IRI_SERVICE.readPersistedNeighbors();
+      NEIGHBOR_RESOURCE.persistedNeighbors = persistedNeighbors;
       res.send(persistedNeighbors);
     });
 

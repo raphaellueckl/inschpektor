@@ -13,6 +13,10 @@ let db;
 
 class NeighborResource {
 
+  constructor() {
+    this.persistedNeighbors = undefined;
+  }
+
   init(app, database) {
     db = database;
 
@@ -95,7 +99,16 @@ class NeighborResource {
 
           Promise.all(allRequests)
           .then(evaluatedNeighbors => {
-            evaluatedNeighbors.sort((a, b) => a.address.localeCompare(b.address));
+            // Sort Priority: Premium neighbors, persisted neighbors, neighbor address
+            evaluatedNeighbors.sort((a, b) => {
+              if (!!(a.iriVersion !== null ^ b.iriVersion !== null)) {
+                return a.iriVersion ? -1 : 1;
+              }
+              if (this.persistedNeighbors && !!(this.persistedNeighbors.includes(a.address) !== null ^ this.persistedNeighbors.includes(b.address))) {
+                return this.persistedNeighbors.includes(a.address) ? -1 : 1;
+              }
+              return a.address.localeCompare(b.address);
+            });
             res.json(evaluatedNeighbors);
           })
           .catch(e => console.log(e.message));
@@ -173,12 +186,18 @@ class NeighborResource {
 
   intitializeNeighborUsernname(fullAddress, name) {
     const currentAdditionalData = neighborAdditionalData.get(fullAddress);
-    neighborAdditionalData.set(fullAddress, {name, port: currentAdditionalData && currentAdditionalData.port ? currentAdditionalData.port : null});
+    neighborAdditionalData.set(fullAddress, {
+      name,
+      port: currentAdditionalData && currentAdditionalData.port ? currentAdditionalData.port : null
+    });
   }
 
   intitializeNeighborIriMainPort(fullAddress, port) {
     const currentAdditionalData = neighborAdditionalData.get(fullAddress);
-    neighborAdditionalData.set(fullAddress, {name: currentAdditionalData && currentAdditionalData.name ? currentAdditionalData.name : null, port});
+    neighborAdditionalData.set(fullAddress, {
+      name: currentAdditionalData && currentAdditionalData.name ? currentAdditionalData.name : null,
+      port
+    });
   }
 
   removeNeighborFromUserNameTable(fullAddress) {
