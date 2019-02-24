@@ -12,6 +12,7 @@
                                     <label class="label">IP-Address*</label>
                                     <div class="control has-icons-right">
                                         <input v-model="ipAddress" class="input"
+                                               v-on:keyup.13="addNeighborAndClearFields"
                                                :class="[ipAddress ? isCorrectAddress ? 'is-success' : 'is-danger' : '']"
                                                type="text"
                                                placeholder="E.g. udp://123.32.123.123:14600 or tcp://neighbor-domain.net:15600">
@@ -31,7 +32,9 @@
                                     <div class="field">
                                         <label class="label">Name</label>
                                         <div class="control">
-                                            <input v-model="name" class="input" type="text"
+                                            <input v-model="name"
+                                                   v-on:keyup.enter="addNeighborAndClearFields"
+                                                   class="input" type="text"
                                                    placeholder="Custom name for this neighbor">
                                         </div>
                                     </div>
@@ -40,6 +43,7 @@
                                         <label class="label">Node Port</label>
                                         <div class="control has-icons-right">
                                             <input v-model="port" class="input"
+                                                   v-on:keyup.enter="addNeighborAndClearFields"
                                                    :class="[portValidation === true ? 'is-success' : portValidation === false ? 'is-danger': '']"
                                                    type="text"
                                                    placeholder="E.g. 14267">
@@ -124,13 +128,15 @@
         methods: {
             ...mapActions(['addNeighbor']),
             addNeighborAndClearFields: function () {
+              if (this.ipAddress && this.isCorrectAddress && (this.portValidation === true || this.portValidation === null)) {
                 this.addNeighbor({
-                    name: this.name,
-                    address: this.ipAddress,
-                    writeToIriConfig: this.writeToIriConfig && !!this.iriFileLocation,
-                    port: this.port
+                  name: this.name,
+                  address: this.ipAddress,
+                  writeToIriConfig: this.writeToIriConfig && !!this.iriFileLocation,
+                  port: this.port
                 });
                 this.clearFields();
+              }
             },
             clearFields: function () {
                 this.name = '';
