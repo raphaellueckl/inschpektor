@@ -1,5 +1,5 @@
 <template>
-    <article @click="showContent = !showContent; triggerAnimation()"
+    <article @click="swapCard()"
              class="tile is-child notification"
              :class="{'is-faulty' : !neighbor.isFriendlyNode || neighbor.isActive === false || neighbor.isSynced === false, 'is-premium': neighbor.iriVersion}"
              ref="cardToAnimate">
@@ -76,9 +76,10 @@
       }
     },
     methods: {
-        triggerAnimation() {
+        swapCard() {
           this.$refs.cardToAnimate.classList.add('animated');
-          setTimeout(() => this.$refs.cardToAnimate.classList.remove('animated'), 500);
+          setTimeout(() => this.$refs.cardToAnimate.classList.remove('animated'), 300);
+          setTimeout(() => this.showContent = !this.showContent, 150)
         }
     }
   };
@@ -104,18 +105,18 @@
     }
 
     .animated {
-        animation: color-me-in 0.3s;
+        animation: swap 0.3s;
     }
 
-    @keyframes color-me-in {
+    @keyframes swap {
         0% {
-            transform:scaleX(1);
+            transform:scaleY(1);
         }
         50% {
-            transform:scaleX(0);
+            transform:scaleY(0);
         }
         100% {
-            transform:scaleX(1);
+            transform:scaleY(1);
         }
     }
 </style>
