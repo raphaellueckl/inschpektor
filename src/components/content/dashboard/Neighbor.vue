@@ -1,61 +1,58 @@
 <template>
-    <article @click="showContent = !showContent"
+    <article @click="showContent = !showContent; triggerAnimation()"
              class="tile is-child notification"
-             :class="{'is-faulty' : !neighbor.isFriendlyNode || neighbor.isActive === false || neighbor.isSynced === false, 'is-premium': neighbor.iriVersion}">
+             :class="{'is-faulty' : !neighbor.isFriendlyNode || neighbor.isActive === false || neighbor.isSynced === false, 'is-premium': neighbor.iriVersion}"
+             ref="cardToAnimate">
         <h2 class="title"><span v-if="neighbor.iriVersion">👑</span><span v-if="isUnpersistedNeighbor">👽</span>
             {{neighbor.name ? neighbor.name : neighbor.address}}</h2>
 
         <div class="media-content">
-            <transition name="rollup">
-                <div v-if="showContent" class="content">
-                    <p>
-                        <strong>Active:</strong><span class="align__right">{{neighbor.isActive === null ? 'N/A' : neighbor.isActive ? '✔️' : '❌' }}</span>
-                    </p>
-                    <p>
-                        <strong>Healthy:</strong><span
-                            class="align__right">{{neighbor.isFriendlyNode ? '✔️' : '❌'}}</span>
-                    </p>
-                    <!-- ## Premium neighbor information-->
-                    <p v-if="neighbor.isSynced === true || neighbor.isSynced === false">
-                        <strong>Synced:</strong><span class="align__right">{{neighbor.isSynced ? '✔' : '❌'}}️</span>
-                    </p>
-                    <p v-if="neighbor.iriVersion">
-                        <strong>Iri-version:</strong><span class="align__right">{{neighbor.iriVersion}}</span>
-                    </p>
-                    <p v-if="neighbor.ping">
-                        <strong>Ping:</strong><span class="align__right">{{neighbor.ping}} ms</span>
-                    </p>
-                    <!-- ## -->
-                </div>
-            </transition>
-            <transition name="rolldown">
-                <div v-if="!showContent" class="content">
-                    <p>
-                        <strong>Milestone:</strong><span> {{neighbor.milestone === null ? 'N/A' : neighbor.milestone}}</span>
-                    </p>
-                    <p>
-                        <strong>Protocol:</strong><span> {{neighbor.protocol === null ? 'N/A' : neighbor.protocol.toUpperCase()}}</span>
-                    </p>
-                    <p>
-                        <strong>All Transactions:</strong><span> {{neighbor.numberOfAllTransactions === null ? 'N/A' : neighbor.numberOfAllTransactions}}</span>
-                    </p>
-                    <p>
-                        <strong>Random Transaction Requests:</strong><span> {{neighbor.numberOfRandomTransactionRequests === null ? 'N/A' : neighbor.numberOfRandomTransactionRequests}}</span>
-                    </p>
-                    <p>
-                        <strong>New Transactions:</strong><span> {{neighbor.numberOfNewTransactions === null ? 'N/A' : neighbor.numberOfNewTransactions}}</span>
-                    </p>
-                    <p>
-                        <strong>Invalid Transactions:</strong><span> {{neighbor.numberOfInvalidTransactions === null ? 'N/A' : neighbor.numberOfInvalidTransactions}}</span>
-                    </p>
-                    <p>
-                        <strong>Stale Transactions:</strong><span> {{neighbor.numberOfStaleTransactions === null ? 'N/A' : neighbor.numberOfStaleTransactions}}</span>
-                    </p>
-                    <p>
-                        <strong>Sent Transactions:</strong><span> {{neighbor.numberOfSentTransactions === null ? 'N/A' : neighbor.numberOfSentTransactions}}</span>
-                    </p>
-                </div>
-            </transition>
+            <div v-if="showContent" class="content">
+                <p>
+                    <strong>Active:</strong><span class="align__right">{{neighbor.isActive === null ? 'N/A' : neighbor.isActive ? '✔️' : '❌' }}</span>
+                </p>
+                <p>
+                    <strong>Healthy:</strong><span
+                        class="align__right">{{neighbor.isFriendlyNode ? '✔️' : '❌'}}</span>
+                </p>
+                <!-- ## Premium neighbor information-->
+                <p v-if="neighbor.isSynced === true || neighbor.isSynced === false">
+                    <strong>Synced:</strong><span class="align__right">{{neighbor.isSynced ? '✔' : '❌'}}️</span>
+                </p>
+                <p v-if="neighbor.iriVersion">
+                    <strong>Iri-version:</strong><span class="align__right">{{neighbor.iriVersion}}</span>
+                </p>
+                <p v-if="neighbor.ping">
+                    <strong>Ping:</strong><span class="align__right">{{neighbor.ping}} ms</span>
+                </p>
+                <!-- ## -->
+            </div>
+            <div v-if="!showContent" class="content">
+                <p>
+                    <strong>Milestone:</strong><span> {{neighbor.milestone === null ? 'N/A' : neighbor.milestone}}</span>
+                </p>
+                <p>
+                    <strong>Protocol:</strong><span> {{neighbor.protocol === null ? 'N/A' : neighbor.protocol.toUpperCase()}}</span>
+                </p>
+                <p>
+                    <strong>All Transactions:</strong><span> {{neighbor.numberOfAllTransactions === null ? 'N/A' : neighbor.numberOfAllTransactions}}</span>
+                </p>
+                <p>
+                    <strong>Random Transaction Requests:</strong><span> {{neighbor.numberOfRandomTransactionRequests === null ? 'N/A' : neighbor.numberOfRandomTransactionRequests}}</span>
+                </p>
+                <p>
+                    <strong>New Transactions:</strong><span> {{neighbor.numberOfNewTransactions === null ? 'N/A' : neighbor.numberOfNewTransactions}}</span>
+                </p>
+                <p>
+                    <strong>Invalid Transactions:</strong><span> {{neighbor.numberOfInvalidTransactions === null ? 'N/A' : neighbor.numberOfInvalidTransactions}}</span>
+                </p>
+                <p>
+                    <strong>Stale Transactions:</strong><span> {{neighbor.numberOfStaleTransactions === null ? 'N/A' : neighbor.numberOfStaleTransactions}}</span>
+                </p>
+                <p>
+                    <strong>Sent Transactions:</strong><span> {{neighbor.numberOfSentTransactions === null ? 'N/A' : neighbor.numberOfSentTransactions}}</span>
+                </p>
+            </div>
         </div>
 
     </article>
@@ -77,6 +74,12 @@
       isUnpersistedNeighbor: function () {
         return this.$store.getters.persistedNeighbors && !this.$store.getters.persistedNeighbors.includes(`${this.neighbor.protocol}://${this.neighbor.address}`);
       }
+    },
+    methods: {
+        triggerAnimation() {
+          this.$refs.cardToAnimate.classList.add('animated');
+          setTimeout(() => this.$refs.cardToAnimate.classList.remove('animated'), 500);
+        }
     }
   };
 </script>
@@ -100,24 +103,19 @@
         word-wrap: break-word;
     }
 
-    .rolldown-enter-active {
-        max-height: 400px;
-        transition: max-height 0.4s linear;
-        overflow: hidden;
+    .animated {
+        animation: color-me-in 0.3s;
     }
 
-    .rolldown-enter {
-        max-height: 0;
-    }
-
-
-    .rollup-enter-active {
-        min-height: 0;
-        transition: min-height 0.3s linear;
-        overflow: hidden;
-    }
-
-    .rollup-enter {
-        min-height: 288px;
+    @keyframes color-me-in {
+        0% {
+            transform:scaleX(1);
+        }
+        50% {
+            transform:scaleX(0);
+        }
+        100% {
+            transform:scaleX(1);
+        }
     }
 </style>
