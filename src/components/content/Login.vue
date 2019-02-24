@@ -15,6 +15,7 @@
       <label class="label">Password</label>
       <div class="control has-icons-right">
         <input v-model="password"
+               v-on:keyup.13="loginClicked"
                class="input"
                :class="[authenticated === false && loginAttempted ? 'is-danger' : '']"
                type="password"
@@ -47,8 +48,10 @@
     methods: {
       ...mapActions(['login']),
       loginClicked: function () {
-        this.login(this.password);
-        setTimeout(() => this.loginAttempted = true, 1000);
+        if (this.password) {
+          this.login(this.password);
+          setTimeout(() => this.loginAttempted = true, 1000);
+        }
       }
     },
     data: () => {
