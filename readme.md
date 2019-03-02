@@ -9,11 +9,13 @@ For the features, head over to my medium article: https://medium.com/@codepleb4/
 ### Installation
 
 #### Precondition
+
 **People with a debian linux system:**
 If you are on a debian linux system (Ubuntu for example), all you need to do is run this command: `sudo apt install -y build-essential && sudo apt install -y curl && sudo apt-get purge nodejs -y && curl -sL https://deb.nodesource.com/setup_10.x | sudo -E bash - && sudo apt-get update -yqq --fix-missing && sudo apt-get install -y nodejs && sudo npm i npm@latest -g`
 If you are not on a debian system, check this link and install nodejs for your system: https://nodejs.org/en/download/
 
 **People without a debian linux system:**
+
 - You need a recent version of node to successfully run this app (10.8+). Check https://nodejs.org/en/download/ and download & install the version for your system.
 - Install `curl`
 - Install `make`
@@ -22,6 +24,7 @@ If you are not on a debian system, check this link and install nodejs for your s
 All of the things in this list are unconfirmed. I do not know if those are all the packages you need on other systems and I also do not know if they all are needed.
 
 #### Install inschpektor
+
 Run `sudo npm i -g inschpektor --unsafe-perm`
 
 `--unsafe-perm` is needed on linux. It was not needed on my MacOS and I'm not sure about windows. The reason are the npm submodules that need to run with sudo permissions too (the bcrypt dependency leads to this necessity).
@@ -46,6 +49,7 @@ When you first open the webapp (or when you clicked the 'Reset Inschpektor' butt
 To get the newest version (or ignore, if you already have it), you can just run the installation command again and it will do the rest for you.
 
 ### Video Instructions
+
 I recorded videos on how to install and use inschpektor. If you want, look them up here: https://www.youtube.com/watch?v=EjXs7kpBqjQ&list=PLAjtvx6a60HLvuLDphPaFRhD3Oe0NVn9J
 
 ### Donations
@@ -68,7 +72,7 @@ Also keep in mind that I run channels where I post updates:
 ## Tips & Help
 
 - **Premium neighbors:** To become a premium neighbor yourself to others, you need to allow the "getNodeInfo" in your node's iri configuration. To do this, ensure that `getNodeInfo` is **not** in the `REMOTE_LIMIT_API` field of your IRI config.
-- **Permission errors:** When you get permission errors on the console, it might be that your iota.ini file has wrong access rights or that your node runs as a service and only the root user can handle it without a password prompt (or various other permission reasons). You can just run `inschpektor` as root user (before running inschpektor, type `sudo -s` and enter your password) in this case. That will work, but I want to say that doing this is generally a very bad habit which can make your computer vulnerable. 
+- **Permission errors:** When you get permission errors on the console, it might be that your iota.ini file has wrong access rights or that your node runs as a service and only the root user can handle it without a password prompt (or various other permission reasons). You can just run `inschpektor` as root user (before running inschpektor, type `sudo -s` and enter your password) in this case. That will work, but I want to say that doing this is generally a very bad habit which can make your computer vulnerable.
 - **Performance:** If you want to increase the performance, serve inschpektor over HTTPS. This way, the service worker will get enabled and be able to put a lot of calls and the site skeleton into the cache.
 
 ### Features/Improves on the roadmap
@@ -81,41 +85,48 @@ Also keep in mind that I run channels where I post updates:
 
 - If you have a premium neighbor which uses a port other than the standard 14265, you won't get the additional info from his node and he won't show up as premium in your overview. It's more like a "not fully complete" feature instead of a bug though.
 
--------
+---
 
 ## Developer Info
 
 ### Project setup
+
 ```
 npm install
 ```
 
 #### Compiles and hot-reloads for development
+
 ```
 npm run serve
 ```
 
 #### Compiles and minifies for production
+
 ```
 npm run build
 ```
 
 #### Run your tests
+
 ```
 npm run test
 ```
 
 #### Lints and fixes files
+
 ```
 npm run lint
 ```
 
 #### Run your end-to-end tests
+
 ```
 npm run test:e2e
 ```
 
 #### Run your unit tests
+
 ```
 npm run test:unit
 ```

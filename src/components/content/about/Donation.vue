@@ -2,46 +2,45 @@
   <article class="tile is-child notification">
     <qrcode-vue :value="dontationAddress()" :size="size" level="L"></qrcode-vue>
     <p>
-      {{donation.address}}
+      {{ donation.address }}
     </p>
   </article>
 </template>
 
 <script>
-  import QrcodeVue from 'qrcode.vue';
+import QrcodeVue from 'qrcode.vue';
 
-  export default {
-    name: 'Donation',
-    props: ['address'],
-    data() {
-      return {
-        size: 200,
-        donation: {
-          address:
-          this.address,
-          amount: 1000000,
-          tag: 'inschpektor',
-          message: 'I LOVE INSCHPEKTOR! <3'
-        }
-      };
-    },
-    methods: {
-      dontationAddress() {
-        return JSON.stringify(this.donation);
+export default {
+  name: 'Donation',
+  props: ['address'],
+  data() {
+    return {
+      size: 200,
+      donation: {
+        address: this.address,
+        amount: 1000000,
+        tag: 'inschpektor',
+        message: 'I LOVE INSCHPEKTOR! <3'
       }
-    },
-    components: {
-      QrcodeVue
+    };
+  },
+  methods: {
+    dontationAddress() {
+      return JSON.stringify(this.donation);
     }
-  };
+  },
+  components: {
+    QrcodeVue
+  }
+};
 </script>
 
 <style scoped>
-  p {
-    word-wrap: break-word;
-  }
+p {
+  word-wrap: break-word;
+}
 
-  article {
-    background: rgb(0, 0, 0, 0);
-  }
+article {
+  background: rgb(0, 0, 0, 0);
+}
 </style>

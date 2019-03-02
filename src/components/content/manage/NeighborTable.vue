@@ -1,6 +1,5 @@
 <template>
   <div class="bottom-margin">
-
     <div class="columns header not-on-mobile">
       <div class="column is-4">
         IP
@@ -22,45 +21,49 @@
       </div>
     </div>
 
-    <NeighborRow v-if="neighbors" v-for="neighbor in neighbors" :neighbor="neighbor" :key="neighbor.address"/>
+    <NeighborRow
+      v-if="neighbors"
+      v-for="neighbor in neighbors"
+      :neighbor="neighbor"
+      :key="neighbor.address"
+    />
 
     <NoContent v-if="!neighbors"></NoContent>
-
   </div>
 </template>
 
 <script>
-  import {mapGetters} from 'vuex';
-  import NoContent from '../NoContent.vue';
-  import NeighborRow from './NeighborRow';
+import { mapGetters } from 'vuex';
+import NoContent from '../NoContent.vue';
+import NeighborRow from './NeighborRow';
 
-  export default {
-    name: 'NeighborTable',
-    components: {
-      NoContent,
-      NeighborRow
-    },
-    computed: {
-      ...mapGetters(['neighbors'])
-    }
-  };
+export default {
+  name: 'NeighborTable',
+  components: {
+    NoContent,
+    NeighborRow
+  },
+  computed: {
+    ...mapGetters(['neighbors'])
+  }
+};
 </script>
 
 <style scoped>
-  .columns.header {
-    background-color: hsl(141, 71%, 60%);
-    border-radius: 4px;
-    margin-top: 4px;
-    font-weight: bold;
-  }
+.columns.header {
+  background-color: hsl(141, 71%, 60%);
+  border-radius: 4px;
+  margin-top: 4px;
+  font-weight: bold;
+}
 
-  .bottom-margin {
-    margin-bottom: 25px;
-  }
+.bottom-margin {
+  margin-bottom: 25px;
+}
 
-  @media screen and (max-width: 768px) {
-    .not-on-mobile {
-        display: none;
-    }
+@media screen and (max-width: 768px) {
+  .not-on-mobile {
+    display: none;
   }
+}
 </style>

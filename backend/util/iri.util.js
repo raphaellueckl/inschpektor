@@ -1,8 +1,9 @@
-require('../../node_modules/console-stamp')(console, {pattern: 'dd/mm/yyyy HH:MM:ss.l'});
+require('../../node_modules/console-stamp')(console, {
+  pattern: 'dd/mm/yyyy HH:MM:ss.l'
+});
 const fs = require('fs');
 
 class IriUtil {
-
   constructor() {
     this.protocol = null;
     this.iriIp = null;
@@ -13,7 +14,7 @@ class IriUtil {
   createIriRequest(command) {
     return {
       url: `${this.protocol}://${this.iriIp}:${this.iriPort}`,
-      data: {command},
+      data: { command },
       method: 'post',
       headers: {
         'Content-Type': 'application/json',
@@ -25,8 +26,10 @@ class IriUtil {
 
   createIriRequestForNeighborNode(command, neighbor, port) {
     return {
-      url: `${this.protocol}://${neighbor.address.split(':')[0]}:${port ? port : '14265'}`,
-      data: {command},
+      url: `${this.protocol}://${neighbor.address.split(':')[0]}:${
+        port ? port : '14265'
+      }`,
+      data: { command },
       method: 'post',
       headers: {
         'Content-Type': 'application/json',
@@ -48,10 +51,14 @@ class IriUtil {
         let currentlyPersistedNeighborsLine = '';
         allLines.forEach((line, index) => {
           if (line.toUpperCase().startsWith(neighborsKeywordMax)) {
-            currentlyPersistedNeighborsLine = line.substring(neighborsKeywordMax.length);
+            currentlyPersistedNeighborsLine = line.substring(
+              neighborsKeywordMax.length
+            );
             indexOfNeighborsLine = index;
           } else if (line.toUpperCase().startsWith(neighborsKeywordMin)) {
-            currentlyPersistedNeighborsLine = line.substring(neighborsKeywordMin.length);
+            currentlyPersistedNeighborsLine = line.substring(
+              neighborsKeywordMin.length
+            );
             indexOfNeighborsLine = index;
           }
         });
@@ -59,22 +66,32 @@ class IriUtil {
         if (indexOfNeighborsLine === -1) {
           const newNeighborLine = `\n${neighborsKeywordMax}${fullAddress}\n`;
           iriConfigContent += newNeighborLine;
-          fs.writeFile(this.iriFileLocation, iriConfigContent, (err) => {
-            if (err) console.error('Failed to add neighbor in iri. Permission error or wrong path.', err.message);
+          fs.writeFile(this.iriFileLocation, iriConfigContent, err => {
+            if (err)
+              console.error(
+                'Failed to add neighbor in iri. Permission error or wrong path.',
+                err.message
+              );
           });
         } else {
           if (!currentlyPersistedNeighborsLine.includes(fullAddress)) {
             currentlyPersistedNeighborsLine += ` ${fullAddress}`;
-            allLines[indexOfNeighborsLine] = `${neighborsKeywordMax}${currentlyPersistedNeighborsLine}`;
+            allLines[
+              indexOfNeighborsLine
+            ] = `${neighborsKeywordMax}${currentlyPersistedNeighborsLine}`;
             const newIriConfigContent = allLines.join('\n');
-            fs.writeFile(this.iriFileLocation, newIriConfigContent, (err) => {
-              if (err) console.error('Failed to add neighbor in iri. Permission error or wrong path.', err.message);
+            fs.writeFile(this.iriFileLocation, newIriConfigContent, err => {
+              if (err)
+                console.error(
+                  'Failed to add neighbor in iri. Permission error or wrong path.',
+                  err.message
+                );
             });
           }
         }
       });
     } else {
-      console.error('Iri config file not found.')
+      console.error('Iri config file not found.');
     }
   }
 
@@ -91,13 +108,17 @@ class IriUtil {
             withRemovedNeighbor = withRemovedNeighbor.replace(' \n', '\n');
           }
 
-          fs.writeFile(this.iriFileLocation, withRemovedNeighbor, (err) => {
-            if (err) console.error('Failed to remove neighbor from iri. Permission error or wrong path.', err.message);
+          fs.writeFile(this.iriFileLocation, withRemovedNeighbor, err => {
+            if (err)
+              console.error(
+                'Failed to remove neighbor from iri. Permission error or wrong path.',
+                err.message
+              );
           });
         }
       });
     } else {
-      console.error('Iri config file not found.')
+      console.error('Iri config file not found.');
     }
   }
 
@@ -108,7 +129,9 @@ class IriUtil {
           const searchTerm = 'NEIGHBORS = ';
           const startIndex = data.indexOf(searchTerm) + searchTerm.length;
           const fromStartOfStaticNeighbors = data.substring(startIndex);
-          const allNeighbors = fromStartOfStaticNeighbors.split('\n')[0].split(' ');
+          const allNeighbors = fromStartOfStaticNeighbors
+            .split('\n')[0]
+            .split(' ');
           resolve(allNeighbors);
         });
       } else {
@@ -116,7 +139,6 @@ class IriUtil {
       }
     });
   }
-
 }
 
 const iriUtil = new IriUtil();
