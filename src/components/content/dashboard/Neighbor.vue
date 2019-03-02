@@ -27,7 +27,7 @@
             }}
           </span>
         </p>
-        <p>
+        <p v-if="neighbor.isActive">
           <strong>Healthy:</strong>
           <span class="align__right">
             {{
@@ -52,10 +52,6 @@
       </div>
       <div v-if="!showContent" class="content">
         <p>
-          <strong>Milestone:</strong>
-          <span>{{ neighbor.milestone === null ? 'N/A' : neighbor.milestone }}</span>
-        </p>
-        <p>
           <strong>Protocol:</strong>
           <span>
             {{
@@ -64,6 +60,10 @@
             : neighbor.protocol.toUpperCase()
             }}
           </span>
+        </p>
+        <p>
+          <strong>Milestone:</strong>
+          <span>{{ neighbor.milestone === null ? 'N/A' : neighbor.milestone }}</span>
         </p>
         <p>
           <strong>All Transactions:</strong>
