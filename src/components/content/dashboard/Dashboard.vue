@@ -2,15 +2,11 @@
   <div>
     <NoContent v-if="!neighbors"></NoContent>
 
-    <Summary v-if="neighbors" :neighbors="neighbors" />
+    <Summary v-if="neighbors" :neighbors="neighbors"/>
 
     <div v-if="neighbors" class="tile is-ancestor">
       <div class="tile is-parent">
-        <Neighbor
-          :neighbor="neighbor"
-          v-for="(neighbor, index) in neighbors"
-          v-if="index < neighbors.length"
-        />
+        <Neighbor v-for="(neighbor, index) in neighbors" :neighbor="neighbor" :key="index"/>
       </div>
     </div>
   </div>
