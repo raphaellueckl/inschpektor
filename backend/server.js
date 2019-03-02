@@ -1,6 +1,8 @@
 #!/usr/bin/env node
 
-require('../node_modules/console-stamp')(console, { pattern: 'dd/mm/yyyy HH:MM:ss.l' });
+require('../node_modules/console-stamp')(console, {
+  pattern: 'dd/mm/yyyy HH:MM:ss.l'
+});
 
 const express = require('express');
 const axios = require('axios');
@@ -16,7 +18,7 @@ const NODE_STATE = require('./state/node.state');
 const NEIGHBOR_RESOURCE = require('./resource/neighbor.resource');
 
 const app = express();
-app.set('port', (process.env.PORT || 8732));
+app.set('port', process.env.PORT || 8732);
 app.use(express.json());
 if (process.env.NODE_ENV === 'dev') {
   console.log('Environment: DEV');
@@ -55,31 +57,40 @@ async function theFetcher() {
   function fetchNeighborsAndNodeInfo() {
     if (IRI_SERVICE.iriIp) {
       axios(IRI_SERVICE.createIriRequest('getNeighbors'))
-      .then(response => {
-        const neighbors = response.data.neighbors;
+        .then(response => {
+          const neighbors = response.data.neighbors;
 
-        const stmt = db.prepare('INSERT INTO neighbor (address, numberOfAllTransactions, numberOfRandomTransactionRequests, numberOfNewTransactions, numberOfInvalidTransactions, numberOfSentTransactions, connectionType) VALUES (?, ?, ?, ?, ?, ?, ?)');
-        neighbors.forEach((neighbor) => {
-          stmt.run(
-            neighbor.address,
-            neighbor.numberOfAllTransactions,
-            neighbor.numberOfRandomTransactionRequests,
-            neighbor.numberOfNewTransactions,
-            neighbor.numberOfInvalidTransactions,
-            neighbor.numberOfSentTransactions,
-            neighbor.connectionType);
-        });
-        stmt.finalize();
+          const stmt = db.prepare(
+            'INSERT INTO neighbor (address, numberOfAllTransactions, numberOfRandomTransactionRequests, numberOfNewTransactions, numberOfInvalidTransactions, numberOfSentTransactions, connectionType) VALUES (?, ?, ?, ?, ?, ?, ?)'
+          );
+          neighbors.forEach(neighbor => {
+            stmt.run(
+              neighbor.address,
+              neighbor.numberOfAllTransactions,
+              neighbor.numberOfRandomTransactionRequests,
+              neighbor.numberOfNewTransactions,
+              neighbor.numberOfInvalidTransactions,
+              neighbor.numberOfSentTransactions,
+              neighbor.connectionType
+            );
+          });
+          stmt.finalize();
 
-        db.run(`DELETE FROM neighbor WHERE timestamp <= datetime('now', '-30 minutes')`);
-      })
-      .catch(error => console.log('Failed to fetch neighbors of own node.', error.message));
+          db.run(
+            `DELETE FROM neighbor WHERE timestamp <= datetime('now', '-30 minutes')`
+          );
+        })
+        .catch(error =>
+          console.log('Failed to fetch neighbors of own node.', error.message)
+        );
 
       axios(IRI_SERVICE.createIriRequest('getNodeInfo'))
-      .then(nodeInfoResponse => {
-        NODE_STATE.currentOwnNodeInfo = nodeInfoResponse.data;
-      })
-      .catch(error => console.log('Failed to fetch own node info.', error.message));
+        .then(nodeInfoResponse => {
+          NODE_STATE.currentOwnNodeInfo = nodeInfoResponse.data;
+        })
+        .catch(error =>
+          console.log('Failed to fetch own node info.', error.message)
+        );
     }
   }
 

@@ -7,37 +7,44 @@
             <h1 class="title">Save & Load</h1>
 
             <div class="field button-container">
-
               <div class="file is-link">
                 <label class="file-label">
-                  <input class="file-input" type="file" name="resume" ref="loadPath" @change="loadDatabase">
+                  <input
+                    class="file-input"
+                    type="file"
+                    name="resume"
+                    ref="loadPath"
+                    @change="loadDatabase"
+                  />
                   <span class="file-cta">
-                      <span class="file-icon">
-                        <font-awesome-icon icon="upload"/>
-                      </span>
-                      <span class="file-label">
-                        Restore Nicknames
-                      </span>
+                    <span class="file-icon">
+                      <font-awesome-icon icon="upload" />
                     </span>
+                    <span class="file-label">
+                      Restore Nicknames
+                    </span>
+                  </span>
                 </label>
               </div>
 
               <div class="file is-link">
                 <label class="file-label">
-                  <input class="file-input" type="button" @click="saveDatabase">
+                  <input
+                    class="file-input"
+                    type="button"
+                    @click="saveDatabase"
+                  />
                   <span class="file-cta">
-                      <span class="file-icon">
-                        <font-awesome-icon icon="download"/>
-                      </span>
-                      <span class="file-label">
-                        Save Nicknames
-                      </span>
+                    <span class="file-icon">
+                      <font-awesome-icon icon="download" />
                     </span>
+                    <span class="file-label">
+                      Save Nicknames
+                    </span>
+                  </span>
                 </label>
               </div>
-
             </div>
-
           </article>
         </div>
       </div>
@@ -46,47 +53,51 @@
 </template>
 
 <script>
-  export default {
-    name: 'DatabaseSync',
-    methods: {
-      saveDatabase() {
-        this.$store.dispatch('saveDatabase');
-      },
-      loadDatabase() {
-        const file = this.$refs.loadPath.files[0];
-        const reader = new FileReader();
+export default {
+  name: 'DatabaseSync',
+  methods: {
+    saveDatabase() {
+      this.$store.dispatch('saveDatabase');
+    },
+    loadDatabase() {
+      const file = this.$refs.loadPath.files[0];
+      const reader = new FileReader();
 
-        const store = this.$store;
+      const store = this.$store;
 
-        reader.addEventListener('load', function () {
+      reader.addEventListener(
+        'load',
+        function() {
           const fileContent = JSON.parse(reader.result);
           store.dispatch('loadDatabase', fileContent);
-        }, false);
+        },
+        false
+      );
 
-        if (file) {
-          reader.readAsText(file);
-        }
+      if (file) {
+        reader.readAsText(file);
       }
     }
-  };
+  }
+};
 </script>
 
 <style scoped>
-  .file-label {
-    margin: 5px;
-  }
+.file-label {
+  margin: 5px;
+}
 
-  .button.is-link.is-rounded > input[type="file"] {
-    display: none;
-  }
+.button.is-link.is-rounded > input[type='file'] {
+  display: none;
+}
 
-  .file-label {
-    border-radius: 290486px; /* bulma default */
-  }
+.file-label {
+  border-radius: 290486px; /* bulma default */
+}
 
-  .button-container {
-    display: flex;
-    justify-content: center;
-    flex-wrap: wrap;
-  }
+.button-container {
+  display: flex;
+  justify-content: center;
+  flex-wrap: wrap;
+}
 </style>

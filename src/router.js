@@ -13,7 +13,8 @@ Vue.use(Router);
 const loginNecessary = (to, from, next) => {
   // If Store.getters.authenticated === null, the store isn't yet initialized and the user would be redirected to
   // '/dashboard' upon page refresh all the time.
-  if (Store.getters.authenticated === false && to.path !== '/login') next('/login');
+  if (Store.getters.authenticated === false && to.path !== '/login')
+    next('/login');
   else next();
 };
 

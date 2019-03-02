@@ -11,7 +11,6 @@ const BASE_URL = '/api';
 const SALT = 11;
 
 class NodeResource {
-
   init(app, db) {
     app.get(`${BASE_URL}/node-info`, (req, res) => {
       if (!IRI_SERVICE.iriIp) {
@@ -20,19 +19,19 @@ class NodeResource {
       }
       const pingStart = new Date();
       axios(IRI_SERVICE.createIriRequest('getNodeInfo'))
-      .then(response => {
-        const ping = new Date() - pingStart;
-        NODE_STATE.currentOwnNodeInfo = response.data;
-        NODE_STATE.currentOwnNodeInfo.ping = ping;
-        res.json(NODE_STATE.currentOwnNodeInfo);
-      })
-      .catch(error => {
-        if (!IRI_SERVICE.iriIp) {
-          res.status(500).send('NODE_NOT_SET');
-        } else {
-          res.status(500).send('NODE_INACCESSIBLE');
-        }
-      });
+        .then(response => {
+          const ping = new Date() - pingStart;
+          NODE_STATE.currentOwnNodeInfo = response.data;
+          NODE_STATE.currentOwnNodeInfo.ping = ping;
+          res.json(NODE_STATE.currentOwnNodeInfo);
+        })
+        .catch(error => {
+          if (!IRI_SERVICE.iriIp) {
+            res.status(500).send('NODE_NOT_SET');
+          } else {
+            res.status(500).send('NODE_INACCESSIBLE');
+          }
+        });
     });
 
     app.post(`${BASE_URL}/host-node-ip`, (req, res) => {
@@ -48,17 +47,33 @@ class NodeResource {
         return;
       }
 
-      if (!USER_RESOURCE.hashedPw && password) USER_RESOURCE.hashedPw = bcrypt.hashSync(password, SALT);
+      if (!USER_RESOURCE.hashedPw && password)
+        USER_RESOURCE.hashedPw = bcrypt.hashSync(password, SALT);
 
       if (password && bcrypt.compareSync(password, USER_RESOURCE.hashedPw)) {
         IRI_SERVICE.protocol = protocol;
         IRI_SERVICE.iriIp = newIriIp;
         IRI_SERVICE.iriPort = port;
         IRI_SERVICE.iriFileLocation = iriFileLocation;
-        USER_RESOURCE.loginToken = new Date().toString().split('').reverse().join('');
+        USER_RESOURCE.loginToken = new Date()
+          .toString()
+          .split('')
+          .reverse()
+          .join('');
 
-        const updateHostIp = db.prepare('REPLACE INTO host_node (id, protocol, ip, port, hashed_pw, iri_path, login_token, restart_node_command) VALUES(?, ?, ?, ?, ?, ?, ?, ?)');
-        updateHostIp.run(0, IRI_SERVICE.protocol, IRI_SERVICE.iriIp, IRI_SERVICE.iriPort, USER_RESOURCE.hashedPw, IRI_SERVICE.iriFileLocation, USER_RESOURCE.loginToken, NODE_STATE.restartNodeCommand);
+        const updateHostIp = db.prepare(
+          'REPLACE INTO host_node (id, protocol, ip, port, hashed_pw, iri_path, login_token, restart_node_command) VALUES(?, ?, ?, ?, ?, ?, ?, ?)'
+        );
+        updateHostIp.run(
+          0,
+          IRI_SERVICE.protocol,
+          IRI_SERVICE.iriIp,
+          IRI_SERVICE.iriPort,
+          USER_RESOURCE.hashedPw,
+          IRI_SERVICE.iriFileLocation,
+          USER_RESOURCE.loginToken,
+          NODE_STATE.restartNodeCommand
+        );
 
         res.json({
           token: USER_RESOURCE.loginToken
@@ -67,8 +82,15 @@ class NodeResource {
         IRI_SERVICE.protocol = protocol;
         IRI_SERVICE.iriIp = newIriIp;
         IRI_SERVICE.iriPort = port;
-        const updateHostIp = db.prepare(`UPDATE host_node SET protocol = ?, ip = ?, port = ? WHERE id = ?`);
-        updateHostIp.run(IRI_SERVICE.protocol, IRI_SERVICE.iriIp, IRI_SERVICE.iriPort, 0);
+        const updateHostIp = db.prepare(
+          `UPDATE host_node SET protocol = ?, ip = ?, port = ? WHERE id = ?`
+        );
+        updateHostIp.run(
+          IRI_SERVICE.protocol,
+          IRI_SERVICE.iriIp,
+          IRI_SERVICE.iriPort,
+          0
+        );
 
         res.status(200).send();
       } else {
@@ -111,10 +133,9 @@ class NodeResource {
         }
         NEIGHBOR_RESOURCE.deleteNeighborHistory();
         res.status(200).send();
-      })
+      });
     });
   }
-
 }
 
 const nodeResource = new NodeResource();
