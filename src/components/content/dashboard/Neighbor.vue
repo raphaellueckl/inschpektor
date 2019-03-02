@@ -12,118 +12,118 @@
     ref="cardToAnimate"
   >
     <h2 class="title">
-      <span v-if="neighbor.iriVersion">👑</span
-      ><span v-if="isUnpersistedNeighbor">👽</span>
+      <span v-if="neighbor.iriVersion">👑</span>
+      <span v-if="isUnpersistedNeighbor">👽</span>
       {{ neighbor.name ? neighbor.name : neighbor.address }}
     </h2>
 
     <div class="media-content">
       <div v-if="showContent" class="content">
         <p>
-          <strong>Active:</strong
-          ><span class="align__right">{{
+          <strong>Active:</strong>
+          <span class="align__right">
+            {{
             neighbor.isActive === null ? 'N/A' : neighbor.isActive ? '✔️' : '❌'
-          }}</span>
+            }}
+          </span>
         </p>
         <p>
-          <strong>Healthy:</strong
-          ><span class="align__right">{{
+          <strong>Healthy:</strong>
+          <span class="align__right">
+            {{
             neighbor.isFriendlyNode ? '✔️' : '❌'
-          }}</span>
+            }}
+          </span>
         </p>
         <!-- ## Premium neighbor information-->
         <p v-if="neighbor.isSynced === true || neighbor.isSynced === false">
-          <strong>Synced:</strong
-          ><span class="align__right"
-            >{{ neighbor.isSynced ? '✔' : '❌' }}️</span
-          >
+          <strong>Synced:</strong>
+          <span class="align__right">{{ neighbor.isSynced ? '✔' : '❌' }}️</span>
         </p>
         <p v-if="neighbor.iriVersion">
-          <strong>Iri-version:</strong
-          ><span class="align__right">{{ neighbor.iriVersion }}</span>
+          <strong>Iri-version:</strong>
+          <span class="align__right">{{ neighbor.iriVersion }}</span>
         </p>
         <p v-if="neighbor.ping">
-          <strong>Ping:</strong
-          ><span class="align__right">{{ neighbor.ping }} ms</span>
+          <strong>Ping:</strong>
+          <span class="align__right">{{ neighbor.ping }} ms</span>
         </p>
         <!-- ## -->
       </div>
       <div v-if="!showContent" class="content">
         <p>
-          <strong>Milestone:</strong
-          ><span>
-            {{ neighbor.milestone === null ? 'N/A' : neighbor.milestone }}</span
-          >
+          <strong>Milestone:</strong>
+          <span>{{ neighbor.milestone === null ? 'N/A' : neighbor.milestone }}</span>
         </p>
         <p>
-          <strong>Protocol:</strong
-          ><span>
+          <strong>Protocol:</strong>
+          <span>
             {{
-              neighbor.protocol === null
-                ? 'N/A'
-                : neighbor.protocol.toUpperCase()
-            }}</span
-          >
+            neighbor.protocol === null
+            ? 'N/A'
+            : neighbor.protocol.toUpperCase()
+            }}
+          </span>
         </p>
         <p>
-          <strong>All Transactions:</strong
-          ><span>
+          <strong>All Transactions:</strong>
+          <span>
             {{
-              neighbor.numberOfAllTransactions === null
-                ? 'N/A'
-                : neighbor.numberOfAllTransactions
-            }}</span
-          >
+            neighbor.numberOfAllTransactions === null
+            ? 'N/A'
+            : neighbor.numberOfAllTransactions
+            }}
+          </span>
         </p>
         <p>
-          <strong>Random Transaction Requests:</strong
-          ><span>
+          <strong>Random Transaction Requests:</strong>
+          <span>
             {{
-              neighbor.numberOfRandomTransactionRequests === null
-                ? 'N/A'
-                : neighbor.numberOfRandomTransactionRequests
-            }}</span
-          >
+            neighbor.numberOfRandomTransactionRequests === null
+            ? 'N/A'
+            : neighbor.numberOfRandomTransactionRequests
+            }}
+          </span>
         </p>
         <p>
-          <strong>New Transactions:</strong
-          ><span>
+          <strong>New Transactions:</strong>
+          <span>
             {{
-              neighbor.numberOfNewTransactions === null
-                ? 'N/A'
-                : neighbor.numberOfNewTransactions
-            }}</span
-          >
+            neighbor.numberOfNewTransactions === null
+            ? 'N/A'
+            : neighbor.numberOfNewTransactions
+            }}
+          </span>
         </p>
         <p>
-          <strong>Invalid Transactions:</strong
-          ><span>
+          <strong>Invalid Transactions:</strong>
+          <span>
             {{
-              neighbor.numberOfInvalidTransactions === null
-                ? 'N/A'
-                : neighbor.numberOfInvalidTransactions
-            }}</span
-          >
+            neighbor.numberOfInvalidTransactions === null
+            ? 'N/A'
+            : neighbor.numberOfInvalidTransactions
+            }}
+          </span>
         </p>
         <p>
-          <strong>Stale Transactions:</strong
-          ><span>
+          <strong>Stale Transactions:</strong>
+          <span>
             {{
-              neighbor.numberOfStaleTransactions === null
-                ? 'N/A'
-                : neighbor.numberOfStaleTransactions
-            }}</span
-          >
+            neighbor.numberOfStaleTransactions === null
+            ? 'N/A'
+            : neighbor.numberOfStaleTransactions
+            }}
+          </span>
         </p>
         <p>
-          <strong>Sent Transactions:</strong
-          ><span>
+          <strong>Sent Transactions:</strong>
+          <span>
             {{
-              neighbor.numberOfSentTransactions === null
-                ? 'N/A'
-                : neighbor.numberOfSentTransactions
-            }}</span
-          >
+            neighbor.numberOfSentTransactions === null
+            ? 'N/A'
+            : neighbor.numberOfSentTransactions
+            }}
+          </span>
         </p>
       </div>
     </div>
@@ -190,13 +190,13 @@ export default {
 
 @keyframes swap {
   0% {
-    transform: scaleY(1);
+    transform: scaleX(1);
   }
   50% {
-    transform: scaleY(0);
+    transform: scaleX(0);
   }
   100% {
-    transform: scaleY(1);
+    transform: scaleX(1);
   }
 }
 </style>
