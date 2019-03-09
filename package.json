@@ -42,8 +42,10 @@
     "axios": "^0.18.0",
     "bcrypt": "^3.0.3",
     "bulma": "^0.7.2",
+    "bulma-divider": "^0.2.0",
     "bulma-switch": "^2.0.0",
     "connect-history-api-fallback": "^1.5.0",
+    "console-stamp": "^0.2.7",
     "express": "^4.16.4",
     "moment": "^2.23.0",
     "qrcode.vue": "^1.6.1",
@@ -51,8 +53,7 @@
     "sqlite3": "^4.0.4",
     "vue": "^2.5.21",
     "vue-router": "^3.0.2",
-    "vuex": "^3.0.1",
-    "console-stamp": "^0.2.7"
+    "vuex": "^3.0.1"
   },
   "devDependencies": {
     "nodemon": "^1.18.9",

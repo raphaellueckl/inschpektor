@@ -19,15 +19,13 @@
       <h2 class="subtitle">Currently set IP: {{ iriIp }}</h2>
     </div>
 
-    <br />
+    <br>
 
     <nav class="level">
       <div class="level-item has-text-centered">
         <div class="columns">
           <div class="column">
-            <label class="label"
-              >Host-Node IP / Domain (Port only if non-default):</label
-            >
+            <label class="label">Host-Node IP / Domain (Port only if non-default):</label>
             <div class="columns">
               <div class="column is-4">
                 <input
@@ -35,7 +33,7 @@
                   v-model="isHttps"
                   type="checkbox"
                   class="switch is-rounded is-success"
-                />
+                >
                 <label for="switchRoundedSuccess">https?</label>
               </div>
               <div class="column is-8">
@@ -45,19 +43,18 @@
                   class="input"
                   type="text"
                   placeholder="E.g. 192.168.1.111 or my-domain.com:12345"
-                />
+                >
               </div>
             </div>
           </div>
         </div>
       </div>
     </nav>
+
     <nav v-if="code === 'NODE_NOT_SET'" class="level">
       <div class="level-item has-text-centered">
         <div class="field">
-          <label class="label"
-            >Define a Password (for node interactions):</label
-          >
+          <label class="label">Define a Password (for node interactions):</label>
           <div class="control">
             <input
               v-model="password"
@@ -65,7 +62,7 @@
               class="input"
               type="password"
               placeholder="Choose wisely..."
-            />
+            >
           </div>
         </div>
       </div>
@@ -73,9 +70,7 @@
     <nav v-if="code === 'NODE_NOT_SET'" class="level">
       <div class="level-item has-text-centered">
         <div class="field">
-          <label class="label"
-            >Path to iri config (optional, but recommended):</label
-          >
+          <label class="label">Path to iri config (optional, but recommended):</label>
           <div class="control">
             <input
               v-model="iriFileLocation"
@@ -83,7 +78,7 @@
               class="input"
               type="text"
               placeholder="E.g. /home/user/iri.txt"
-            />
+            >
           </div>
         </div>
       </div>
@@ -99,7 +94,7 @@
               class="input"
               type="text"
               placeholder="E.g. systemctl restart iota"
-            />
+            >
           </div>
         </div>
       </div>
@@ -112,11 +107,27 @@
             :click="setHostNode"
             type="success"
             :disabled="code === 'NODE_NOT_SET' ? !password || !nodeIp : !nodeIp"
-          >
-            Submit
-          </RoundedButton>
+          >Submit</RoundedButton>
         </div>
       </div>
+    </nav>
+
+    <div class="is-divider"></div>
+
+    <h2
+      class="subtitle"
+    >You can restart your iota node, if you are logged in, which could solve the issue.</h2>
+
+    <Login v-if="!authenticated"></Login>
+
+    <nav v-if="authenticated">
+      <RoundedButton
+        class="centered"
+        :click="restartNode"
+        type="danger"
+        spin="10000"
+        modal-text="This action will restart your node. This will cause some connection issues from INSCHPEKTOR, but they will resolve automatically after the node is restarted."
+      >Restart Node</RoundedButton>
     </nav>
   </div>
 </template>
@@ -124,11 +135,13 @@
 <script>
 import { mapGetters } from 'vuex';
 import RoundedButton from './content/utility/RoundedButton';
+import Login from './content/Login';
 
 export default {
   name: 'Error',
   components: {
-    RoundedButton
+    RoundedButton,
+    Login
   },
   props: ['code'],
   data: () => {
@@ -142,6 +155,9 @@ export default {
     };
   },
   methods: {
+    restartNode() {
+      this.$store.dispatch('restartNode');
+    },
     setHostNode() {
       if (
         this.code === 'NODE_NOT_SET'
@@ -159,7 +175,7 @@ export default {
     }
   },
   computed: {
-    ...mapGetters(['iriIp'])
+    ...mapGetters(['iriIp', 'authenticated'])
   },
   created() {
     this.$store.dispatch('fetchIriDetails');
