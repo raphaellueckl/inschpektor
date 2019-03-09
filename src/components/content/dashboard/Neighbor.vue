@@ -63,7 +63,11 @@
         </p>
         <p>
           <strong>Milestone:</strong>
-          <span>{{ neighbor.milestone === null ? 'N/A' : neighbor.milestone }}</span>
+          <span>
+            {{
+            neighbor.milestone === null ? 'N/A' : neighbor.milestone
+            }}
+          </span>
         </p>
         <p>
           <strong>All Transactions:</strong>
