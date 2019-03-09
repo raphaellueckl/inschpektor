@@ -20,9 +20,6 @@ axios.interceptors.response.use(
   }
 );
 
-let iriIp = null;
-let iriPort = null;
-
 const state = {
   hostNode: null,
   iriFileLocation: null,
