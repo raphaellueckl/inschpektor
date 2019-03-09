@@ -1,27 +1,28 @@
 <template>
   <div class="columns">
     <div class="column is-4">
-      <strong class="mobile-only">IP-Address:</strong> {{ neighbor.address }}
+      <strong class="mobile-only">IP-Address:</strong>
+      {{ neighbor.address }}
     </div>
     <div class="column is-one-fifth">
-      <strong class="mobile-only">Nickname: </strong>
+      <strong class="mobile-only">Nickname:</strong>
       <input
         v-model="neighbor.name"
         placeholder="Enter nickname..."
         class="input"
         type="text"
         @input="setNeighborName(neighbor)"
-      />
+      >
     </div>
     <div class="column is-2">
-      <strong class="mobile-only">Node Port: </strong>
+      <strong class="mobile-only">Node Port:</strong>
       <input
         v-model="neighbor.port"
         placeholder="Enter port..."
         class="input"
         type="text"
         @input="setNeighborPort(neighbor)"
-      />
+      >
     </div>
     <div class="column">
       <strong class="mobile-only">Active:</strong>
@@ -32,14 +33,13 @@
       {{ neighbor.isSynced === null ? 'N/A' : neighbor.isSynced ? '✔' : '❌' }}️
     </div>
     <div class="column">
-      <strong class="mobile-only">Remove neighbor:</strong>
       <RoundedButton
         :click="remove"
         type="danger"
         spin="2000"
         modal-text="This action will remove the selected neighbor from your node."
       >
-        <font-awesome-icon icon="trash-alt" />
+        <font-awesome-icon icon="trash-alt"/>
       </RoundedButton>
     </div>
   </div>
