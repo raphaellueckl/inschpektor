@@ -24,7 +24,7 @@ let iriIp = null;
 let iriPort = null;
 
 const state = {
-  hostNode: `${iriIp}:${iriPort}`,
+  hostNode: null,
   iriFileLocation: null,
   token: null,
   loading: false,
@@ -49,7 +49,9 @@ const mutations = {
   },
   SET_IRI_DETAILS(state, iriDetails) {
     state.iriIp = iriDetails.nodeIp;
-    state.hostNode = `${iriDetails.nodeIp}:${iriDetails.port}`;
+    state.hostNode = iriDetails.nodeIp
+      ? `${iriDetails.nodeIp}:${iriDetails.port}`
+      : null;
     state.iriFileLocation = iriDetails.iriFileLocation;
   },
   SET_NEIGHBORS(state, neighbors) {
