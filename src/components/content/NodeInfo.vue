@@ -4,40 +4,49 @@
       <div class="tile">
         <div class="tile is-parent is-vertical">
           <article class="tile is-child notification">
-            <p class="title">{{ hostNode }}</p>
+            <p class="title">{{ hostNode ? hostNode : 'N/A' }}</p>
             <div class="media-content">
               <div class="content" v-if="nodeInfo">
                 <p class="subtitle">Host-Server:</p>
                 <p>
-                  <strong>Ping: </strong
-                  >{{ nodeInfo.ping === null ? null : nodeInfo.ping }} ms
+                  <strong>Ping:</strong>
+                  {{ nodeInfo.ping === null ? null : nodeInfo.ping }} ms
                 </p>
                 <p>
-                  <strong>Cores: </strong>{{ nodeInfo.jreAvailableProcessors }}
+                  <strong>Cores:</strong>
+                  {{ nodeInfo.jreAvailableProcessors }}
                 </p>
-                <strong>RAM Usage: </strong>
-                <span
-                  >{{ Math.round(nodeInfo.jreFreeMemory / 1000000) }} /
-                  {{ Math.round(nodeInfo.jreMaxMemory / 1000000) }} MB</span
-                >
+                <strong>RAM Usage:</strong>
+                <span>
+                  {{ Math.round(nodeInfo.jreFreeMemory / 1000000) }} /
+                  {{ Math.round(nodeInfo.jreMaxMemory / 1000000) }} MB
+                </span>
                 <div>
                   <progress
                     class="progress is-success"
                     :value="nodeInfo.jreFreeMemory"
                     :max="nodeInfo.jreMaxMemory"
-                  >
-                  </progress>
+                  ></progress>
                 </div>
-                <p><strong>Java Version: </strong>{{ nodeInfo.jreVersion }}</p>
-
-                <br />
-                <p class="subtitle">IRI:</p>
-                <p><strong>IRI Version: </strong>{{ nodeInfo.appVersion }}</p>
-                <p><strong>Neighbors: </strong>{{ nodeInfo.neighbors }}</p>
                 <p>
-                  <strong>Timestamp: </strong
-                  >{{
-                    nodeInfo.time === null ? null : nodeInfo.time | timespan
+                  <strong>Java Version:</strong>
+                  {{ nodeInfo.jreVersion }}
+                </p>
+
+                <br>
+                <p class="subtitle">IRI:</p>
+                <p>
+                  <strong>IRI Version:</strong>
+                  {{ nodeInfo.appVersion }}
+                </p>
+                <p>
+                  <strong>Neighbors:</strong>
+                  {{ nodeInfo.neighbors }}
+                </p>
+                <p>
+                  <strong>Timestamp:</strong>
+                  {{
+                  nodeInfo.time === null ? null : nodeInfo.time | timespan
                   }}
                 </p>
               </div>
