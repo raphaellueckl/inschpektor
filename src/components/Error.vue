@@ -112,23 +112,25 @@
       </div>
     </nav>
 
-    <div class="is-divider"></div>
+    <div v-if="code !== 'NODE_NOT_SET'">
+      <div class="is-divider"></div>
 
-    <h2
-      class="subtitle"
-    >You can restart your iota node, if you are logged in, which could solve the issue.</h2>
+      <h2
+        class="subtitle"
+      >You can restart your iota node, if you are logged in, which could solve the issue.</h2>
 
-    <Login v-if="!authenticated"></Login>
+      <Login v-if="!authenticated"></Login>
 
-    <nav v-if="authenticated">
-      <RoundedButton
-        class="centered"
-        :click="restartNode"
-        type="danger"
-        spin="10000"
-        modal-text="This action will restart your node. This will cause some connection issues from INSCHPEKTOR, but they will resolve automatically after the node is restarted."
-      >Restart Node</RoundedButton>
-    </nav>
+      <nav v-if="authenticated">
+        <RoundedButton
+          class="centered"
+          :click="restartNode"
+          type="danger"
+          spin="10000"
+          modal-text="This action will restart your node. This will cause some connection issues from INSCHPEKTOR, but they will resolve automatically after the node is restarted."
+        >Restart Node</RoundedButton>
+      </nav>
+    </div>
   </div>
 </template>
 
