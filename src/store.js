@@ -268,7 +268,7 @@ const actions = {
       const token = await messaging.getToken();
 
       axios
-        .post('/api/notification', token)
+        .post('/api/notification', { token })
         .catch(error =>
           console.log('Error when sending notification permission token.')
         );
