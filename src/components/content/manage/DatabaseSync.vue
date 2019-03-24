@@ -5,7 +5,6 @@
         <div class="tile is-parent is-vertical">
           <article class="tile is-child notification">
             <h1 class="title">Save & Load</h1>
-
             <div class="field button-container">
               <div class="file is-link">
                 <label class="file-label">
@@ -37,7 +36,12 @@
                 </label>
               </div>
 
-              <!-- <RoundedButton type="success" spin="1000">Enable Notifications</RoundedButton> -->
+              <RoundedButton
+                type="success"
+                :click="saveDatabase"
+                :disabled="disabledNotificationButton"
+                spin="1000"
+              >Enable Notifications</RoundedButton>
             </div>
           </article>
         </div>
@@ -51,6 +55,9 @@ import RoundedButton from '../utility/RoundedButton';
 
 export default {
   name: 'DatabaseSync',
+  components: {
+    RoundedButton
+  },
   methods: {
     saveDatabase() {
       this.$store.dispatch('saveDatabase');
@@ -73,6 +80,14 @@ export default {
       if (file) {
         reader.readAsText(file);
       }
+    }
+  },
+  computed: {
+    disabledNotificationButton: () => {
+      return (
+        window.location.protocol !== 'https:' &&
+        window.location.hostname !== 'localhost'
+      );
     }
   }
 };
