@@ -4,6 +4,7 @@ class UserResource {
   constructor() {
     this.loginToken = undefined;
     this.hashedPw = undefined;
+    this.notificationTokens = [];
   }
 
   init(app, db) {
@@ -40,6 +41,17 @@ class UserResource {
         res.status(404).send();
       }
     });
+
+    app.post('/api/notification', (req, res) => {
+      const token = req.body.token;
+      this.notificationTokens.push(token);
+
+      res.status(200).send();
+    });
+  }
+
+  initializeNotificationTokens(token) {
+    this.notificationTokens.push(token);
   }
 }
 

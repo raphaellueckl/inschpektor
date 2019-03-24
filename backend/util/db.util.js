@@ -42,6 +42,8 @@ class DbUtil {
         port INTEGER
       )`
       );
+
+      db.run(`CREATE TABLE IF NOT EXISTS notification (token TEXT)`);
     });
   }
 
@@ -67,6 +69,12 @@ class DbUtil {
           r.address,
           r.port ? r.port : null
         );
+      });
+    });
+
+    db.all('select * from notification', [], (err, rows) => {
+      rows.forEach(r => {
+        USER_RESOURCE.initializeNotificationTokens(r.token);
       });
     });
   }
