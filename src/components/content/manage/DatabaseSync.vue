@@ -37,6 +37,7 @@
               </div>
 
               <RoundedButton
+                class="aligned-button"
                 type="success"
                 :click="saveDatabase"
                 :disabled="disabledNotificationButton"
@@ -110,5 +111,9 @@ export default {
   display: flex;
   justify-content: center;
   flex-wrap: wrap;
+}
+
+.aligned-button {
+  margin: 5px;
 }
 </style>
