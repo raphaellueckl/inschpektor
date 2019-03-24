@@ -8,7 +8,7 @@
       </h2>
     </div>
 
-    <br />
+    <br>
 
     <nav class="level">
       <div class="level-item">
@@ -24,33 +24,21 @@
               ]"
               type="password"
               placeholder="Enter Password..."
-            />
+            >
             <span
               v-if="authenticated === false && loginAttempted"
               class="icon is-small is-right"
               :key="1"
             >
-              <font-awesome-icon icon="exclamation-triangle" />
+              <font-awesome-icon icon="exclamation-triangle"/>
             </span>
           </div>
-          <p
-            v-if="authenticated === false && loginAttempted"
-            class="help is-danger"
-          >
-            Wrong Password!
-          </p>
+          <p v-if="authenticated === false && loginAttempted" class="help is-danger">Wrong Password!</p>
         </div>
       </div>
     </nav>
 
-    <RoundedButton
-      type="success"
-      :click="loginClicked"
-      :disabled="!password"
-      spin="1000"
-    >
-      Login
-    </RoundedButton>
+    <RoundedButton type="success" :click="loginClicked" :disabled="!password" spin="1000">Login</RoundedButton>
   </div>
 </template>
 
