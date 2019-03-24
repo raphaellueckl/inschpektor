@@ -1,5 +1,6 @@
 import Vue from 'vue';
 import Vuex from 'vuex';
+import { askForPermissioToReceiveNotifications } from './pushService';
 
 Vue.use(Vuex);
 

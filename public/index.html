@@ -37,33 +37,6 @@
     <meta name="theme-color" content="#ffffff" />
 
     <title>inschpektor</title>
-
-    <!-- Firebase -->
-    <script src="https://www.gstatic.com/firebasejs/5.9.0/firebase.js"></script>
-    <script>
-      var config = {
-        apiKey: 'AIzaSyCXbdeUhH_m46ICaNyla50RHTHNcTF8gaA',
-        authDomain: 'inschpektor.firebaseapp.com',
-        databaseURL: 'https://inschpektor.firebaseio.com',
-        projectId: 'inschpektor',
-        storageBucket: 'inschpektor.appspot.com',
-        messagingSenderId: '1008642879795'
-      };
-      firebase.initializeApp(config);
-      const messaging = firebase.messaging();
-
-      messaging
-        .requestPermission()
-        .then(function() {
-          console.log('Notification permission granted.');
-          // TODO(developer): Retrieve an Instance ID token for use with FCM.
-          // ...
-        })
-        .catch(function(err) {
-          console.log('Unable to get permission to notify.', err);
-        });
-    </script>
-    <!--  -->
   </head>
   <body>
     <noscript>

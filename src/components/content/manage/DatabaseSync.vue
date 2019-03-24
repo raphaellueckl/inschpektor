@@ -15,35 +15,29 @@
                     name="resume"
                     ref="loadPath"
                     @change="loadDatabase"
-                  />
+                  >
                   <span class="file-cta">
                     <span class="file-icon">
-                      <font-awesome-icon icon="upload" />
+                      <font-awesome-icon icon="upload"/>
                     </span>
-                    <span class="file-label">
-                      Restore Nicknames
-                    </span>
+                    <span class="file-label">Restore Nicknames</span>
                   </span>
                 </label>
               </div>
 
               <div class="file is-link">
                 <label class="file-label">
-                  <input
-                    class="file-input"
-                    type="button"
-                    @click="saveDatabase"
-                  />
+                  <input class="file-input" type="button" @click="saveDatabase">
                   <span class="file-cta">
                     <span class="file-icon">
-                      <font-awesome-icon icon="download" />
+                      <font-awesome-icon icon="download"/>
                     </span>
-                    <span class="file-label">
-                      Save Nicknames
-                    </span>
+                    <span class="file-label">Save Nicknames</span>
                   </span>
                 </label>
               </div>
+
+              <!-- <RoundedButton type="success" spin="1000">Enable Notifications</RoundedButton> -->
             </div>
           </article>
         </div>
@@ -53,6 +47,8 @@
 </template>
 
 <script>
+import RoundedButton from '../utility/RoundedButton';
+
 export default {
   name: 'DatabaseSync',
   methods: {
