@@ -1,9 +1,9 @@
 <template>
   <div>
-    <AddNeighbor />
-    <NeighborTable />
-    <DatabaseSync />
-    <DangerZone />
+    <AddNeighbor/>
+    <NeighborTable/>
+    <Settings/>
+    <DangerZone/>
   </div>
 </template>
 
@@ -11,7 +11,7 @@
 import AddNeighbor from './AddNeighbor';
 import NeighborTable from './NeighborTable';
 import DangerZone from './DangerZone';
-import DatabaseSync from './DatabaseSync';
+import Settings from './Settings';
 
 export default {
   name: 'Manage',
@@ -19,7 +19,7 @@ export default {
     DangerZone,
     AddNeighbor,
     NeighborTable,
-    DatabaseSync
+    Settings
   }
 };
 </script>

@@ -55,7 +55,7 @@ import { mapActions } from 'vuex';
 import RoundedButton from '../utility/RoundedButton';
 
 export default {
-  name: 'DatabaseSync',
+  name: 'Settings',
   components: {
     RoundedButton
   },
