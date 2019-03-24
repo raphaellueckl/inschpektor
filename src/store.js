@@ -1,6 +1,6 @@
+import firebase from 'firebase';
 import Vue from 'vue';
 import Vuex from 'vuex';
-import { askForPermissioToReceiveNotifications } from './pushService';
 
 Vue.use(Vuex);
 
@@ -260,6 +260,21 @@ const actions = {
           'Could not receive information about latest inschpektor version.'
         )
       );
+  },
+  async enableNotifications({ commit }) {
+    try {
+      const messaging = firebase.messaging();
+      await messaging.requestPermission();
+      const token = await messaging.getToken();
+
+      axios
+        .post('/api/notification', token)
+        .catch(error =>
+          console.log('Error when sending notification permission token.')
+        );
+    } catch (error) {
+      console.log('Failed to request notification permissions.');
+    }
   }
 };
 

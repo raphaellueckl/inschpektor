@@ -4,7 +4,7 @@
       <div class="tile">
         <div class="tile is-parent is-vertical">
           <article class="tile is-child notification">
-            <h1 class="title">Save & Load</h1>
+            <h1 class="title">Settings</h1>
             <div class="field button-container">
               <div class="file is-link">
                 <label class="file-label">
@@ -39,9 +39,8 @@
               <RoundedButton
                 class="aligned-button"
                 type="success"
-                :click="saveDatabase"
-                :disabled="disabledNotificationButton"
-                spin="1000"
+                :click="enableNotifications"
+                :disabled="notificationButtonDisabled"
               >Enable Notifications</RoundedButton>
             </div>
           </article>
@@ -52,6 +51,7 @@
 </template>
 
 <script>
+import { mapActions } from 'vuex';
 import RoundedButton from '../utility/RoundedButton';
 
 export default {
@@ -60,6 +60,7 @@ export default {
     RoundedButton
   },
   methods: {
+    ...mapActions(['enableNotifications']),
     saveDatabase() {
       this.$store.dispatch('saveDatabase');
     },
@@ -84,7 +85,7 @@ export default {
     }
   },
   computed: {
-    disabledNotificationButton: () => {
+    notificationButtonDisabled: () => {
       return (
         window.location.protocol !== 'https:' &&
         window.location.hostname !== 'localhost'
