@@ -46,11 +46,14 @@ class UserResource {
       const token = req.body.token;
       this.notificationTokens.push(token);
 
+      const stmt = db.prepare('INSERT INTO notification (token) VALUES (?)');
+      stmt.run(token);
+
       res.status(200).send();
     });
   }
 
-  initializeNotificationTokens(token) {
+  initializeNotificationToken(token) {
     this.notificationTokens.push(token);
   }
 }
