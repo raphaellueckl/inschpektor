@@ -71,10 +71,9 @@ class DbUtil {
         );
       });
     });
-
     db.all('select * from notification', [], (err, rows) => {
       rows.forEach(r => {
-        USER_RESOURCE.initializeNotificationTokens(r.token);
+        USER_RESOURCE.initializeNotificationToken(r.token);
       });
     });
   }
@@ -99,7 +98,14 @@ class DbUtil {
               reject();
               return;
             }
-            resolve();
+            db.run('drop table IF EXISTS notification', err => {
+              if (err) {
+                console.log('Error deleting notification table', err.message);
+                reject();
+                return;
+              }
+              resolve();
+            });
           });
         });
       });
