@@ -5,7 +5,6 @@ const IRI_SERVICE = require('../util/iri.util');
 const USER_RESOURCE = require('./user.resource');
 const NEIGHBOR_RESOURCE = require('./neighbor.resource');
 const NODE_STATE = require('../state/node.state');
-const AUTH_UTIL = require('../util/auth.util');
 
 const BASE_URL = '/api';
 const SALT = 11;
@@ -99,7 +98,7 @@ class NodeResource {
     });
 
     app.get(`${BASE_URL}/iri-details`, (req, res) => {
-      if (!AUTH_UTIL.isUserAuthenticated(NODE_STATE.loginToken, req)) {
+      if (!USER_RESOURCE.isUserAuthenticated(NODE_STATE.loginToken, req)) {
         res.status(401).send();
         return;
       }
@@ -112,7 +111,7 @@ class NodeResource {
     });
 
     app.get(`${BASE_URL}/persisted-neighbors`, async (req, res) => {
-      if (!AUTH_UTIL.isUserAuthenticated(NODE_STATE.loginToken, req)) {
+      if (!USER_RESOURCE.isUserAuthenticated(NODE_STATE.loginToken, req)) {
         res.status(401).send();
         return;
       }
@@ -122,7 +121,7 @@ class NodeResource {
     });
 
     app.post(`${BASE_URL}/restart-node`, async (req, res) => {
-      if (!AUTH_UTIL.isUserAuthenticated(NODE_STATE.loginToken, req)) {
+      if (!USER_RESOURCE.isUserAuthenticated(NODE_STATE.loginToken, req)) {
         res.status(401).send();
         return;
       }

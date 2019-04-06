@@ -11,7 +11,6 @@ const sqlite3 = require('sqlite3').verbose();
 
 const IRI_SERVICE = require('./util/iri.util');
 const DB_UTIL = require('./util/db.util');
-const AUTH_UTIL = require('./util/auth.util');
 const USER_RESOURCE = require('./resource/user.resource');
 const NODE_RESOURCE = require('./resource/node.resource');
 const NODE_STATE = require('./state/node.state');
@@ -38,7 +37,7 @@ DB_UTIL.createTables(db);
 DB_UTIL.initializeState(db);
 
 app.post(`/api/reset-database`, async (req, res) => {
-  if (!AUTH_UTIL.isUserAuthenticated(NODE_STATE.loginToken, req)) {
+  if (!USER_RESOURCE.isUserAuthenticated(NODE_STATE.loginToken, req)) {
     res.status(401).send();
     return;
   }
