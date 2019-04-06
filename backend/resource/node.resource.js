@@ -2,7 +2,7 @@ const exec = require('child_process').exec;
 const bcrypt = require('bcrypt');
 const axios = require('axios');
 const IRI_SERVICE = require('../util/iri.util');
-const USER_RESOURCE = require('./user.resource');
+const AUTH_RESOURCE = require('./auth.resource');
 const NEIGHBOR_RESOURCE = require('./neighbor.resource');
 const NODE_STATE = require('../state/node.state');
 
@@ -46,10 +46,10 @@ class NodeResource {
         return;
       }
 
-      if (!USER_RESOURCE.hashedPw && password)
-        USER_RESOURCE.hashedPw = bcrypt.hashSync(password, SALT);
+      if (!AUTH_RESOURCE.hashedPw && password)
+        AUTH_RESOURCE.hashedPw = bcrypt.hashSync(password, SALT);
 
-      if (password && bcrypt.compareSync(password, USER_RESOURCE.hashedPw)) {
+      if (password && bcrypt.compareSync(password, AUTH_RESOURCE.hashedPw)) {
         IRI_SERVICE.protocol = protocol;
         IRI_SERVICE.iriIp = newIriIp;
         IRI_SERVICE.iriPort = port;
@@ -68,7 +68,7 @@ class NodeResource {
           IRI_SERVICE.protocol,
           IRI_SERVICE.iriIp,
           IRI_SERVICE.iriPort,
-          USER_RESOURCE.hashedPw,
+          AUTH_RESOURCE.hashedPw,
           IRI_SERVICE.iriFileLocation,
           NODE_STATE.loginToken,
           NODE_STATE.restartNodeCommand
@@ -98,7 +98,7 @@ class NodeResource {
     });
 
     app.get(`${BASE_URL}/iri-details`, (req, res) => {
-      if (!USER_RESOURCE.isUserAuthenticated(NODE_STATE.loginToken, req)) {
+      if (!AUTH_RESOURCE.isUserAuthenticated(NODE_STATE.loginToken, req)) {
         res.status(401).send();
         return;
       }
@@ -111,7 +111,7 @@ class NodeResource {
     });
 
     app.get(`${BASE_URL}/persisted-neighbors`, async (req, res) => {
-      if (!USER_RESOURCE.isUserAuthenticated(NODE_STATE.loginToken, req)) {
+      if (!AUTH_RESOURCE.isUserAuthenticated(NODE_STATE.loginToken, req)) {
         res.status(401).send();
         return;
       }
@@ -121,7 +121,7 @@ class NodeResource {
     });
 
     app.post(`${BASE_URL}/restart-node`, async (req, res) => {
-      if (!USER_RESOURCE.isUserAuthenticated(NODE_STATE.loginToken, req)) {
+      if (!AUTH_RESOURCE.isUserAuthenticated(NODE_STATE.loginToken, req)) {
         res.status(401).send();
         return;
       }

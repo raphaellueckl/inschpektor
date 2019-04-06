@@ -2,7 +2,7 @@ const bcrypt = require('bcrypt');
 
 const NODE_STATE = require('../state/node.state');
 
-class UserResource {
+class AuthResource {
   constructor() {
     this.hashedPw = undefined;
   }
@@ -62,5 +62,5 @@ class UserResource {
   }
 }
 
-const userResource = new UserResource();
-module.exports = userResource;
+const authResource = new AuthResource();
+module.exports = authResource;
