@@ -55,7 +55,7 @@ class NodeResource {
         IRI_SERVICE.iriIp = newIriIp;
         IRI_SERVICE.iriPort = port;
         IRI_SERVICE.iriFileLocation = iriFileLocation;
-        USER_RESOURCE.loginToken = new Date()
+        NODE_STATE.loginToken = new Date()
           .toString()
           .split('')
           .reverse()
@@ -71,12 +71,12 @@ class NodeResource {
           IRI_SERVICE.iriPort,
           USER_RESOURCE.hashedPw,
           IRI_SERVICE.iriFileLocation,
-          USER_RESOURCE.loginToken,
+          NODE_STATE.loginToken,
           NODE_STATE.restartNodeCommand
         );
 
         res.json({
-          token: USER_RESOURCE.loginToken
+          token: NODE_STATE.loginToken
         });
       } else if (!password) {
         IRI_SERVICE.protocol = protocol;
@@ -99,7 +99,7 @@ class NodeResource {
     });
 
     app.get(`${BASE_URL}/iri-details`, (req, res) => {
-      if (!AUTH_UTIL.isUserAuthenticated(USER_RESOURCE.loginToken, req)) {
+      if (!AUTH_UTIL.isUserAuthenticated(NODE_STATE.loginToken, req)) {
         res.status(401).send();
         return;
       }
@@ -112,7 +112,7 @@ class NodeResource {
     });
 
     app.get(`${BASE_URL}/persisted-neighbors`, async (req, res) => {
-      if (!AUTH_UTIL.isUserAuthenticated(USER_RESOURCE.loginToken, req)) {
+      if (!AUTH_UTIL.isUserAuthenticated(NODE_STATE.loginToken, req)) {
         res.status(401).send();
         return;
       }
@@ -122,7 +122,7 @@ class NodeResource {
     });
 
     app.post(`${BASE_URL}/restart-node`, async (req, res) => {
-      if (!AUTH_UTIL.isUserAuthenticated(USER_RESOURCE.loginToken, req)) {
+      if (!AUTH_UTIL.isUserAuthenticated(NODE_STATE.loginToken, req)) {
         res.status(401).send();
         return;
       }

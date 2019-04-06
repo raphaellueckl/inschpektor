@@ -38,7 +38,7 @@ DB_UTIL.createTables(db);
 DB_UTIL.initializeState(db);
 
 app.post(`/api/reset-database`, async (req, res) => {
-  if (!AUTH_UTIL.isUserAuthenticated(USER_RESOURCE.loginToken, req)) {
+  if (!AUTH_UTIL.isUserAuthenticated(NODE_STATE.loginToken, req)) {
     res.status(401).send();
     return;
   }

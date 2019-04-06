@@ -1,10 +1,10 @@
 const bcrypt = require('bcrypt');
 
+const NODE_STATE = require('../state/node.state');
+
 class UserResource {
   constructor() {
-    this.loginToken = undefined;
     this.hashedPw = undefined;
-    this.notificationTokens = [];
   }
 
   init(app, db) {
@@ -13,17 +13,17 @@ class UserResource {
 
       if (
         deliveredPasswordOrToken &&
-        deliveredPasswordOrToken === this.loginToken
+        deliveredPasswordOrToken === NODE_STATE.loginToken
       ) {
         res.json({
-          token: this.loginToken
+          token: NODE_STATE.loginToken
         });
       } else if (
         deliveredPasswordOrToken &&
         this.hashedPw &&
         bcrypt.compareSync(deliveredPasswordOrToken, this.hashedPw)
       ) {
-        this.loginToken = new Date()
+        NODE_STATE.loginToken = new Date()
           .toString()
           .split('')
           .reverse()
@@ -32,10 +32,10 @@ class UserResource {
         const updateHostIp = db.prepare(
           `UPDATE host_node SET login_token = ? WHERE id = ?`
         );
-        updateHostIp.run(this.loginToken, 0);
+        updateHostIp.run(NODE_STATE.loginToken, 0);
 
         res.json({
-          token: this.loginToken
+          token: NODE_STATE.loginToken
         });
       } else {
         res.status(404).send();
@@ -44,7 +44,7 @@ class UserResource {
 
     app.post('/api/notification', (req, res) => {
       const token = req.body.token;
-      this.notificationTokens.push(token);
+      NODE_STATE.notificationTokens.push(token);
 
       const stmt = db.prepare('INSERT INTO notification (token) VALUES (?)');
       stmt.run(token);
@@ -54,7 +54,7 @@ class UserResource {
   }
 
   initializeNotificationToken(token) {
-    this.notificationTokens.push(token);
+    NODE_STATE.notificationTokens.push(token);
   }
 }
 

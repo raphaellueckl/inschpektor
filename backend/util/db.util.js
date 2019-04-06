@@ -54,7 +54,7 @@ class DbUtil {
       IRI_SERVICE.iriIp = row ? row.ip : null;
       IRI_SERVICE.iriPort = row ? row.port : null;
       USER_RESOURCE.hashedPw = row ? row.hashed_pw : null;
-      USER_RESOURCE.loginToken = row ? row.login_token : null;
+      NODE_STATE.loginToken = row ? row.login_token : null;
       IRI_SERVICE.iriFileLocation = row ? row.iri_path : null;
       NODE_STATE.restartNodeCommand = row ? row.restart_node_command : null;
     });
