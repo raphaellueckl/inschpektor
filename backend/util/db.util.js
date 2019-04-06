@@ -2,7 +2,7 @@ require('../../node_modules/console-stamp')(console, {
   pattern: 'dd/mm/yyyy HH:MM:ss.l'
 });
 const IRI_SERVICE = require('./iri.util');
-const USER_RESOURCE = require('../resource/user.resource');
+const AUTH_RESOURCE = require('../resource/auth.resource');
 const NODE_STATE = require('../state/node.state');
 const NEIGHBOR_RESOURCE = require('../resource/neighbor.resource');
 
@@ -53,7 +53,7 @@ class DbUtil {
       IRI_SERVICE.protocol = row ? row.protocol : null;
       IRI_SERVICE.iriIp = row ? row.ip : null;
       IRI_SERVICE.iriPort = row ? row.port : null;
-      USER_RESOURCE.hashedPw = row ? row.hashed_pw : null;
+      AUTH_RESOURCE.hashedPw = row ? row.hashed_pw : null;
       NODE_STATE.loginToken = row ? row.login_token : null;
       IRI_SERVICE.iriFileLocation = row ? row.iri_path : null;
       NODE_STATE.restartNodeCommand = row ? row.restart_node_command : null;
@@ -73,7 +73,7 @@ class DbUtil {
     });
     db.all('select * from notification', [], (err, rows) => {
       rows.forEach(r => {
-        USER_RESOURCE.initializeNotificationToken(r.token);
+        AUTH_RESOURCE.initializeNotificationToken(r.token);
       });
     });
   }

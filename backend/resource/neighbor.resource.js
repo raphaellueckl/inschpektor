@@ -2,7 +2,7 @@ require('../../node_modules/console-stamp')(console, {
   pattern: 'dd/mm/yyyy HH:MM:ss.l'
 });
 const IRI_SERVICE = require('../util/iri.util');
-const USER_RESOURCE = require('./user.resource');
+const AUTH_RESOURCE = require('./auth.resource');
 const NODE_STATE = require('../state/node.state');
 const axios = require('axios');
 const MAX_MILESTONES_BEHIND_BEFORE_UNSYNCED = 50;
@@ -20,7 +20,7 @@ class NeighborResource {
     db = database;
 
     app.post(`${BASE_URL}/neighbor/name`, (req, res) => {
-      if (!USER_RESOURCE.isUserAuthenticated(NODE_STATE.loginToken, req)) {
+      if (!AUTH_RESOURCE.isUserAuthenticated(NODE_STATE.loginToken, req)) {
         res.status(401).send();
         return;
       }
@@ -33,7 +33,7 @@ class NeighborResource {
     });
 
     app.post(`${BASE_URL}/neighbor/port`, (req, res) => {
-      if (!USER_RESOURCE.isUserAuthenticated(NODE_STATE.loginToken, req)) {
+      if (!AUTH_RESOURCE.isUserAuthenticated(NODE_STATE.loginToken, req)) {
         res.status(401).send();
         return;
       }
@@ -46,7 +46,7 @@ class NeighborResource {
     });
 
     app.post(`${BASE_URL}/neighbor/additional-data`, (req, res) => {
-      if (!USER_RESOURCE.isUserAuthenticated(NODE_STATE.loginToken, req)) {
+      if (!AUTH_RESOURCE.isUserAuthenticated(NODE_STATE.loginToken, req)) {
         res.status(401).send();
         return;
       }
@@ -163,7 +163,7 @@ class NeighborResource {
     });
 
     app.post(`${BASE_URL}/neighbor`, (req, res) => {
-      if (!USER_RESOURCE.isUserAuthenticated(NODE_STATE.loginToken, req)) {
+      if (!AUTH_RESOURCE.isUserAuthenticated(NODE_STATE.loginToken, req)) {
         res.status(401).send();
         return;
       }
@@ -197,7 +197,7 @@ class NeighborResource {
     });
 
     app.delete(`${BASE_URL}/neighbor`, (req, res) => {
-      if (!USER_RESOURCE.isUserAuthenticated(NODE_STATE.loginToken, req)) {
+      if (!AUTH_RESOURCE.isUserAuthenticated(NODE_STATE.loginToken, req)) {
         res.status(401).send();
         return;
       }
