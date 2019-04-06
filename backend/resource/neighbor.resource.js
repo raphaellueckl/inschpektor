@@ -2,11 +2,9 @@ require('../../node_modules/console-stamp')(console, {
   pattern: 'dd/mm/yyyy HH:MM:ss.l'
 });
 const IRI_SERVICE = require('../util/iri.util');
-const USER_RESOURCE = require('./user.resource');
 const AUTH_UTIL = require('../util/auth.util');
 const NODE_STATE = require('../state/node.state');
 const axios = require('axios');
-const neighborAdditionalData = new Map();
 const MAX_MILESTONES_BEHIND_BEFORE_UNSYNCED = 50;
 // TODO move to a config or something, since redundant
 const BASE_URL = '/api';
@@ -22,7 +20,7 @@ class NeighborResource {
     db = database;
 
     app.post(`${BASE_URL}/neighbor/name`, (req, res) => {
-      if (!AUTH_UTIL.isUserAuthenticated(USER_RESOURCE.loginToken, req)) {
+      if (!AUTH_UTIL.isUserAuthenticated(NODE_STATE.loginToken, req)) {
         res.status(401).send();
         return;
       }
@@ -35,7 +33,7 @@ class NeighborResource {
     });
 
     app.post(`${BASE_URL}/neighbor/port`, (req, res) => {
-      if (!AUTH_UTIL.isUserAuthenticated(USER_RESOURCE.loginToken, req)) {
+      if (!AUTH_UTIL.isUserAuthenticated(NODE_STATE.loginToken, req)) {
         res.status(401).send();
         return;
       }
@@ -48,7 +46,7 @@ class NeighborResource {
     });
 
     app.post(`${BASE_URL}/neighbor/additional-data`, (req, res) => {
-      if (!AUTH_UTIL.isUserAuthenticated(USER_RESOURCE.loginToken, req)) {
+      if (!AUTH_UTIL.isUserAuthenticated(NODE_STATE.loginToken, req)) {
         res.status(401).send();
         return;
       }
@@ -78,7 +76,7 @@ class NeighborResource {
               const allRequests = [];
 
               for (let neighbor of activeNeighbors) {
-                const additionalDataOfNeighbor = neighborAdditionalData.get(
+                const additionalDataOfNeighbor = NODE_STATE.neighborAdditionalData.get(
                   `${neighbor.connectionType}://${neighbor.address}`
                 );
 
@@ -165,7 +163,7 @@ class NeighborResource {
     });
 
     app.post(`${BASE_URL}/neighbor`, (req, res) => {
-      if (!AUTH_UTIL.isUserAuthenticated(USER_RESOURCE.loginToken, req)) {
+      if (!AUTH_UTIL.isUserAuthenticated(NODE_STATE.loginToken, req)) {
         res.status(401).send();
         return;
       }
@@ -199,7 +197,7 @@ class NeighborResource {
     });
 
     app.delete(`${BASE_URL}/neighbor`, (req, res) => {
-      if (!AUTH_UTIL.isUserAuthenticated(USER_RESOURCE.loginToken, req)) {
+      if (!AUTH_UTIL.isUserAuthenticated(NODE_STATE.loginToken, req)) {
         res.status(401).send();
         return;
       }
@@ -232,8 +230,10 @@ class NeighborResource {
   }
 
   intitializeNeighborUsernname(fullAddress, name) {
-    const currentAdditionalData = neighborAdditionalData.get(fullAddress);
-    neighborAdditionalData.set(fullAddress, {
+    const currentAdditionalData = NODE_STATE.neighborAdditionalData.get(
+      fullAddress
+    );
+    NODE_STATE.neighborAdditionalData.set(fullAddress, {
       name,
       port:
         currentAdditionalData && currentAdditionalData.port
@@ -243,8 +243,10 @@ class NeighborResource {
   }
 
   intitializeNeighborIriMainPort(fullAddress, port) {
-    const currentAdditionalData = neighborAdditionalData.get(fullAddress);
-    neighborAdditionalData.set(fullAddress, {
+    const currentAdditionalData = NODE_STATE.neighborAdditionalData.get(
+      fullAddress
+    );
+    NODE_STATE.neighborAdditionalData.set(fullAddress, {
       name:
         currentAdditionalData && currentAdditionalData.name
           ? currentAdditionalData.name
@@ -254,7 +256,7 @@ class NeighborResource {
   }
 
   removeNeighborFromUserNameTable(fullAddress) {
-    neighborAdditionalData.delete(fullAddress);
+    NODE_STATE.neighborAdditionalData.delete(fullAddress);
 
     const removeNeighborEntriesWithAddress = db.prepare(
       'DELETE FROM neighbor_data where address=?'
@@ -263,7 +265,7 @@ class NeighborResource {
   }
 
   setNeighborAdditionalData(fullAddress, name, port) {
-    const currentAdditionalDataForNeighbor = neighborAdditionalData.get(
+    const currentAdditionalDataForNeighbor = NODE_STATE.neighborAdditionalData.get(
       fullAddress
     );
     const oldName =
@@ -275,7 +277,7 @@ class NeighborResource {
         ? currentAdditionalDataForNeighbor.port
         : null;
 
-    neighborAdditionalData.set(fullAddress, {
+    NODE_STATE.neighborAdditionalData.set(fullAddress, {
       name: name ? name : oldName,
       port: port ? port : oldPort
     });
@@ -287,7 +289,7 @@ class NeighborResource {
   }
 
   setNeighborName(fullAddress, name) {
-    const currentAdditionalDataForNeighbor = neighborAdditionalData.get(
+    const currentAdditionalDataForNeighbor = NODE_STATE.neighborAdditionalData.get(
       fullAddress
     );
     const oldPort =
@@ -295,7 +297,7 @@ class NeighborResource {
         ? currentAdditionalDataForNeighbor.port
         : null;
 
-    neighborAdditionalData.set(fullAddress, { name, port: oldPort });
+    NODE_STATE.neighborAdditionalData.set(fullAddress, { name, port: oldPort });
 
     const stmt = db.prepare(
       'REPLACE INTO neighbor_data (address, name, port) VALUES (?, ?, ?)'
@@ -304,7 +306,7 @@ class NeighborResource {
   }
 
   setNeighborPort(fullAddress, port) {
-    const currentAdditionalDataForNeighbor = neighborAdditionalData.get(
+    const currentAdditionalDataForNeighbor = NODE_STATE.neighborAdditionalData.get(
       fullAddress
     );
     const oldName =
@@ -312,7 +314,7 @@ class NeighborResource {
         ? currentAdditionalDataForNeighbor.name
         : null;
 
-    neighborAdditionalData.set(fullAddress, { name: oldName, port });
+    NODE_STATE.neighborAdditionalData.set(fullAddress, { name: oldName, port });
 
     const stmt = db.prepare(
       'REPLACE INTO neighbor_data (address, name, port) VALUES (?, ?, ?)'
@@ -360,7 +362,7 @@ class NeighborResource {
       ...neighbor
     };
 
-    const additionalDataForNeighbor = neighborAdditionalData.get(
+    const additionalDataForNeighbor = NODE_STATE.neighborAdditionalData.get(
       `${resultNeighbor.protocol}://${resultNeighbor.address}`
     );
     resultNeighbor.name =
