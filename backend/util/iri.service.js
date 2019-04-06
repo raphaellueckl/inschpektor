@@ -1,9 +1,9 @@
-require('../../node_modules/console-stamp')(console, {
+require('console-stamp')(console, {
   pattern: 'dd/mm/yyyy HH:MM:ss.l'
 });
 const fs = require('fs');
 
-class IriUtil {
+class IriService {
   constructor() {
     this.protocol = null;
     this.iriIp = null;
@@ -141,5 +141,5 @@ class IriUtil {
   }
 }
 
-const iriUtil = new IriUtil();
-module.exports = iriUtil;
+const iriService = new IriService();
+module.exports = iriService;
