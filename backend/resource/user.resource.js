@@ -56,6 +56,10 @@ class UserResource {
   initializeNotificationToken(token) {
     NODE_STATE.notificationTokens.push(token);
   }
+
+  isUserAuthenticated(validToken, request) {
+    return request && validToken === request.header('Authorization');
+  }
 }
 
 const userResource = new UserResource();
