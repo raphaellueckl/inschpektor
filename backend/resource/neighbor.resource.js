@@ -1,7 +1,7 @@
 require('../../node_modules/console-stamp')(console, {
   pattern: 'dd/mm/yyyy HH:MM:ss.l'
 });
-const IRI_SERVICE = require('../util/iri.service');
+const IRI_SERVICE = require('../service/iri.service');
 const AUTH_RESOURCE = require('./auth.resource');
 const NODE_STATE = require('../state/node.state');
 const axios = require('axios');

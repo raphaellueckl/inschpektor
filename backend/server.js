@@ -9,8 +9,8 @@ const axios = require('axios');
 const history = require('connect-history-api-fallback');
 const sqlite3 = require('sqlite3').verbose();
 
-const IRI_SERVICE = require('./util/iri.service');
-const DB_SERVICE = require('./util/db.service');
+const IRI_SERVICE = require('./service/iri.service');
+const DB_SERVICE = require('./service/db.service');
 const AUTH_RESOURCE = require('./resource/auth.resource');
 const NODE_RESOURCE = require('./resource/node.resource');
 const NODE_STATE = require('./state/node.state');
