@@ -9,8 +9,8 @@ const axios = require('axios');
 const history = require('connect-history-api-fallback');
 const sqlite3 = require('sqlite3').verbose();
 
-const IRI_SERVICE = require('./util/iri.util');
-const DB_UTIL = require('./util/db.util');
+const IRI_SERVICE = require('./util/iri.service');
+const DB_SERVICE = require('./util/db.service');
 const AUTH_RESOURCE = require('./resource/auth.resource');
 const NODE_RESOURCE = require('./resource/node.resource');
 const NODE_STATE = require('./state/node.state');
@@ -33,18 +33,18 @@ AUTH_RESOURCE.init(app, db);
 NODE_RESOURCE.init(app, db);
 NEIGHBOR_RESOURCE.init(app, db);
 
-DB_UTIL.createTables(db);
-DB_UTIL.initializeState(db);
+DB_SERVICE.createTables(db);
+DB_SERVICE.initializeState(db);
 
 app.post(`/api/reset-database`, async (req, res) => {
   if (!AUTH_RESOURCE.isUserAuthenticated(NODE_STATE.loginToken, req)) {
     res.status(401).send();
     return;
   }
-  await DB_UTIL.dropAllTables(db);
+  await DB_SERVICE.dropAllTables(db);
   db = new sqlite3.Database(__dirname + '/db');
-  DB_UTIL.createTables(db);
-  DB_UTIL.initializeState(db);
+  DB_SERVICE.createTables(db);
+  DB_SERVICE.initializeState(db);
   res.status(200).send();
 });
 

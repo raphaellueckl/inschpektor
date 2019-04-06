@@ -1,12 +1,12 @@
-require('../../node_modules/console-stamp')(console, {
+require('console-stamp')(console, {
   pattern: 'dd/mm/yyyy HH:MM:ss.l'
 });
-const IRI_SERVICE = require('./iri.util');
+const IRI_SERVICE = require('./iri.service');
 const AUTH_RESOURCE = require('../resource/auth.resource');
 const NODE_STATE = require('../state/node.state');
 const NEIGHBOR_RESOURCE = require('../resource/neighbor.resource');
 
-class DbUtil {
+class DbService {
   createTables(db) {
     db.serialize(() => {
       db.run(
@@ -113,5 +113,5 @@ class DbUtil {
   }
 }
 
-const dbUtil = new DbUtil();
-module.exports = dbUtil;
+const dbService = new DbService();
+module.exports = dbService;
