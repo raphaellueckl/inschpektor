@@ -21,7 +21,18 @@ class DbService {
           'numberOfNewTransactions INTEGER,' +
           'numberOfInvalidTransactions INTEGER,' +
           'numberOfSentTransactions INTEGER,' +
-          'connectionType TEXT' +
+          'numberOfStaleTransactions INTEGER,' +
+          'connectionType TEXT,' +
+          'iriVersion TEXT,' +
+          'isActive INTEGER,' +
+          'isFriendlyNode INTEGER,' +
+          'isSynced INTEGER,' +
+          'milestone TEXT,' +
+          'name TEXT,' +
+          'onlineTime INTEGER,' +
+          'ping INTEGER,' +
+          'port TEXT,' +
+          'protocol TEXT' +
           ')'
       );
 
@@ -217,11 +228,30 @@ class DbService {
     });
   }
 
-  addNeighborStates(neighbors) {
+  addNeighborStates(richNeighbors) {
     const stmt = this.db.prepare(
-      'INSERT INTO neighbor (address, numberOfAllTransactions, numberOfRandomTransactionRequests, numberOfNewTransactions, numberOfInvalidTransactions, numberOfSentTransactions, connectionType) VALUES (?, ?, ?, ?, ?, ?, ?)'
+      `INSERT INTO neighbor (
+        address,
+        numberOfAllTransactions,
+        numberOfRandomTransactionRequests,
+        numberOfNewTransactions,
+        numberOfInvalidTransactions,
+        numberOfSentTransactions,
+        numberOfStaleTransactions,
+        connectionType,
+        iriVersion,
+        isActive,
+        isFriendlyNode,
+        isSynced,
+        milestone,
+        name,
+        onlineTime,
+        ping,
+        port,
+        protocol
+        ) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)`
     );
-    neighbors.forEach(neighbor => {
+    richNeighbors.forEach(neighbor => {
       stmt.run(
         neighbor.address,
         neighbor.numberOfAllTransactions,
@@ -229,7 +259,18 @@ class DbService {
         neighbor.numberOfNewTransactions,
         neighbor.numberOfInvalidTransactions,
         neighbor.numberOfSentTransactions,
-        neighbor.connectionType
+        neighbor.numberOfStaleTransactions,
+        neighbor.connectionType,
+        neighbor.iriVersion,
+        neighbor.isActive,
+        neighbor.isFriendlyNode,
+        neighbor.isSynced,
+        neighbor.milestone,
+        neighbor.name,
+        neighbor.onlineTime,
+        neighbor.ping,
+        neighbor.port,
+        neighbor.protocol
       );
     });
     stmt.finalize();

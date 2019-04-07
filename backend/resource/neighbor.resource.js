@@ -61,98 +61,10 @@ class NeighborResource {
     });
 
     app.get(`${GLOBALS.BASE_URL}/neighbors`, (req, res) => {
-      const resultNeighbors = [];
-      axios(IRI_SERVICE.createIriRequest('getNeighbors'))
-        .then(async iriNeighborsResponse => {
-          const activeNeighbors = iriNeighborsResponse.data.neighbors;
-
-          const rows = await DB_SERVICE.getAllNeighborEntries();
-
-          const allRequests = [];
-
-          for (let neighbor of activeNeighbors) {
-            const additionalDataOfNeighbor = NODE_STATE.neighborAdditionalData.get(
-              `${neighbor.connectionType}://${neighbor.address}`
-            );
-
-            allRequests.push(
-              new Promise((resolve, reject) => {
-                let startDate = new Date();
-                const oldestEntry = rows.find(
-                  row => neighbor.address === row.address
-                );
-
-                axios(
-                  IRI_SERVICE.createIriRequestForNeighborNode(
-                    'getNodeInfo',
-                    neighbor,
-                    additionalDataOfNeighbor
-                      ? additionalDataOfNeighbor.port
-                      : null
-                  )
-                )
-                  .then(nodeInfoResponse => {
-                    let ping = new Date() - startDate;
-                    let nodeInfo = nodeInfoResponse.data;
-
-                    const resultNeighbor = this.createResultNeighbor(
-                      neighbor,
-                      oldestEntry,
-                      additionalDataOfNeighbor,
-                      nodeInfo,
-                      ping
-                    );
-
-                    resultNeighbors.push(resultNeighbor);
-                    resolve(resultNeighbor);
-                  })
-                  .catch(error => {
-                    const resultNeighbor = this.createResultNeighbor(
-                      neighbor,
-                      oldestEntry,
-                      additionalDataOfNeighbor
-                    );
-
-                    resultNeighbors.push(resultNeighbor);
-                    resolve(resultNeighbor);
-                  });
-              })
-            );
-          }
-
-          Promise.all(allRequests)
-            .then(evaluatedNeighbors => {
-              // Sort Priority: Persisted neighbors, premium neighbors, neighbor address
-              evaluatedNeighbors.sort((a, b) => {
-                if (
-                  NODE_STATE.persistedNeighbors &&
-                  !!(
-                    (NODE_STATE.persistedNeighbors.includes(a.address) !==
-                      null) ^
-                    NODE_STATE.persistedNeighbors.includes(b.address)
-                  )
-                ) {
-                  return NODE_STATE.persistedNeighbors.includes(a.address)
-                    ? -1
-                    : 1;
-                }
-                if (!!((a.iriVersion !== null) ^ (b.iriVersion !== null))) {
-                  return a.iriVersion ? -1 : 1;
-                }
-                return a.address.localeCompare(b.address);
-              });
-              res.json(evaluatedNeighbors);
-            })
-            .catch(e => console.log(e.message));
-        })
-        .catch(error => {
-          console.log('failed to get neighbors', error.message);
-          if (!NODE_STATE.iriIp) {
-            res.status(404).send('NODE_NOT_SET');
-          } else {
-            res.status(500).send('NODE_INACCESSIBLE');
-          }
-        });
+      if (!NODE_STATE.iriIp) {
+        res.status(404).send('NODE_NOT_SET');
+      }
+      res.json(NODE_STATE.currentNeighbors);
     });
 
     app.post(`${GLOBALS.BASE_URL}/neighbor`, (req, res) => {
