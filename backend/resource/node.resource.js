@@ -6,13 +6,13 @@ const IRI_SERVICE = require('../service/iri.service');
 const DB_SERVICE = require('../service/db.service');
 const AUTH_SERVICE = require('../service/auth.service');
 const NODE_STATE = require('../state/node.state');
+const GLOBALS = require('../state/globals');
 
-const BASE_URL = '/api';
 const SALT = 11;
 
 class NodeResource {
   init(app) {
-    app.get(`${BASE_URL}/node-info`, (req, res) => {
+    app.get(`${GLOBALS.BASE_URL}/node-info`, (req, res) => {
       if (!NODE_STATE.iriIp) {
         res.status(404).send('NODE_NOT_SET');
         return;
@@ -34,7 +34,7 @@ class NodeResource {
         });
     });
 
-    app.post(`${BASE_URL}/host-node-ip`, (req, res) => {
+    app.post(`${GLOBALS.BASE_URL}/host-node-ip`, (req, res) => {
       const protocol = req.body.protocol;
       const newIriIp = req.body.nodeIp;
       const port = req.body.port;
@@ -88,7 +88,7 @@ class NodeResource {
       }
     });
 
-    app.get(`${BASE_URL}/iri-details`, (req, res) => {
+    app.get(`${GLOBALS.BASE_URL}/iri-details`, (req, res) => {
       if (!AUTH_SERVICE.isUserAuthenticated(NODE_STATE.loginToken, req)) {
         res.status(401).send();
         return;
@@ -101,7 +101,7 @@ class NodeResource {
       });
     });
 
-    app.get(`${BASE_URL}/persisted-neighbors`, async (req, res) => {
+    app.get(`${GLOBALS.BASE_URL}/persisted-neighbors`, async (req, res) => {
       if (!AUTH_SERVICE.isUserAuthenticated(NODE_STATE.loginToken, req)) {
         res.status(401).send();
         return;
@@ -111,7 +111,7 @@ class NodeResource {
       res.send(NODE_STATE.persistedNeighbors);
     });
 
-    app.post(`${BASE_URL}/restart-node`, async (req, res) => {
+    app.post(`${GLOBALS.BASE_URL}/restart-node`, async (req, res) => {
       if (!AUTH_SERVICE.isUserAuthenticated(NODE_STATE.loginToken, req)) {
         res.status(401).send();
         return;

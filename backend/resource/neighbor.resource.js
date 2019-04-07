@@ -7,10 +7,9 @@ const IRI_SERVICE = require('../service/iri.service');
 const AUTH_SERVICE = require('../service/auth.service');
 const NODE_STATE = require('../state/node.state');
 const DB_SERVICE = require('../service/db.service');
+const GLOBALS = require('../state/globals');
 
 const MAX_MILESTONES_BEHIND_BEFORE_UNSYNCED = 50;
-// TODO move to a config or something, since redundant
-const BASE_URL = '/api';
 
 class NeighborResource {
   constructor() {
@@ -18,7 +17,7 @@ class NeighborResource {
   }
 
   init(app) {
-    app.post(`${BASE_URL}/neighbor/name`, (req, res) => {
+    app.post(`${GLOBALS.BASE_URL}/neighbor/name`, (req, res) => {
       if (!AUTH_SERVICE.isUserAuthenticated(NODE_STATE.loginToken, req)) {
         res.status(401).send();
         return;
@@ -31,7 +30,7 @@ class NeighborResource {
       res.status(200).send();
     });
 
-    app.post(`${BASE_URL}/neighbor/port`, (req, res) => {
+    app.post(`${GLOBALS.BASE_URL}/neighbor/port`, (req, res) => {
       if (!AUTH_SERVICE.isUserAuthenticated(NODE_STATE.loginToken, req)) {
         res.status(401).send();
         return;
@@ -44,7 +43,7 @@ class NeighborResource {
       res.status(200).send();
     });
 
-    app.post(`${BASE_URL}/neighbor/additional-data`, (req, res) => {
+    app.post(`${GLOBALS.BASE_URL}/neighbor/additional-data`, (req, res) => {
       if (!AUTH_SERVICE.isUserAuthenticated(NODE_STATE.loginToken, req)) {
         res.status(401).send();
         return;
@@ -61,7 +60,7 @@ class NeighborResource {
       res.status(200).send();
     });
 
-    app.get(`${BASE_URL}/neighbors`, (req, res) => {
+    app.get(`${GLOBALS.BASE_URL}/neighbors`, (req, res) => {
       const resultNeighbors = [];
       axios(IRI_SERVICE.createIriRequest('getNeighbors'))
         .then(async iriNeighborsResponse => {
@@ -156,7 +155,7 @@ class NeighborResource {
         });
     });
 
-    app.post(`${BASE_URL}/neighbor`, (req, res) => {
+    app.post(`${GLOBALS.BASE_URL}/neighbor`, (req, res) => {
       if (!AUTH_SERVICE.isUserAuthenticated(NODE_STATE.loginToken, req)) {
         res.status(401).send();
         return;
@@ -187,7 +186,7 @@ class NeighborResource {
         });
     });
 
-    app.delete(`${BASE_URL}/neighbor`, (req, res) => {
+    app.delete(`${GLOBALS.BASE_URL}/neighbor`, (req, res) => {
       if (!AUTH_SERVICE.isUserAuthenticated(NODE_STATE.loginToken, req)) {
         res.status(401).send();
         return;
