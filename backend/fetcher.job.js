@@ -11,7 +11,7 @@ console.log(NODE_STATE);
 
 const theFetcher = async () => {
   function fetchNeighborsAndNodeInfo() {
-    if (IRI_SERVICE.iriIp) {
+    if (NODE_STATE.iriIp) {
       axios(IRI_SERVICE.createIriRequest('getNeighbors'))
         .then(response => {
           const neighbors = response.data.neighbors;

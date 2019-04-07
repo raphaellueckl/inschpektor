@@ -216,6 +216,30 @@ class DbService {
       );
     });
   }
+
+  addNeighborStates(neighbors) {
+    const stmt = this.db.prepare(
+      'INSERT INTO neighbor (address, numberOfAllTransactions, numberOfRandomTransactionRequests, numberOfNewTransactions, numberOfInvalidTransactions, numberOfSentTransactions, connectionType) VALUES (?, ?, ?, ?, ?, ?, ?)'
+    );
+    neighbors.forEach(neighbor => {
+      stmt.run(
+        neighbor.address,
+        neighbor.numberOfAllTransactions,
+        neighbor.numberOfRandomTransactionRequests,
+        neighbor.numberOfNewTransactions,
+        neighbor.numberOfInvalidTransactions,
+        neighbor.numberOfSentTransactions,
+        neighbor.connectionType
+      );
+    });
+    stmt.finalize();
+  }
+
+  deleteOutdatedNeighborEntries() {
+    this.db.run(
+      `DELETE FROM neighbor WHERE timestamp <= datetime('now', '-30 minutes')`
+    );
+  }
 }
 
 const dbService = new DbService();
