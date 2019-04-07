@@ -16,6 +16,8 @@ const AUTH_RESOURCE = require('./resource/auth.resource');
 const NEIGHBOR_RESOURCE = require('./resource/neighbor.resource');
 const NODE_RESOURCE = require('./resource/node.resource');
 
+const FETCHER_JOB = require('./fetcher.job');
+
 const app = express();
 app.set('port', process.env.PORT || 8732);
 app.use(express.json());
@@ -38,56 +40,4 @@ app.listen(app.get('port'), () => {
   console.log(`Find the server at: http://localhost:${app.get('port')}/`);
 });
 
-// async function theFetcher() {
-//   function fetchNeighborsAndNodeInfo() {
-//     if (NODE_STATE.iriIp) {
-//       axios(IRI_SERVICE.createIriRequest('getNeighbors'))
-//         .then(response => {
-//           const neighbors = response.data.neighbors;
-
-//           const stmt = db.prepare(
-//             'INSERT INTO neighbor (address, numberOfAllTransactions, numberOfRandomTransactionRequests, numberOfNewTransactions, numberOfInvalidTransactions, numberOfSentTransactions, connectionType) VALUES (?, ?, ?, ?, ?, ?, ?)'
-//           );
-//           neighbors.forEach(neighbor => {
-//             stmt.run(
-//               neighbor.address,
-//               neighbor.numberOfAllTransactions,
-//               neighbor.numberOfRandomTransactionRequests,
-//               neighbor.numberOfNewTransactions,
-//               neighbor.numberOfInvalidTransactions,
-//               neighbor.numberOfSentTransactions,
-//               neighbor.connectionType
-//             );
-//           });
-//           stmt.finalize();
-
-//           db.run(
-//             `DELETE FROM neighbor WHERE timestamp <= datetime('now', '-30 minutes')`
-//           );
-//         })
-//         .catch(error =>
-//           console.log('Failed to fetch neighbors of own node.', error.message)
-//         );
-
-//       axios(IRI_SERVICE.createIriRequest('getNodeInfo'))
-//         .then(nodeInfoResponse => {
-//           NODE_STATE.currentOwnNodeInfo = nodeInfoResponse.data;
-//         })
-//         .catch(error =>
-//           console.log('Failed to fetch own node info.', error.message)
-//         );
-//     }
-//   }
-
-//   while (true) {
-//     fetchNeighborsAndNodeInfo();
-
-//     let timekeeper = new Promise((resolve, reject) => {
-//       setTimeout(() => resolve(), 15000);
-//     });
-
-//     await timekeeper;
-//   }
-// }
-
-// theFetcher();
+FETCHER_JOB();
