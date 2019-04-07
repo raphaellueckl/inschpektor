@@ -2,10 +2,11 @@ const bcrypt = require('bcrypt');
 
 const NODE_STATE = require('../state/node.state');
 const DB_SERVICE = require('../service/db.service');
+const GLOBALS = require('../state/globals');
 
 class AuthResource {
   init(app) {
-    app.post('/api/login', (req, res) => {
+    app.post(`${GLOBALS.BASE_URL}/login`, (req, res) => {
       const deliveredPasswordOrToken = req.body.passwordOrToken;
 
       if (
@@ -35,7 +36,7 @@ class AuthResource {
       }
     });
 
-    app.post('/api/notification', (req, res) => {
+    app.post(`${GLOBALS.BASE_URL}/notification`, (req, res) => {
       const token = req.body.token;
       NODE_STATE.notificationTokens.push(token);
 

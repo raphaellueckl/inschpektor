@@ -4,11 +4,6 @@ const NODE_STATE = require('./state/node.state');
 const IRI_SERVICE = require('./service/iri.service');
 const DB_SERVICE = require('./service/db.service');
 
-console.log('fetcher');
-console.log(IRI_SERVICE);
-console.log(DB_SERVICE);
-console.log(NODE_STATE);
-
 const theFetcher = async () => {
   function fetchNeighborsAndNodeInfo() {
     if (NODE_STATE.iriIp) {
