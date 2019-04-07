@@ -138,8 +138,8 @@ const actions = {
         restartNodeCommand: nodeSubmission.restartNodeCommand
       })
       .then(response => {
-        iriIp = nodeIp;
-        iriPort = port;
+        state.iriIp = nodeIp;
+        state.iriPort = port;
         if (response.data.token) {
           commit('SET_TOKEN', response.data.token);
           commit('USER_AUTHENTICATED', true);
@@ -151,7 +151,7 @@ const actions = {
         dispatch('fetchNeighbors');
         dispatch('fetchNodeInfo');
       })
-      .catch(error => console.log('error setting node ip'));
+      .catch(error => console.log('error setting node ip', error));
   },
   addNeighbor({ dispatch, commit }, neighborSubmission) {
     axios
