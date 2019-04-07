@@ -1,5 +1,5 @@
 const globals = {
-    BASE_URL = '/api'
+  BASE_URL: '/api'
 };
 
 module.exports = globals;
