@@ -126,7 +126,7 @@ class NodeResource {
       });
     });
 
-    app.post(`/api/reset-database`, async (req, res) => {
+    app.post(`${GLOBALS.BASE_URL}/reset-database`, async (req, res) => {
       if (!AUTH_SERVICE.isUserAuthenticated(NODE_STATE.loginToken, req)) {
         res.status(401).send();
         return;
