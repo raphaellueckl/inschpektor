@@ -8,6 +8,11 @@ class NodeState {
     this.hashedPw = undefined;
     this.notificationTokens = [];
     this.neighborAdditionalData = new Map();
+
+    this.protocol = undefined;
+    this.iriIp = undefined;
+    this.iriPort = undefined;
+    this.iriFileLocation = undefined;
   }
 }
 

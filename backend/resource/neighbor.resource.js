@@ -1,26 +1,25 @@
 require('../../node_modules/console-stamp')(console, {
   pattern: 'dd/mm/yyyy HH:MM:ss.l'
 });
-const IRI_SERVICE = require('../service/iri.service');
-const AUTH_RESOURCE = require('./auth.resource');
-const NODE_STATE = require('../state/node.state');
 const axios = require('axios');
+
+const IRI_SERVICE = require('../service/iri.service');
+const AUTH_SERVICE = require('../service/auth.service');
+const NODE_STATE = require('../state/node.state');
+const DB_SERVICE = require('../service/db.service');
+
 const MAX_MILESTONES_BEHIND_BEFORE_UNSYNCED = 50;
 // TODO move to a config or something, since redundant
 const BASE_URL = '/api';
 
-let db;
-
 class NeighborResource {
   constructor() {
-    this.persistedNeighbors = undefined;
+    NODE_STATE.persistedNeighbors = undefined;
   }
 
-  init(app, database) {
-    db = database;
-
+  init(app) {
     app.post(`${BASE_URL}/neighbor/name`, (req, res) => {
-      if (!AUTH_RESOURCE.isUserAuthenticated(NODE_STATE.loginToken, req)) {
+      if (!AUTH_SERVICE.isUserAuthenticated(NODE_STATE.loginToken, req)) {
         res.status(401).send();
         return;
       }
@@ -33,7 +32,7 @@ class NeighborResource {
     });
 
     app.post(`${BASE_URL}/neighbor/port`, (req, res) => {
-      if (!AUTH_RESOURCE.isUserAuthenticated(NODE_STATE.loginToken, req)) {
+      if (!AUTH_SERVICE.isUserAuthenticated(NODE_STATE.loginToken, req)) {
         res.status(401).send();
         return;
       }
@@ -46,7 +45,7 @@ class NeighborResource {
     });
 
     app.post(`${BASE_URL}/neighbor/additional-data`, (req, res) => {
-      if (!AUTH_RESOURCE.isUserAuthenticated(NODE_STATE.loginToken, req)) {
+      if (!AUTH_SERVICE.isUserAuthenticated(NODE_STATE.loginToken, req)) {
         res.status(401).send();
         return;
       }
@@ -64,97 +63,92 @@ class NeighborResource {
 
     app.get(`${BASE_URL}/neighbors`, (req, res) => {
       const resultNeighbors = [];
-
       axios(IRI_SERVICE.createIriRequest('getNeighbors'))
-        .then(iriNeighborsResponse => {
+        .then(async iriNeighborsResponse => {
           const activeNeighbors = iriNeighborsResponse.data.neighbors;
 
-          db.all(
-            'SELECT * FROM neighbor ORDER BY timestamp ASC',
-            [],
-            (err, rows) => {
-              const allRequests = [];
+          const rows = await DB_SERVICE.getAllNeighborEntries();
 
-              for (let neighbor of activeNeighbors) {
-                const additionalDataOfNeighbor = NODE_STATE.neighborAdditionalData.get(
-                  `${neighbor.connectionType}://${neighbor.address}`
+          const allRequests = [];
+
+          for (let neighbor of activeNeighbors) {
+            const additionalDataOfNeighbor = NODE_STATE.neighborAdditionalData.get(
+              `${neighbor.connectionType}://${neighbor.address}`
+            );
+
+            allRequests.push(
+              new Promise((resolve, reject) => {
+                let startDate = new Date();
+                const oldestEntry = rows.find(
+                  row => neighbor.address === row.address
                 );
 
-                allRequests.push(
-                  new Promise(resolve => {
-                    let startDate = new Date();
-                    const oldestEntry = rows.find(
-                      row => neighbor.address === row.address
+                axios(
+                  IRI_SERVICE.createIriRequestForNeighborNode(
+                    'getNodeInfo',
+                    neighbor,
+                    additionalDataOfNeighbor
+                      ? additionalDataOfNeighbor.port
+                      : null
+                  )
+                )
+                  .then(nodeInfoResponse => {
+                    let ping = new Date() - startDate;
+                    let nodeInfo = nodeInfoResponse.data;
+
+                    const resultNeighbor = this.createResultNeighbor(
+                      neighbor,
+                      oldestEntry,
+                      additionalDataOfNeighbor,
+                      nodeInfo,
+                      ping
                     );
 
-                    // axios(IRI_SERVICE.createIriRequestForNeighborNode('getNodeInfo', neighbor.address.split(':')[0], ))
-                    axios(
-                      IRI_SERVICE.createIriRequestForNeighborNode(
-                        'getNodeInfo',
-                        neighbor,
-                        additionalDataOfNeighbor
-                          ? additionalDataOfNeighbor.port
-                          : null
-                      )
-                    )
-                      .then(nodeInfoResponse => {
-                        let ping = new Date() - startDate;
-                        let nodeInfo = nodeInfoResponse.data;
-
-                        const resultNeighbor = this.createResultNeighbor(
-                          neighbor,
-                          oldestEntry,
-                          additionalDataOfNeighbor,
-                          nodeInfo,
-                          ping
-                        );
-
-                        resultNeighbors.push(resultNeighbor);
-                        resolve(resultNeighbor);
-                      })
-                      .catch(error => {
-                        const resultNeighbor = this.createResultNeighbor(
-                          neighbor,
-                          oldestEntry,
-                          additionalDataOfNeighbor
-                        );
-
-                        resultNeighbors.push(resultNeighbor);
-                        resolve(resultNeighbor);
-                      });
+                    resultNeighbors.push(resultNeighbor);
+                    resolve(resultNeighbor);
                   })
-                );
-              }
+                  .catch(error => {
+                    const resultNeighbor = this.createResultNeighbor(
+                      neighbor,
+                      oldestEntry,
+                      additionalDataOfNeighbor
+                    );
 
-              Promise.all(allRequests)
-                .then(evaluatedNeighbors => {
-                  // Sort Priority: Persisted neighbors, premium neighbors, neighbor address
-                  evaluatedNeighbors.sort((a, b) => {
-                    if (
-                      this.persistedNeighbors &&
-                      !!(
-                        (this.persistedNeighbors.includes(a.address) !== null) ^
-                        this.persistedNeighbors.includes(b.address)
-                      )
-                    ) {
-                      return this.persistedNeighbors.includes(a.address)
-                        ? -1
-                        : 1;
-                    }
-                    if (!!((a.iriVersion !== null) ^ (b.iriVersion !== null))) {
-                      return a.iriVersion ? -1 : 1;
-                    }
-                    return a.address.localeCompare(b.address);
+                    resultNeighbors.push(resultNeighbor);
+                    resolve(resultNeighbor);
                   });
-                  res.json(evaluatedNeighbors);
-                })
-                .catch(e => console.log(e.message));
-            }
-          );
+              })
+            );
+          }
+
+          Promise.all(allRequests)
+            .then(evaluatedNeighbors => {
+              // Sort Priority: Persisted neighbors, premium neighbors, neighbor address
+              evaluatedNeighbors.sort((a, b) => {
+                if (
+                  NODE_STATE.persistedNeighbors &&
+                  !!(
+                    (NODE_STATE.persistedNeighbors.includes(a.address) !==
+                      null) ^
+                    NODE_STATE.persistedNeighbors.includes(b.address)
+                  )
+                ) {
+                  return NODE_STATE.persistedNeighbors.includes(a.address)
+                    ? -1
+                    : 1;
+                }
+                if (!!((a.iriVersion !== null) ^ (b.iriVersion !== null))) {
+                  return a.iriVersion ? -1 : 1;
+                }
+                return a.address.localeCompare(b.address);
+              });
+              res.json(evaluatedNeighbors);
+            })
+            .catch(e => console.log(e.message));
         })
         .catch(error => {
           console.log('failed to get neighbors', error.message);
-          if (!IRI_SERVICE.iriIp) {
+          if (!NODE_STATE.iriIp) {
             res.status(404).send('NODE_NOT_SET');
           } else {
             res.status(500).send('NODE_INACCESSIBLE');
@@ -163,7 +157,7 @@ class NeighborResource {
     });
 
     app.post(`${BASE_URL}/neighbor`, (req, res) => {
-      if (!AUTH_RESOURCE.isUserAuthenticated(NODE_STATE.loginToken, req)) {
+      if (!AUTH_SERVICE.isUserAuthenticated(NODE_STATE.loginToken, req)) {
         res.status(401).send();
         return;
       }
@@ -178,10 +172,7 @@ class NeighborResource {
       axios(addNeighborRequest)
         .then(response => {
           // Remove old entries to not confuse outdated data with new one, if neighbor was already added in the past.
-          const removeNeighborEntriesWithAddress = db.prepare(
-            `DELETE FROM neighbor where address=?`
-          );
-          removeNeighborEntriesWithAddress.run(fullAddress);
+          DB_SERVICE.deleteNeighborHistory(fullAddress);
 
           this.setNeighborAdditionalData(fullAddress, name, port);
 
@@ -197,7 +188,7 @@ class NeighborResource {
     });
 
     app.delete(`${BASE_URL}/neighbor`, (req, res) => {
-      if (!AUTH_RESOURCE.isUserAuthenticated(NODE_STATE.loginToken, req)) {
+      if (!AUTH_SERVICE.isUserAuthenticated(NODE_STATE.loginToken, req)) {
         res.status(401).send();
         return;
       }
@@ -211,10 +202,7 @@ class NeighborResource {
         .then(response => {
           const addressWithoutProtocolPrefix = fullAddress.substring(6);
 
-          const removeNeighborEntriesWithAddress = db.prepare(
-            `DELETE FROM neighbor where address=?`
-          );
-          removeNeighborEntriesWithAddress.run(addressWithoutProtocolPrefix);
+          DB_SERVICE.deleteNeighborHistory(addressWithoutProtocolPrefix);
 
           this.removeNeighborFromUserNameTable(fullAddress);
 
@@ -229,39 +217,10 @@ class NeighborResource {
     });
   }
 
-  intitializeNeighborUsernname(fullAddress, name) {
-    const currentAdditionalData = NODE_STATE.neighborAdditionalData.get(
-      fullAddress
-    );
-    NODE_STATE.neighborAdditionalData.set(fullAddress, {
-      name,
-      port:
-        currentAdditionalData && currentAdditionalData.port
-          ? currentAdditionalData.port
-          : null
-    });
-  }
-
-  intitializeNeighborIriMainPort(fullAddress, port) {
-    const currentAdditionalData = NODE_STATE.neighborAdditionalData.get(
-      fullAddress
-    );
-    NODE_STATE.neighborAdditionalData.set(fullAddress, {
-      name:
-        currentAdditionalData && currentAdditionalData.name
-          ? currentAdditionalData.name
-          : null,
-      port
-    });
-  }
-
   removeNeighborFromUserNameTable(fullAddress) {
     NODE_STATE.neighborAdditionalData.delete(fullAddress);
 
-    const removeNeighborEntriesWithAddress = db.prepare(
-      'DELETE FROM neighbor_data where address=?'
-    );
-    removeNeighborEntriesWithAddress.run(fullAddress);
+    DB_SERVICE.deleteNeighborData(fullAddress);
   }
 
   setNeighborAdditionalData(fullAddress, name, port) {
@@ -282,10 +241,7 @@ class NeighborResource {
       port: port ? port : oldPort
     });
 
-    const stmt = db.prepare(
-      'REPLACE INTO neighbor_data (address, name, port) VALUES (?, ?, ?)'
-    );
-    stmt.run(fullAddress, name, port);
+    DB_SERVICE.setNeighborAdditionalData(fullAddress, name, port);
   }
 
   setNeighborName(fullAddress, name) {
@@ -299,10 +255,7 @@ class NeighborResource {
 
     NODE_STATE.neighborAdditionalData.set(fullAddress, { name, port: oldPort });
 
-    const stmt = db.prepare(
-      'REPLACE INTO neighbor_data (address, name, port) VALUES (?, ?, ?)'
-    );
-    stmt.run(fullAddress, name, oldPort);
+    DB_SERVICE.setNeighborAdditionalData(fullAddress, name, oldPort);
   }
 
   setNeighborPort(fullAddress, port) {
@@ -316,14 +269,7 @@ class NeighborResource {
 
     NODE_STATE.neighborAdditionalData.set(fullAddress, { name: oldName, port });
 
-    const stmt = db.prepare(
-      'REPLACE INTO neighbor_data (address, name, port) VALUES (?, ?, ?)'
-    );
-    stmt.run(fullAddress, oldName, port);
-  }
-
-  deleteNeighborHistory() {
-    db.run(`DELETE FROM neighbor`);
+    DB_SERVICE.setNeighborAdditionalData(fullAddress, oldName, port);
   }
 
   createResultNeighbor(

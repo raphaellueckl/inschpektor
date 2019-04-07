@@ -1,13 +1,10 @@
 const bcrypt = require('bcrypt');
 
 const NODE_STATE = require('../state/node.state');
+const DB_SERVICE = require('../service/db.service');
 
 class AuthResource {
-  constructor() {
-    this.hashedPw = undefined;
-  }
-
-  init(app, db) {
+  init(app) {
     app.post('/api/login', (req, res) => {
       const deliveredPasswordOrToken = req.body.passwordOrToken;
 
@@ -20,19 +17,15 @@ class AuthResource {
         });
       } else if (
         deliveredPasswordOrToken &&
-        this.hashedPw &&
-        bcrypt.compareSync(deliveredPasswordOrToken, this.hashedPw)
+        NODE_STATE.hashedPw &&
+        bcrypt.compareSync(deliveredPasswordOrToken, NODE_STATE.hashedPw)
       ) {
         NODE_STATE.loginToken = new Date()
           .toString()
           .split('')
           .reverse()
           .join('');
-
-        const updateHostIp = db.prepare(
-          `UPDATE host_node SET login_token = ? WHERE id = ?`
-        );
-        updateHostIp.run(NODE_STATE.loginToken, 0);
+        DB_SERVICE.updateHostIp();
 
         res.json({
           token: NODE_STATE.loginToken
@@ -46,15 +39,10 @@ class AuthResource {
       const token = req.body.token;
       NODE_STATE.notificationTokens.push(token);
 
-      const stmt = db.prepare('INSERT INTO notification (token) VALUES (?)');
-      stmt.run(token);
+      DB_SERVICE.setNotificationToken();
 
       res.status(200).send();
     });
-  }
-
-  initializeNotificationToken(token) {
-    NODE_STATE.notificationTokens.push(token);
   }
 
   isUserAuthenticated(validToken, request) {
