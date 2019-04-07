@@ -13,6 +13,8 @@ class NodeState {
     this.iriIp = undefined;
     this.iriPort = undefined;
     this.iriFileLocation = undefined;
+
+    this.currentNeighbors = undefined;
   }
 }
 
