@@ -34,17 +34,6 @@ NODE_RESOURCE.init(app);
 DB_SERVICE.createTables();
 DB_SERVICE.initializeState();
 
-app.post(`/api/reset-database`, async (req, res) => {
-  if (!AUTH_SERVICE.isUserAuthenticated(NODE_STATE.loginToken, req)) {
-    res.status(401).send();
-    return;
-  }
-  await DB_SERVICE.dropAllTables();
-  DB_SERVICE.createTables();
-  DB_SERVICE.initializeState();
-  res.status(200).send();
-});
-
 app.listen(app.get('port'), () => {
   console.log(`Find the server at: http://localhost:${app.get('port')}/`);
 });

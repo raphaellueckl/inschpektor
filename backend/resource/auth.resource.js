@@ -44,10 +44,6 @@ class AuthResource {
       res.status(200).send();
     });
   }
-
-  isUserAuthenticated(validToken, request) {
-    return request && validToken === request.header('Authorization');
-  }
 }
 
 const authResource = new AuthResource();

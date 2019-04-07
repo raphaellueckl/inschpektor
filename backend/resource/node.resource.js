@@ -125,6 +125,17 @@ class NodeResource {
         res.status(200).send();
       });
     });
+
+    app.post(`/api/reset-database`, async (req, res) => {
+      if (!AUTH_SERVICE.isUserAuthenticated(NODE_STATE.loginToken, req)) {
+        res.status(401).send();
+        return;
+      }
+      await DB_SERVICE.dropAllTables();
+      DB_SERVICE.createTables();
+      DB_SERVICE.initializeState();
+      res.status(200).send();
+    });
   }
 }
 
