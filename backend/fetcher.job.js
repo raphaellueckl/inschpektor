@@ -4,6 +4,8 @@ const NODE_STATE = require('./state/node.state');
 const IRI_SERVICE = require('./service/iri.service');
 const DB_SERVICE = require('./service/db.service');
 
+const MAX_MILESTONES_BEHIND_BEFORE_UNSYNCED = 50;
+
 const theFetcher = async () => {
   function createResultNeighbor(
     neighbor,
@@ -24,11 +26,15 @@ const theFetcher = async () => {
           : null,
       milestone: nodeInfo
         ? `${nodeInfo.latestSolidSubtangleMilestoneIndex} / ${
-            NODE_STATE.currentOwnNodeInfo.latestMilestoneIndex
+            NODE_STATE.currentOwnNodeInfo
+              ? NODE_STATE.currentOwnNodeInfo.latestMilestoneIndex
+              : '-'
           }`
         : null,
       isActive: oldestEntry
-        ? neighbor.numberOfNewTransactions > oldestEntry.numberOfNewTransactions
+        ? neighbor.numberOfNewTransactions > oldestEntry
+          ? oldestEntry.numberOfNewTransactions
+          : -1
         : null,
       protocol: neighbor.connectionType,
       onlineTime: nodeInfo ? nodeInfo.time : null,
