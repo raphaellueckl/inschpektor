@@ -100,15 +100,30 @@ class DbService {
     });
 
     this.db.all('select * from neighbor_data', [], (err, rows) => {
-      rows.forEach(r => {
-        this.intitializeNeighborUsernname(r.address, r.name ? r.name : null);
-        this.intitializeNeighborIriMainPort(r.address, r.port ? r.port : null);
-      });
+      if (err) {
+        console.log('select * from neighbor_data failed', err.message);
+        return;
+      }
+      if (rows) {
+        rows.forEach(r => {
+          this.intitializeNeighborUsernname(r.address, r.name ? r.name : null);
+          this.intitializeNeighborIriMainPort(
+            r.address,
+            r.port ? r.port : null
+          );
+        });
+      }
     });
     this.db.all('select * from notification', [], (err, rows) => {
-      rows.forEach(r => {
-        NODE_STATE.notificationTokens.push(r.token);
-      });
+      if (err) {
+        console.log('select * from notification failed', err.message);
+        return;
+      }
+      if (rows) {
+        rows.forEach(r => {
+          NODE_STATE.notificationTokens.push(r.token);
+        });
+      }
     });
   }
 
@@ -229,8 +244,9 @@ class DbService {
   }
 
   addNeighborStates(richNeighbors) {
-    const stmt = this.db.prepare(
-      `INSERT INTO neighbor (
+    if (richNeighbors) {
+      const stmt = this.db.prepare(
+        `INSERT INTO neighbor (
         address,
         numberOfAllTransactions,
         numberOfRandomTransactionRequests,
@@ -250,30 +266,31 @@ class DbService {
         port,
         protocol
         ) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)`
-    );
-    richNeighbors.forEach(neighbor => {
-      stmt.run(
-        neighbor.address,
-        neighbor.numberOfAllTransactions,
-        neighbor.numberOfRandomTransactionRequests,
-        neighbor.numberOfNewTransactions,
-        neighbor.numberOfInvalidTransactions,
-        neighbor.numberOfSentTransactions,
-        neighbor.numberOfStaleTransactions,
-        neighbor.connectionType,
-        neighbor.iriVersion,
-        neighbor.isActive,
-        neighbor.isFriendlyNode,
-        neighbor.isSynced,
-        neighbor.milestone,
-        neighbor.name,
-        neighbor.onlineTime,
-        neighbor.ping,
-        neighbor.port,
-        neighbor.protocol
       );
-    });
-    stmt.finalize();
+      richNeighbors.forEach(neighbor => {
+        stmt.run(
+          neighbor.address,
+          neighbor.numberOfAllTransactions,
+          neighbor.numberOfRandomTransactionRequests,
+          neighbor.numberOfNewTransactions,
+          neighbor.numberOfInvalidTransactions,
+          neighbor.numberOfSentTransactions,
+          neighbor.numberOfStaleTransactions,
+          neighbor.connectionType,
+          neighbor.iriVersion,
+          neighbor.isActive,
+          neighbor.isFriendlyNode,
+          neighbor.isSynced,
+          neighbor.milestone,
+          neighbor.name,
+          neighbor.onlineTime,
+          neighbor.ping,
+          neighbor.port,
+          neighbor.protocol
+        );
+      });
+      stmt.finalize();
+    }
   }
 
   deleteOutdatedNeighborEntries() {

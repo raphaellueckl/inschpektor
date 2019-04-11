@@ -118,6 +118,7 @@ class NodeResource {
       }
       exec(NODE_STATE.restartNodeCommand, (error, stdout, stderr) => {
         if (error || stderr) {
+          console.log('Unsuccessful restart node attempt', error.message);
           res.status(500).send();
           return;
         }
