@@ -9,7 +9,7 @@ class DbService {
     this.db = new sqlite3.Database(__dirname + '/../db');
   }
 
-  createTables() {
+  createAndInitializeTables() {
     const db = this.db;
     db.serialize(() => {
       db.run(
@@ -58,6 +58,47 @@ class DbService {
       );
 
       db.run(`CREATE TABLE IF NOT EXISTS notification (token TEXT)`);
+
+      const sql = 'select * from host_node';
+      db.get(sql, [], (err, row) => {
+        NODE_STATE.protocol = row ? row.protocol : null;
+        NODE_STATE.iriIp = row ? row.ip : null;
+        NODE_STATE.iriPort = row ? row.port : null;
+        NODE_STATE.hashedPw = row ? row.hashed_pw : null;
+        NODE_STATE.loginToken = row ? row.login_token : null;
+        NODE_STATE.iriFileLocation = row ? row.iri_path : null;
+        NODE_STATE.restartNodeCommand = row ? row.restart_node_command : null;
+      });
+
+      db.all('select * from neighbor_data', [], (err, rows) => {
+        if (err) {
+          console.log('select * from neighbor_data failed', err.message);
+          return;
+        }
+        if (rows) {
+          rows.forEach(r => {
+            this.intitializeNeighborUsernname(
+              r.address,
+              r.name ? r.name : null
+            );
+            this.intitializeNeighborIriMainPort(
+              r.address,
+              r.port ? r.port : null
+            );
+          });
+        }
+      });
+      db.all('select * from notification', [], (err, rows) => {
+        if (err) {
+          console.log('select * from notification failed', err.message);
+          return;
+        }
+        if (rows) {
+          rows.forEach(r => {
+            NODE_STATE.notificationTokens.push(r.token);
+          });
+        }
+      });
     });
   }
 
@@ -84,46 +125,6 @@ class DbService {
           ? currentAdditionalData.name
           : null,
       port
-    });
-  }
-
-  initializeState() {
-    const sql = 'select * from host_node';
-    this.db.get(sql, [], (err, row) => {
-      NODE_STATE.protocol = row ? row.protocol : null;
-      NODE_STATE.iriIp = row ? row.ip : null;
-      NODE_STATE.iriPort = row ? row.port : null;
-      NODE_STATE.hashedPw = row ? row.hashed_pw : null;
-      NODE_STATE.loginToken = row ? row.login_token : null;
-      NODE_STATE.iriFileLocation = row ? row.iri_path : null;
-      NODE_STATE.restartNodeCommand = row ? row.restart_node_command : null;
-    });
-
-    this.db.all('select * from neighbor_data', [], (err, rows) => {
-      if (err) {
-        console.log('select * from neighbor_data failed', err.message);
-        return;
-      }
-      if (rows) {
-        rows.forEach(r => {
-          this.intitializeNeighborUsernname(r.address, r.name ? r.name : null);
-          this.intitializeNeighborIriMainPort(
-            r.address,
-            r.port ? r.port : null
-          );
-        });
-      }
-    });
-    this.db.all('select * from notification', [], (err, rows) => {
-      if (err) {
-        console.log('select * from notification failed', err.message);
-        return;
-      }
-      if (rows) {
-        rows.forEach(r => {
-          NODE_STATE.notificationTokens.push(r.token);
-        });
-      }
     });
   }
 

@@ -133,8 +133,7 @@ class NodeResource {
         return;
       }
       await DB_SERVICE.dropAllTables();
-      DB_SERVICE.createTables();
-      DB_SERVICE.initializeState();
+      DB_SERVICE.createAndInitializeTables();
       res.status(200).send();
     });
   }

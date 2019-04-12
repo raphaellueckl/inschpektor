@@ -33,8 +33,7 @@ AUTH_RESOURCE.init(app);
 NEIGHBOR_RESOURCE.init(app);
 NODE_RESOURCE.init(app);
 
-DB_SERVICE.createTables();
-DB_SERVICE.initializeState();
+DB_SERVICE.createAndInitializeTables();
 
 app.listen(app.get('port'), () => {
   console.log(`Find the server at: http://localhost:${app.get('port')}/`);
