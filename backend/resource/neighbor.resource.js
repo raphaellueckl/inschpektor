@@ -63,6 +63,7 @@ class NeighborResource {
     app.get(`${GLOBALS.BASE_URL}/neighbors`, (req, res) => {
       if (!NODE_STATE.iriIp) {
         res.status(404).send('NODE_NOT_SET');
+        return;
       }
       res.json(NODE_STATE.currentNeighbors);
     });
