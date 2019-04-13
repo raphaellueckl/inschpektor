@@ -45,7 +45,7 @@ class AuthResource {
       const token = req.body.token;
       NODE_STATE.notificationTokens.push(token);
 
-      DB_SERVICE.setNotificationToken();
+      DB_SERVICE.setNotificationToken(token);
 
       res.status(200).send();
     });

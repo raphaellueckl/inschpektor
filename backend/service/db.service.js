@@ -94,6 +94,8 @@ class DbService {
           return;
         }
         if (rows) {
+          // todo remove
+          console.log('loaded tokens:', rows);
           rows.forEach(r => {
             NODE_STATE.notificationTokens.push(r.token);
           });
@@ -170,9 +172,9 @@ class DbService {
     updateHostIp.run(NODE_STATE.loginToken, 0);
   }
 
-  setNotificationToken() {
+  setNotificationToken(token) {
     const stmt = this.db.prepare('INSERT INTO notification (token) VALUES (?)');
-    stmt.run(NODE_STATE.token);
+    stmt.run(token);
   }
 
   removeNotificationToken(token) {

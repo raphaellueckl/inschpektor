@@ -8,7 +8,7 @@ const NODE_STATE = require('../state/node.state');
 
 class NotificationService {
   sendNotification(title, body) {
-    NODE_STATE.notificationTokens().forEach(token => {
+    NODE_STATE.notificationTokens.forEach(token => {
       const notificationBody = {
         notification: {
           title,
