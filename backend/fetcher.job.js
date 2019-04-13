@@ -3,6 +3,7 @@ const axios = require('axios');
 const NODE_STATE = require('./state/node.state');
 const IRI_SERVICE = require('./service/iri.service');
 const DB_SERVICE = require('./service/db.service');
+const NOTIFICATION_SERVICE = require('./service/notification.service');
 
 const MAX_MILESTONES_BEHIND_BEFORE_UNSYNCED = 50;
 
@@ -165,7 +166,8 @@ const theFetcher = async () => {
 
   while (true) {
     fetchNeighborsAndNodeInfo();
-
+    // todo remove
+    NOTIFICATION_SERVICE.sendNotification('title', 'and body');
     let timekeeper = new Promise((resolve, reject) => {
       setTimeout(() => resolve(), 15000);
     });
