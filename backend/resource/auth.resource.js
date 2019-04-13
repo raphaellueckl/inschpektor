@@ -2,6 +2,7 @@ const bcrypt = require('bcrypt');
 
 const NODE_STATE = require('../state/node.state');
 const DB_SERVICE = require('../service/db.service');
+const AUTH_SERVICE = require('../service/auth.service');
 const GLOBALS = require('../state/globals');
 
 class AuthResource {
@@ -37,6 +38,10 @@ class AuthResource {
     });
 
     app.post(`${GLOBALS.BASE_URL}/notification`, (req, res) => {
+      if (!AUTH_SERVICE.isUserAuthenticated(NODE_STATE.loginToken, req)) {
+        res.status(401).send();
+        return;
+      }
       const token = req.body.token;
       NODE_STATE.notificationTokens.push(token);
 
