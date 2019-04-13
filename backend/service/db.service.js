@@ -57,7 +57,9 @@ class DbService {
       )`
       );
 
-      db.run(`CREATE TABLE IF NOT EXISTS notification (token TEXT)`);
+      db.run(
+        `CREATE TABLE IF NOT EXISTS notification (token TEXT, UNIQUE(token))`
+      );
 
       const sql = 'select * from host_node';
       db.get(sql, [], (err, row) => {
@@ -173,7 +175,9 @@ class DbService {
   }
 
   setNotificationToken(token) {
-    const stmt = this.db.prepare('INSERT INTO notification (token) VALUES (?)');
+    const stmt = this.db.prepare(
+      'INSERT OR IGNORE INTO notification (token) VALUES (?)'
+    );
     stmt.run(token);
   }
 
