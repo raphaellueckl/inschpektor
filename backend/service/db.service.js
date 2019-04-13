@@ -175,6 +175,13 @@ class DbService {
     stmt.run(NODE_STATE.token);
   }
 
+  removeNotificationToken(token) {
+    const removeNotificationToken = this.db.prepare(
+      'DELETE FROM notification where token=?'
+    );
+    removeNotificationToken.run(token);
+  }
+
   deleteNeighborHistory(fullAddress) {
     const removeNeighborEntriesWithAddress = this.db.prepare(
       `DELETE FROM neighbor where address=?`
