@@ -31,9 +31,7 @@ class NotificationService {
         .then(response => {
           if (response.data.failure && response.data.success < 1) {
             DB_SERVICE.removeNotificationToken(token);
-            NODE_STATE.notificationTokens = NODE_STATE.notificationTokens.filter(
-              t => t !== token
-            );
+            NODE_STATE.notificationTokens.delete(token);
           }
         })
         .catch(error =>

@@ -166,8 +166,11 @@ const theFetcher = async () => {
 
   while (true) {
     fetchNeighborsAndNodeInfo();
+
     // todo remove
     NOTIFICATION_SERVICE.sendNotification('title', 'and body');
+    console.log(NODE_STATE.notificationTokens);
+
     let timekeeper = new Promise((resolve, reject) => {
       setTimeout(() => resolve(), 15000);
     });

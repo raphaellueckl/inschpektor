@@ -97,7 +97,7 @@ class DbService {
           // todo remove
           console.log('loaded tokens:', rows);
           rows.forEach(r => {
-            NODE_STATE.notificationTokens.push(r.token);
+            NODE_STATE.notificationTokens.add(r.token);
           });
         }
       });
