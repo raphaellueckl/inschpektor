@@ -6,7 +6,7 @@ class NodeState {
 
     this.loginToken = undefined;
     this.hashedPw = undefined;
-    this.notificationTokens = [];
+    this.notificationTokens = new Set();
     this.neighborAdditionalData = new Map();
 
     this.protocol = undefined;
