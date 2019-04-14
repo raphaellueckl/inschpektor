@@ -1,10 +1,20 @@
 {
-  "name": "",
-  "short_name": "",
+  "name": "inschpektor",
+  "short_name": "inschpektor",
   "icons": [
     {
       "src": "/android-chrome-72x72.png",
       "sizes": "72x72",
+      "type": "image/png"
+    },
+    {
+      "src": "/logo_192.png",
+      "sizes": "192x192",
+      "type": "image/png"
+    },
+    {
+      "src": "/logo_512.png",
+      "sizes": "512x512",
       "type": "image/png"
     }
   ],
