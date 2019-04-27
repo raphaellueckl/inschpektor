@@ -6,9 +6,8 @@
   "private": false,
   "scripts": {
     "start": "node backend/server.js",
-    "start-dev": "concurrently \"NODE_ENV=dev nodemon backend/server.js\" \"npm run serve\"",
+    "serve": "concurrently \"NODE_ENV=dev nodemon backend/server.js\" \"vue-cli-service serve\"",
     "api": "NODE_ENV=dev nodemon backend/server.js",
-    "serve": "vue-cli-service serve",
     "build": "vue-cli-service build",
     "test:e2e": "vue-cli-service test:e2e",
     "test:unit": "vue-cli-service test:unit"
