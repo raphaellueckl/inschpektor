@@ -32,6 +32,7 @@ class NotificationService {
           if (response.data.failure && response.data.success < 1) {
             DB_SERVICE.removeNotificationToken(token);
             NODE_STATE.notificationTokens.delete(token);
+            console.log('Notification sent: ' + title);
           }
         })
         .catch(error =>
