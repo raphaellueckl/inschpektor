@@ -1,12 +1,11 @@
 const fetchNeighborsAndNodeInfo = require('./observer/fetchNeighborsAndNodeInfo');
-
-const MAX_MILESTONES_BEHIND_BEFORE_UNSYNCED = 50;
+const assertNodeInSync = require('./observer/assertNodeInSync');
 
 const theFetcher = async () => {
   while (true) {
     fetchNeighborsAndNodeInfo();
 
-    // assertNodeInSync();
+    assertNodeInSync();
     // assertPremiumNeighborsSynced();
     // assertNeighborsActive();
     // assertNeighborsHealthy();
