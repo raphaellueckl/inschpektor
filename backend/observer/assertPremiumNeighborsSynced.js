@@ -1,5 +1,3 @@
-const axios = require('axios');
-
 const NODE_STATE = require('../state/node.state');
 const NOTIFICATION_SERVICE = require('../service/notification.service');
 const GLOBALS = require('../state/globals');
