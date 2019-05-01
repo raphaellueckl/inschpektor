@@ -2,11 +2,8 @@
   <nav class="navbar" role="navigation" aria-label="main navigation">
     <div class="logo" style="display: flex">
       <router-link to="/" class="navbar-brand">
-        <figure
-          class="image is-96x75"
-          style="margin-left: 6px; margin-right: 6px"
-        >
-          <img src="@/assets/logo.png" />
+        <figure class="image is-96x75" style="margin-left: 6px; margin-right: 6px">
+          <img src="@/assets/logo.png">
         </figure>
       </router-link>
       <a
@@ -25,27 +22,17 @@
 
     <div class="navbar-menu" :class="{ 'is-active': burgerOpen }">
       <div class="navbar-start">
-        <router-link to="/" class="navbar-item">
-          Dashboard
-        </router-link>
-        <router-link to="/manage" class="navbar-item">
-          Manage
-        </router-link>
-        <router-link to="/node" class="navbar-item">
-          Node Info
-        </router-link>
-        <router-link to="/login" v-if="!authenticated" class="navbar-item">
-          Login
-        </router-link>
-        <router-link to="/about" class="navbar-item">
-          About
-        </router-link>
+        <router-link to="/" class="navbar-item">Dashboard</router-link>
+        <router-link to="/manage" class="navbar-item">Manage</router-link>
+        <router-link to="/node" class="navbar-item">Node Info</router-link>
+        <router-link to="/login" v-if="!authenticated" class="navbar-item">Login</router-link>
+        <router-link to="/about" class="navbar-item">About</router-link>
       </div>
     </div>
     <div class="navbar-end">
       <span
         v-if="nodeInfo"
-        class="navbar-item __online"
+        class="navbar-item node-state-badge __online"
         :class="{
           __offline:
             nodeInfo.latestSolidSubtangleMilestoneIndex <
@@ -55,9 +42,7 @@
         {{ nodeInfo.latestSolidSubtangleMilestoneIndex }} /
         {{ nodeInfo.latestMilestoneIndex }}
       </span>
-      <span v-else class="navbar-item __offline">
-        Node seems offline!
-      </span>
+      <span v-else class="navbar-item node-state-badge __offline">Node seems offline!</span>
     </div>
   </nav>
 </template>
@@ -87,8 +72,14 @@ export default {
   background: hsl(356, 100%, 72%);
 }
 
+.node-state-badge {
+  border-bottom-right-radius: 0 !important;
+  border-bottom-left-radius: 20px;
+}
+
 .navbar-item {
   border-bottom-left-radius: 20px;
+  border-bottom-right-radius: 20px;
 }
 
 a.navbar-item.is-active {
