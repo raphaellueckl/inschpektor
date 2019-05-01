@@ -181,53 +181,6 @@ class NeighborResource {
 
     DB_SERVICE.setNeighborAdditionalData(fullAddress, oldName, port);
   }
-
-  createResultNeighbor(
-    neighbor,
-    oldestEntry,
-    additionalData,
-    nodeInfo = null,
-    ping = null
-  ) {
-    const resultNeighbor = {
-      iriVersion: nodeInfo ? nodeInfo.appVersion : null,
-      isSynced:
-        nodeInfo &&
-        NODE_STATE.currentOwnNodeInfo &&
-        NODE_STATE.currentOwnNodeInfo.latestMilestoneIndex
-          ? nodeInfo.latestSolidSubtangleMilestoneIndex >=
-            NODE_STATE.currentOwnNodeInfo.latestMilestoneIndex -
-              GLOBALS.MAX_MILESTONES_BEHIND_BEFORE_UNSYNCED
-          : null,
-      milestone: nodeInfo
-        ? `${nodeInfo.latestSolidSubtangleMilestoneIndex} / ${
-            NODE_STATE.currentOwnNodeInfo.latestMilestoneIndex
-          }`
-        : null,
-      isActive: oldestEntry
-        ? neighbor.numberOfNewTransactions > oldestEntry.numberOfNewTransactions
-        : null,
-      protocol: neighbor.connectionType,
-      onlineTime: nodeInfo ? nodeInfo.time : null,
-      isFriendlyNode:
-        neighbor.numberOfInvalidTransactions <
-        neighbor.numberOfAllTransactions / 200,
-      ping: ping,
-      name: additionalData && additionalData.name ? additionalData.name : null,
-      port: additionalData && additionalData.port ? additionalData.port : null,
-      ...neighbor
-    };
-
-    const additionalDataForNeighbor = NODE_STATE.neighborAdditionalData.get(
-      `${resultNeighbor.protocol}://${resultNeighbor.address}`
-    );
-    resultNeighbor.name =
-      additionalDataForNeighbor && additionalDataForNeighbor.name
-        ? additionalDataForNeighbor.name
-        : null;
-
-    return resultNeighbor;
-  }
 }
 
 const neighborResource = new NeighborResource();
