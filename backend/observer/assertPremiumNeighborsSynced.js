@@ -10,9 +10,7 @@ const assertPremiumNeighborsSynced = () => {
     isAllowedToSendNotification() &&
     NODE_STATE.currentNeighbors &&
     NODE_STATE.currentNeighbors
-      .filter(
-        n => n.milestone && n.milestone.latestSolidSubtangleMilestoneIndex
-      )
+      .filter(n => n.latestSolidSubtangleMilestoneIndex)
       .filter(
         n =>
           n.latestSolidSubtangleMilestoneIndex >=
