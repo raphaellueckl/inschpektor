@@ -1,17 +1,19 @@
-const fetchNeighborsAndNodeInfo = require('./observer/fetchNeighborsAndNodeInfo');
+const fetchNodeInfo = require('./observer/fetchNodeInfo');
+const fetchNeighbors = require('./observer/fetchNeighbors');
 const assertNodeInSync = require('./observer/assertNodeInSync');
+const assertPremiumNeighborsSynced = require('./observer/assertPremiumNeighborsSynced');
+const assertNeighborsActive = require('./observer/assertNeighborsActive');
+const assertNeighborsHealthy = require('./observer/assertNeighborsHealthy');
 
 const theFetcher = async () => {
   while (true) {
-    fetchNeighborsAndNodeInfo();
+    fetchNeighbors();
+    fetchNodeInfo();
 
     assertNodeInSync();
-    // assertPremiumNeighborsSynced();
-    // assertNeighborsActive();
-    // assertNeighborsHealthy();
-
-    // NOTIFICATION_SERVICE.sendNotification('title', 'and body');
-    // console.log(NODE_STATE.notificationTokens);
+    assertPremiumNeighborsSynced();
+    assertNeighborsActive();
+    assertNeighborsHealthy();
 
     let timekeeper = new Promise((resolve, reject) => {
       setTimeout(() => resolve(), 15000);

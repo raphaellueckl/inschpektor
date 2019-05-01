@@ -3,7 +3,7 @@ const axios = require('axios');
 const NODE_STATE = require('../state/node.state');
 const IRI_SERVICE = require('../service/iri.service');
 const DB_SERVICE = require('../service/db.service');
-const NOTIFICATION_SERVICE = require('../service/notification.service');
+const GLOBALS = require('../state/globals');
 
 function createResultNeighbor(
   neighbor,
@@ -20,7 +20,7 @@ function createResultNeighbor(
       NODE_STATE.currentOwnNodeInfo.latestMilestoneIndex
         ? nodeInfo.latestSolidSubtangleMilestoneIndex >=
           NODE_STATE.currentOwnNodeInfo.latestMilestoneIndex -
-            MAX_MILESTONES_BEHIND_BEFORE_UNSYNCED
+            GLOBALS.MAX_MILESTONES_BEHIND_BEFORE_UNSYNCED
         : null,
     milestone: nodeInfo
       ? `${nodeInfo.latestSolidSubtangleMilestoneIndex} / ${
@@ -44,7 +44,6 @@ function createResultNeighbor(
     port: additionalData && additionalData.port ? additionalData.port : null,
     ...neighbor
   };
-
   const additionalDataForNeighbor = NODE_STATE.neighborAdditionalData.get(
     `${resultNeighbor.protocol}://${resultNeighbor.address}`
   );
@@ -56,7 +55,7 @@ function createResultNeighbor(
   return resultNeighbor;
 }
 
-const fetchNeighborsAndNodeInfo = () => {
+const fetchNeighbors = () => {
   if (NODE_STATE.iriIp) {
     const resultNeighbors = [];
     axios(IRI_SERVICE.createIriRequest('getNeighbors'))
@@ -149,15 +148,7 @@ const fetchNeighborsAndNodeInfo = () => {
       .catch(error =>
         console.log('Failed to fetch neighbors of own node.', error.message)
       );
-
-    axios(IRI_SERVICE.createIriRequest('getNodeInfo'))
-      .then(nodeInfoResponse => {
-        NODE_STATE.currentOwnNodeInfo = nodeInfoResponse.data;
-      })
-      .catch(error =>
-        console.log('Failed to fetch own node info.', error.message)
-      );
   }
 };
 
-module.exports = fetchNeighborsAndNodeInfo;
+module.exports = fetchNeighbors;

@@ -9,8 +9,6 @@ const NODE_STATE = require('../state/node.state');
 const DB_SERVICE = require('../service/db.service');
 const GLOBALS = require('../state/globals');
 
-const MAX_MILESTONES_BEHIND_BEFORE_UNSYNCED = 50;
-
 class NeighborResource {
   constructor() {
     NODE_STATE.persistedNeighbors = undefined;
@@ -199,7 +197,7 @@ class NeighborResource {
         NODE_STATE.currentOwnNodeInfo.latestMilestoneIndex
           ? nodeInfo.latestSolidSubtangleMilestoneIndex >=
             NODE_STATE.currentOwnNodeInfo.latestMilestoneIndex -
-              MAX_MILESTONES_BEHIND_BEFORE_UNSYNCED
+              GLOBALS.MAX_MILESTONES_BEHIND_BEFORE_UNSYNCED
           : null,
       milestone: nodeInfo
         ? `${nodeInfo.latestSolidSubtangleMilestoneIndex} / ${
