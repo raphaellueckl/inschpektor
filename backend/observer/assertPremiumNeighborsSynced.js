@@ -18,7 +18,7 @@ const assertPremiumNeighborsSynced = () => {
           n.latestSolidSubtangleMilestoneIndex >=
           NODE_STATE.currentOwnNodeInfo.latestMilestoneIndex -
             GLOBALS.MAX_MILESTONES_BEHIND_BEFORE_UNSYNCED
-      )
+      ).length > 0
   ) {
     NOTIFICATION_SERVICE.sendNotification('A neighbor is out of sync!');
   }
