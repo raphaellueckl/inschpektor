@@ -1,5 +1,5 @@
 <template>
-  <div>
+  <div class="show-delayed">
     <div class="loading-animation">
       <div></div>
       <div></div>
@@ -91,6 +91,14 @@ export default {
   animation-timing-function: linear;
   animation-duration: 1s;
   animation-delay: 5s;
+  animation-fill-mode: forwards;
+}
+
+.show-delayed {
+  opacity: 0;
+  animation-name: fadein;
+  animation-timing-function: linear;
+  animation-delay: 0.5s;
   animation-fill-mode: forwards;
 }
 
