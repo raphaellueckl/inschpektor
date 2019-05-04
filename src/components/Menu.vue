@@ -105,12 +105,19 @@ a.navbar-item.is-active {
 .logo-holder {
   display: flex;
   align-items: center;
+  background: rgb(240, 240, 240);
+  border-right-style: solid;
+  border-bottom-style: solid;
+  border-width: 3px;
+  border-color: whitesmoke;
+  border-bottom-right-radius: 20px;
 }
 
 .logo-item {
   margin: 5px;
   color: black;
-  font-size: 29px;
+  font-size: 18px;
+  /* font-family: 'Avenir', Helvetica, Arial, sans-serif; */
   font-family: monospace;
 }
 
@@ -119,8 +126,8 @@ a.navbar-item.is-active {
 }
 
 .logo-img {
-  width: 60px;
-  height: 60px;
+  width: 40px;
+  height: 40px;
   display: block;
 }
 
