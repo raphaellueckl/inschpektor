@@ -78,8 +78,14 @@ export default {
 }
 
 .node-state-badge {
-  border-bottom-right-radius: 0 !important;
+  border-bottom-right-radius: 20px;
   border-bottom-left-radius: 20px;
+}
+
+@media screen and (min-width: 1088px) {
+  .node-state-badge {
+    border-bottom-right-radius: 0 !important;
+  }
 }
 
 .navbar-item {
@@ -88,7 +94,7 @@ export default {
 }
 
 a.navbar-item.is-active {
-  background-color: hsl(0, 0%, 96%) !important;
+  background-color: hsl(0, 0%, 96%);
 }
 
 .image.is-96x75 {
