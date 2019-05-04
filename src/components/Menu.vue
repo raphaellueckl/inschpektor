@@ -117,6 +117,8 @@ a.navbar-item.is-active {
   }
 
   .logo-holder {
+    padding-left: 5px;
+    margin-right: 40px;
     background: rgb(240, 240, 240);
     border-right-style: solid;
     border-bottom-style: solid;
