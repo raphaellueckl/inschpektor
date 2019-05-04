@@ -16,7 +16,7 @@
 import { mapGetters } from 'vuex';
 import Neighbor from './Neighbor.vue';
 import Summary from './Summary.vue';
-import NoContent from '../NoContent.vue';
+import NoContent from '../utility/NoContent.vue';
 
 export default {
   name: 'Dashboard',
