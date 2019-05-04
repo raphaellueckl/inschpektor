@@ -97,7 +97,10 @@ class NodeResource {
         protocol: NODE_STATE.protocol,
         nodeIp: NODE_STATE.iriIp,
         port: NODE_STATE.iriPort,
-        iriFileLocation: NODE_STATE.iriFileLocation
+        iriFileLocation: NODE_STATE.iriFileLocation,
+        restartNodeCommandAvailable: NODE_STATE.restartNodeCommand
+          ? true
+          : false
       });
     });
 
