@@ -4,7 +4,7 @@
       <router-link to="/" class="navbar-brand">
         <div class="logo-holder">
           <div class="logo-item">
-            <img src="@/assets/logo_300.png" style="width:60px; height:60px; display:block;">
+            <img src="@/assets/logo_300.png" class="logo-img">
           </div>
           <div class="logo-item">
             <span>inschpektor</span>
@@ -110,6 +110,12 @@ a.navbar-item.is-active {
 
 .logo-item:last-child {
   margin-right: 20px;
+}
+
+.logo-img {
+  width: 60px;
+  height: 60px;
+  display: block;
 }
 
 .logo {
