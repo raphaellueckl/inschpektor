@@ -106,6 +106,7 @@
           <RoundedButton
             :click="setHostNode"
             type="success"
+            spin="20000"
             :disabled="code === 'NODE_NOT_SET' ? !password || !nodeIp : !nodeIp"
           >Submit</RoundedButton>
         </div>
@@ -126,7 +127,7 @@
           class="centered"
           :click="restartNode"
           type="danger"
-          spin="10000"
+          spin="20000"
           modal-text="This action will restart your node. This will cause some connection issues from INSCHPEKTOR, but they will resolve automatically after the node is restarted."
         >Restart Node</RoundedButton>
       </nav>
