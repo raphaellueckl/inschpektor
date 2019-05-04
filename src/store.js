@@ -25,6 +25,7 @@ axios.interceptors.response.use(
 const state = {
   hostNode: null,
   iriFileLocation: null,
+  restartNodeCommandAvailable: null,
   token: null,
   loading: false,
   nodeInfo: null,
@@ -52,6 +53,7 @@ const mutations = {
       ? `${iriDetails.nodeIp}:${iriDetails.port}`
       : null;
     state.iriFileLocation = iriDetails.iriFileLocation;
+    state.restartNodeCommandAvailable = iriDetails.restartNodeCommandAvailable;
   },
   SET_NEIGHBORS(state, neighbors) {
     state.neighbors = neighbors;
@@ -284,6 +286,7 @@ const getters = {
   loading: state => state.loading,
   nodeInfo: state => state.nodeInfo,
   iriFileLocation: state => state.iriFileLocation,
+  restartNodeCommandAvailable: state => state.restartNodeCommandAvailable,
   iriIp: state => state.iriIp,
   hostNode: state => state.hostNode,
   neighbors: state => state.neighbors,
