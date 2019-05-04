@@ -82,12 +82,6 @@ export default {
   border-bottom-left-radius: 20px;
 }
 
-@media screen and (min-width: 1088px) {
-  .node-state-badge {
-    border-bottom-right-radius: 0 !important;
-  }
-}
-
 .navbar-item {
   border-bottom-left-radius: 20px;
   border-bottom-right-radius: 20px;
@@ -105,12 +99,31 @@ a.navbar-item.is-active {
 .logo-holder {
   display: flex;
   align-items: center;
+}
+
+.navbar {
   background: rgb(240, 240, 240);
-  border-right-style: solid;
-  border-bottom-style: solid;
-  border-width: 3px;
-  border-color: whitesmoke;
+  border-bottom-left-radius: 20px;
   border-bottom-right-radius: 20px;
+}
+
+@media screen and (min-width: 1088px) {
+  .node-state-badge {
+    border-bottom-right-radius: 0 !important;
+  }
+
+  .navbar {
+    background: unset;
+  }
+
+  .logo-holder {
+    background: rgb(240, 240, 240);
+    border-right-style: solid;
+    border-bottom-style: solid;
+    border-width: 3px;
+    border-color: whitesmoke;
+    border-bottom-right-radius: 20px;
+  }
 }
 
 .logo-item {
