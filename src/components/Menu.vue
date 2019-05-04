@@ -99,6 +99,7 @@ a.navbar-item.is-active {
 .logo-holder {
   display: flex;
   align-items: center;
+  padding-left: 10px;
 }
 
 .navbar {
@@ -117,7 +118,6 @@ a.navbar-item.is-active {
   }
 
   .logo-holder {
-    padding-left: 5px;
     margin-right: 40px;
     background: rgb(240, 240, 240);
     border-right-style: solid;
