@@ -12,7 +12,9 @@ class NotificationService {
       const notificationBody = {
         notification: {
           title,
-          body
+          body,
+          icon:
+            'https://raw.githubusercontent.com/codepleb/inschpektor/master/docs/logo_196.png'
         },
         to: token
       };
