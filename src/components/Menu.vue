@@ -1,10 +1,15 @@
 <template>
   <nav class="navbar" role="navigation" aria-label="main navigation">
-    <div class="logo" style="display: flex">
+    <div class="logo">
       <router-link to="/" class="navbar-brand">
-        <figure class="image is-96x75" style="margin-left: 6px; margin-right: 6px">
-          <img src="@/assets/logo.png">
-        </figure>
+        <div class="logo-holder">
+          <div class="logo-item">
+            <img src="@/assets/logo_300.png" style="width:60px; height:60px; display:block;">
+          </div>
+          <div class="logo-item">
+            <span>inschpektor</span>
+          </div>
+        </div>
       </router-link>
       <a
         role="button"
@@ -89,5 +94,31 @@ a.navbar-item.is-active {
 .image.is-96x75 {
   height: 75px;
   width: 96px;
+}
+
+.logo-holder {
+  display: flex;
+  align-items: center;
+  /* padding: 5px; */
+}
+
+.logo-item {
+  margin: 5px;
+  color: black;
+  font-size: 29px;
+  font-family: monospace;
+}
+
+.logo-item:last-child {
+  margin-right: 20px;
+}
+
+.logo-item:hover {
+  /* color: black; */
+}
+
+.logo {
+  display: flex;
+  align-items: center;
 }
 </style>
