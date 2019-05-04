@@ -112,7 +112,7 @@
       </div>
     </nav>
 
-    <div v-if="code !== 'NODE_NOT_SET'">
+    <div v-if="code !== 'NODE_NOT_SET' && restartNodeCommandAvailable">
       <div class="is-divider"></div>
 
       <h2
@@ -177,7 +177,7 @@ export default {
     }
   },
   computed: {
-    ...mapGetters(['iriIp', 'authenticated'])
+    ...mapGetters(['iriIp', 'authenticated', 'restartNodeCommandAvailable'])
   },
   created() {
     this.$store.dispatch('fetchIriDetails');
