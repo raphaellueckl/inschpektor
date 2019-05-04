@@ -23,25 +23,23 @@
                       ]"
                       type="text"
                       placeholder="E.g. udp://123.32.123.123:14600 or tcp://neighbor-domain.net:15600"
-                    />
+                    >
                     <span
                       v-if="this.ipAddress && isCorrectAddress"
                       class="icon is-small is-right"
                       :key="0"
                     >
-                      <font-awesome-icon icon="check" />
+                      <font-awesome-icon icon="check"/>
                     </span>
                     <span
                       v-if="this.ipAddress && !isCorrectAddress"
                       class="icon is-small is-right"
                       :key="1"
                     >
-                      <font-awesome-icon icon="exclamation-triangle" />
+                      <font-awesome-icon icon="exclamation-triangle"/>
                     </span>
                   </div>
-                  <p v-if="!isCorrectAddress" class="help is-danger">
-                    Wrong node address format!
-                  </p>
+                  <p v-if="!isCorrectAddress" class="help is-danger">Wrong node address format!</p>
                 </div>
 
                 <div>
@@ -54,7 +52,7 @@
                         class="input"
                         type="text"
                         placeholder="Custom name for this neighbor"
-                      />
+                      >
                     </div>
                   </div>
 
@@ -74,20 +72,12 @@
                         ]"
                         type="text"
                         placeholder="E.g. 14267"
-                      />
-                      <span
-                        v-if="portValidation"
-                        class="icon is-small is-right"
-                        :key="0"
                       >
-                        <font-awesome-icon icon="check" />
+                      <span v-if="portValidation" class="icon is-small is-right" :key="0">
+                        <font-awesome-icon icon="check"/>
                       </span>
-                      <span
-                        v-if="portValidation === false"
-                        class="icon is-small is-right"
-                        :key="1"
-                      >
-                        <font-awesome-icon icon="exclamation-triangle" />
+                      <span v-if="portValidation === false" class="icon is-small is-right" :key="1">
+                        <font-awesome-icon icon="exclamation-triangle"/>
                       </span>
                     </div>
                     <p v-if="portValidation === false" class="help is-danger">
@@ -98,7 +88,7 @@
 
                   <div class="field" v-if="iriFileLocation">
                     <label class="checkbox">
-                      <input type="checkbox" v-model="writeToIriConfig" />
+                      <input type="checkbox" v-model="writeToIriConfig">
                       Write neighbor to iri config
                     </label>
                   </div>
@@ -114,15 +104,11 @@
                         "
                         :click="addNeighborAndClearFields"
                         type="ok"
-                        spin="2000"
-                      >
-                        Submit
-                      </RoundedButton>
+                        spin="10000"
+                      >Submit</RoundedButton>
                     </div>
                     <div class="control">
-                      <RoundedButton :click="clearFields">
-                        Cancel
-                      </RoundedButton>
+                      <RoundedButton :click="clearFields">Cancel</RoundedButton>
                     </div>
                   </div>
                 </div>

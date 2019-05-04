@@ -38,7 +38,7 @@
       </div>
     </nav>
 
-    <RoundedButton type="success" :click="loginClicked" :disabled="!password" spin="1000">Login</RoundedButton>
+    <RoundedButton type="success" :click="loginClicked" :disabled="!password" spin="2000">Login</RoundedButton>
   </div>
 </template>
 
@@ -57,7 +57,7 @@ export default {
     loginClicked: function() {
       if (this.password) {
         this.login(this.password);
-        setTimeout(() => (this.loginAttempted = true), 1000);
+        setTimeout(() => (this.loginAttempted = true), 2000);
       }
     }
   },
