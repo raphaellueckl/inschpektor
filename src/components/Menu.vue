@@ -99,7 +99,6 @@ a.navbar-item.is-active {
 .logo-holder {
   display: flex;
   align-items: center;
-  /* padding: 5px; */
 }
 
 .logo-item {
@@ -111,10 +110,6 @@ a.navbar-item.is-active {
 
 .logo-item:last-child {
   margin-right: 20px;
-}
-
-.logo-item:hover {
-  /* color: black; */
 }
 
 .logo {
