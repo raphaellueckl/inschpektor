@@ -38,7 +38,7 @@
 
               <RoundedButton
                 class="aligned-button"
-                type="success"
+                type="ok"
                 :click="enableNotifications"
                 :disabled="notificationButtonDisabled"
               >Enable Notifications</RoundedButton>
