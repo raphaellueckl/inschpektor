@@ -117,7 +117,6 @@ const actions = {
     axios('/api/neighbors')
       .then(response => {
         commit('SET_NEIGHBORS', response.data);
-        commit('SET_ERROR', null);
       })
       .catch(error => {
         commit('SET_ERROR', error.response.data);
