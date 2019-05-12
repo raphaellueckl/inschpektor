@@ -5,7 +5,6 @@ const isAllowedToSendNotification = require('./gatekepper');
 
 const assertPremiumNeighborsSynced = () => {
   if (
-    isAllowedToSendNotification() &&
     NODE_STATE.currentNeighbors &&
     NODE_STATE.currentNeighbors
       .filter(n => n.latestSolidSubtangleMilestoneIndex)
@@ -14,7 +13,8 @@ const assertPremiumNeighborsSynced = () => {
           n.latestSolidSubtangleMilestoneIndex >=
           NODE_STATE.currentOwnNodeInfo.latestMilestoneIndex -
             GLOBALS.MAX_MILESTONES_BEHIND_BEFORE_UNSYNCED
-      ).length > 0
+      ).length > 0 &&
+    isAllowedToSendNotification()
   ) {
     NOTIFICATION_SERVICE.sendNotification('A neighbor is out of sync!');
   }
