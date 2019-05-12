@@ -11,9 +11,9 @@ const theFetcher = async () => {
     fetchNodeInfo();
 
     assertNodeInSync();
-    assertPremiumNeighborsSynced();
     assertNeighborsActive();
     assertNeighborsHealthy();
+    assertPremiumNeighborsSynced();
 
     let timekeeper = new Promise((resolve, reject) => {
       setTimeout(() => resolve(), 15000);
