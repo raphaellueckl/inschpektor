@@ -54,11 +54,15 @@ I recorded videos on how to install and use inschpektor. If you want, look them 
 
 ### Donations
 
-You can find an address within the 'About' section of inschpektor or use this one:
+If you want to show some love, I always appreciate it. :) Here are some crypto addresses.
 
-IZ99FQWJUQJCDLBSUOEDZIVROSARFYLXJWPZNAXQPCCGAHCUWKRE9RNHMGNHZTAIZHPUDV9HMSPNJLYSXPNEPTRHUW
+**IOTA:** IZ99FQWJUQJCDLBSUOEDZIVROSARFYLXJWPZNAXQPCCGAHCUWKRE9RNHMGNHZTAIZHPUDV9HMSPNJLYSXPNEPTRHUW
 
-If you want to show some love, I always appreciate it. :)
+**BTC:** 32o6kbgZqJ9nhT2aRsfEGcMtpThJ2za89T
+**LTC:** LgfSNjqVpXFj9xN8ZWPR9qTZQJpcRRNXRZ
+**XMR:** 4GdoN7NCTi8a5gZug7PrwZNKjvHFmKeV11L6pNJPgj5QNEHsN6eeX3DaAQFwZ1ufD4LYCZKArktt113W7QjWvQ7CWAjwVCr95LATLKqtxr
+**XLM:** GA5XIGA5C7QTPTWXQHY6MCJRMTRZDOSHR6EFIBNDQTCQHG262N4GGKTM
+**XRP:** rLHzPsX6oXkzU2qL12kHCH8G8cnZv1rBJh
 
 ### Feedback
 
@@ -77,9 +81,9 @@ Also keep in mind that I run channels where I post updates:
 
 ### Features/Improves on the roadmap
 
-- Support for multiple nodes
-- Notifications
-- Unit tests 😳
+- Go further down the PWA road and make the app more "native like"
+- Make everything more stable
+- Overhaul this overly fancy UI :)
 
 ### Known Bugs
 
