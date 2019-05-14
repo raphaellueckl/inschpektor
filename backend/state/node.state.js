@@ -1,5 +1,9 @@
 class NodeState {
   constructor() {
+    this.initialize();
+  }
+
+  initialize() {
     this.currentOwnNodeInfo = undefined;
     this.persistedNeighbors = undefined;
     this.restartNodeCommand = undefined;
