@@ -2,6 +2,7 @@
   <article class="tile is-child notification">
     <qrcode-vue :value="dontationAddress()" :size="size" level="L"></qrcode-vue>
     <p>
+      <strong>IOTA:</strong>
       {{ donation.address }}
     </p>
   </article>
