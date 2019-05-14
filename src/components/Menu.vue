@@ -88,7 +88,8 @@ export default {
 }
 
 a.navbar-item.is-active {
-  background-color: hsl(0, 0%, 96%);
+  /* Important because it would be overriden on desktop size */
+  background-color: hsl(0, 0%, 96%) !important;
 }
 
 .image.is-96x75 {
