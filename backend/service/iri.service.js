@@ -30,7 +30,7 @@ class IriService {
         'Content-Type': 'application/json',
         'X-IOTA-API-Version': '1'
       },
-      timeout: 2000
+      timeout: 6000
     };
   }
 
