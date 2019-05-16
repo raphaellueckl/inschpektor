@@ -20,7 +20,7 @@
       {{ latestInschpektorVersion }} is ready to download! See here how to
       update:
       <a
-        href="https://github.com/codepleb/inschpektor/blob/master/readme.md"
+        href="https://github.com/codepleb/inschpektor/blob/master/readme.md#update"
         target="_blank"
       >Update manual</a>
       🌟
