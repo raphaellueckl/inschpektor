@@ -4,7 +4,7 @@ This is a manager for your IOTA node with focus on simplicity and user experienc
 
 ### Features
 
-For the features, head over to my medium article: https://medium.com/@codepleb4/inschpektor-the-user-friendly-peer-manager-for-your-iota-node-c820d5243964
+For the features and future outlook, head over to my medium article: https://medium.com/@codepleb4/inschpektor-the-user-friendly-peer-manager-for-your-iota-node-c820d5243964
 
 ### Installation
 
@@ -31,7 +31,7 @@ Run `sudo npm i -g inschpektor --unsafe-perm`
 
 ### Running after installation
 
-Always run this command in a terminal: `sudo inschpektor` (it is recommended to start inschpektor with `sudo` permissions. The reason is, that depending on how you setup your IOTA node, inschpektor cannot restart your IOTA node and probably cannot write to your iri config file upon adding/removing neighbors).
+Always run this command in a terminal: `sudo inschpektor` (it is recommended to start inschpektor with `sudo` permissions. The reason is, that depending on how you setup your IOTA node, inschpektor cannot restart your IOTA node and probably cannot write to your iri config file upon adding/removing neighbors). If you are a skilled linux user and you know the permission system, using sudo is not necessary at all.
 
 After that, you will find it in your browser @ <http://{YOUR-IP}:8732> (tested on Google Chrome and Firefox, desktop and mobile).
 
@@ -51,6 +51,22 @@ To get the newest version (or ignore, if you already have it), you can just run 
 ### Video Instructions
 
 I recorded videos on how to install and use inschpektor. If you want, look them up here: https://www.youtube.com/watch?v=EjXs7kpBqjQ&list=PLAjtvx6a60HLvuLDphPaFRhD3Oe0NVn9J
+
+### Installing inschpektor as an app
+
+Inschpektor can be installed and used like a normal application. This is more than just a website bookmark!
+
+**iOS:** Open Safari (only Safari will work), browse to your inschpektor URL, click on 'share', 'Add to Home Screen'.
+**Android:** Open Chrome, browse to your inschpektor URL, clicke the three dots on the top right, 'Add to Home Screen' or 'Install Inschpektor'
+**Windows/MacOs:** Open Chrome/Firefox, browse to your inschpektor URL, clicke the three dots on the top right, 'Install Inschpektor'
+
+### Activate Notifications
+
+For iOs, this sadly is not possible at this time, because Apple does not yet allow the 'push api' that is supposed to work cross-platform.
+
+For all other devices, open inschpektor, go to 'Manage' and click on the 'Enable Notifications' button. You will have to accept the request that is popping up and you are set up!
+
+Keep in mind, that whenever you reset inschpektor or update it, you have to register for notifications again. This might be obsolete in the future.
 
 ### Donations
 
