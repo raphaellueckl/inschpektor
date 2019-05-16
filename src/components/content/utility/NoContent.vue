@@ -6,7 +6,8 @@
       <div></div>
       <div></div>
     </div>
-    <div class="animated-info-text">
+    <div class="info-init">... Initializing ...</div>
+    <div class="info-error">
       There might be a problem getting data from your node. If you access it
       remotely, please do not forget to allow at least the reading commands on
       your IRI.
@@ -85,12 +86,21 @@ export default {
   }
 }
 
-.animated-info-text {
+.info-init {
+  opacity: 0;
+  animation-name: fadeinandout;
+  animation-timing-function: linear;
+  animation-duration: 16s;
+  animation-delay: 3s;
+  animation-fill-mode: forwards;
+}
+
+.info-error {
   opacity: 0;
   animation-name: fadein;
   animation-timing-function: linear;
   animation-duration: 1s;
-  animation-delay: 5s;
+  animation-delay: 20s;
   animation-fill-mode: forwards;
 }
 
@@ -108,6 +118,25 @@ export default {
   }
   to {
     opacity: 1;
+  }
+}
+
+@keyframes fadeinandout {
+  0% {
+    max-height: unset;
+    opacity: 0;
+  }
+  5% {
+    opacity: 1;
+  }
+  94% {
+    opacity: 1;
+  }
+  99% {
+    opacity: 0;
+  }
+  100% {
+    max-height: 0px;
   }
 }
 </style>
