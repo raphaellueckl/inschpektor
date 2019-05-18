@@ -61,6 +61,7 @@
             }}
           </span>
         </p>
+        <!-- ## Premium neighbor information-->
         <p>
           <strong>Milestone:</strong>
           <span>
@@ -69,6 +70,7 @@
             }}
           </span>
         </p>
+        <!-- ## -->
         <p>
           <strong>All Transactions:</strong>
           <span>
