@@ -4,10 +4,7 @@
       class="message"
       :class="[issues(neighbors).length === 0 ? 'is-success' : 'is-warning']"
     >
-      <div
-        class="message-header black-text"
-        @click="showContent = !showContent"
-      >
+      <div class="message-header black-text" @click="showContent = !showContent">
         <p>Summary - Neighbors: {{ neighbors.length }}</p>
 
         <a
@@ -18,7 +15,7 @@
           ]"
           :key="1"
         >
-          <font-awesome-icon icon="window-minimize" />
+          <font-awesome-icon icon="window-minimize"/>
         </a>
 
         <a
@@ -29,7 +26,7 @@
           ]"
           :key="0"
         >
-          <font-awesome-icon icon="window-maximize" />
+          <font-awesome-icon icon="window-maximize"/>
         </a>
       </div>
       <div class="message-body" v-if="showContent">
@@ -61,7 +58,7 @@ export default {
           addIssueMessage(n, 'has a lot of invalid transactions.');
         if (n.isSynced === false)
           addIssueMessage(n, 'does not seem to be in sync.');
-        if (n.isActive === false)
+        if (n.isActive === false || n.isActive === -1)
           addIssueMessage(n, 'does not seem to be active anymore.');
       });
 
