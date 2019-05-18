@@ -5,7 +5,7 @@
     :class="{
       'is-faulty':
         !neighbor.isFriendlyNode ||
-        neighbor.isActive === false ||
+        neighbor.isActive === false || neighbor.isActive === -1 || 
         neighbor.isSynced === false,
       'is-premium': neighbor.iriVersion
     }"
