@@ -41,7 +41,7 @@
           <span class="align__right">{{ neighbor.isSynced ? '✔' : '❌' }}️</span>
         </p>
         <p v-if="neighbor.iriVersion">
-          <strong>Iri-version:</strong>
+          <strong>IRI-Version:</strong>
           <span class="align__right">{{ neighbor.iriVersion }}</span>
         </p>
         <p v-if="neighbor.ping">
