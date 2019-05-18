@@ -30,7 +30,7 @@ function createResultNeighbor(
         }`
       : null,
     isActive: oldestEntry
-      ? neighbor.numberOfNewTransactions > oldestEntry
+      ? neighbor.numberOfNewTransactions > oldestEntry.numberOfNewTransactions
         ? oldestEntry.numberOfNewTransactions
         : -1
       : null,
@@ -38,7 +38,8 @@ function createResultNeighbor(
     onlineTime: nodeInfo ? nodeInfo.time : null,
     isFriendlyNode:
       neighbor.numberOfInvalidTransactions <
-      neighbor.numberOfAllTransactions / 200,
+        neighbor.numberOfAllTransactions / 200 ||
+      !neighbor.numberOfAllTransactions,
     ping: ping,
     name: additionalData && additionalData.name ? additionalData.name : null,
     port: additionalData && additionalData.port ? additionalData.port : null,

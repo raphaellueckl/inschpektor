@@ -23,7 +23,7 @@
           <strong>Active:</strong>
           <span class="align__right">
             {{
-            neighbor.isActive === null ? 'N/A' : neighbor.isActive ? '✔️' : '❌'
+            neighbor.isActive === null ? 'N/A' : neighbor.isActive && neighbor.isActive !== -1 ? '✔️' : '❌'
             }}
           </span>
         </p>
