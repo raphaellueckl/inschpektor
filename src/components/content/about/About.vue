@@ -93,11 +93,6 @@ export default {
   border-radius: 1vh;
 }
 
-.logo-holder {
-  /* display: flex; */
-  /* align-items: center; */
-}
-
 .logo-item {
   margin: 5px;
   color: black;
