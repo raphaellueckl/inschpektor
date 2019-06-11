@@ -3,7 +3,13 @@
     <!-- <img src="../../../assets/logo.png" /> -->
     <div class="logo-holder">
       <div class="logo-item">
-        <img src="@/assets/logo_300.png" style="width:150px; height:150px;">
+        <img
+          src="@/assets/logo_300.png"
+          style="width:150px; height:150px;"
+          :class="{'animate': animated}"
+          @click="animate"
+          @animationend="animated = false"
+        >
       </div>
       <div class="logo-item">
         <span>inschpektor</span>
@@ -32,7 +38,7 @@
         href="https://github.com/codepleb/inschpektor"
       >Github</a>.
     </p>
-    <p>The application is based on Vuejs.</p>
+    <p>The application is based on Nodejs and Vuejs.</p>
     <br>
     <p>If you would like to contribute: I'd love to get your pullrequests. :)</p>
     <p>Hit me up on telegram: @codepleb</p>
@@ -75,11 +81,17 @@ export default {
   name: 'About',
   data: () => {
     return {
-      installedVersion: VERSION
+      installedVersion: VERSION,
+      animated: false
     };
   },
   computed: {
     ...mapGetters(['latestInschpektorVersion'])
+  },
+  methods: {
+    animate() {
+      this.animated = true;
+    }
   },
   components: {
     Donation
@@ -102,5 +114,19 @@ export default {
 
 .logo-item:last-child {
   margin-bottom: 20px;
+}
+
+.animate {
+  animation: spin 3s;
+  animation-timing-function: ease-in-out;
+}
+
+@keyframes spin {
+  20% {
+    transform: rotate(360deg);
+  }
+  40% {
+    transform: rotate(720deg);
+  }
 }
 </style>
