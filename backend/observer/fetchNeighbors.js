@@ -81,6 +81,7 @@ const fetchNeighbors = () => {
 
               axios(
                 IRI_SERVICE.createIriRequestForNeighborNode(
+                  'http',
                   'getNodeInfo',
                   neighbor,
                   additionalDataOfNeighbor
@@ -104,14 +105,41 @@ const fetchNeighbors = () => {
                   resolve(resultNeighbor);
                 })
                 .catch(error => {
-                  const resultNeighbor = createResultNeighbor(
-                    neighbor,
-                    oldestEntry,
-                    additionalDataOfNeighbor
-                  );
+                  axios(
+                    IRI_SERVICE.createIriRequestForNeighborNode(
+                      'https',
+                      'getNodeInfo',
+                      neighbor,
+                      additionalDataOfNeighbor
+                        ? additionalDataOfNeighbor.port
+                        : null
+                    )
+                  )
+                    .then(nodeInfoResponse => {
+                      let ping = new Date() - startDate;
+                      let nodeInfo = nodeInfoResponse.data;
 
-                  resultNeighbors.push(resultNeighbor);
-                  resolve(resultNeighbor);
+                      const resultNeighbor = createResultNeighbor(
+                        neighbor,
+                        oldestEntry,
+                        additionalDataOfNeighbor,
+                        nodeInfo,
+                        ping
+                      );
+
+                      resultNeighbors.push(resultNeighbor);
+                      resolve(resultNeighbor);
+                    })
+                    .catch(error => {
+                      const resultNeighbor = createResultNeighbor(
+                        neighbor,
+                        oldestEntry,
+                        additionalDataOfNeighbor
+                      );
+
+                      resultNeighbors.push(resultNeighbor);
+                      resolve(resultNeighbor);
+                    });
                 });
             })
           );

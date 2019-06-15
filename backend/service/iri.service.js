@@ -19,9 +19,9 @@ class IriService {
     };
   }
 
-  createIriRequestForNeighborNode(command, neighbor, port) {
+  createIriRequestForNeighborNode(protocol, command, neighbor, port) {
     return {
-      url: `${NODE_STATE.protocol}://${neighbor.address.split(':')[0]}:${
+      url: `${protocol}://${neighbor.address.split(':')[0]}:${
         port ? port : '14265'
       }`,
       data: { command },
