@@ -6,7 +6,7 @@ const GLOBALS = require('../state/globals');
 
 class HostResource {
   init(app) {
-    app.post(`${GLOBALS.BASE_URL}/versions`, (req, res) => {
+    app.get(`${GLOBALS.BASE_URL}/versions`, (req, res) => {
       if (!AUTH_SERVICE.isUserAuthenticated(NODE_STATE.loginToken, req)) {
         res.status(401).send();
         return;
