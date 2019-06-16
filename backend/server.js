@@ -15,6 +15,7 @@ const AUTH_SERVICE = require('./service/auth.service');
 const AUTH_RESOURCE = require('./resource/auth.resource');
 const NEIGHBOR_RESOURCE = require('./resource/neighbor.resource');
 const NODE_RESOURCE = require('./resource/node.resource');
+const HOST_RESOURCE = require('./resource/host.resource');
 
 const FETCHER_JOB = require('./fetcher.job');
 
@@ -32,6 +33,7 @@ if (process.env.NODE_ENV === 'dev') {
 AUTH_RESOURCE.init(app);
 NEIGHBOR_RESOURCE.init(app);
 NODE_RESOURCE.init(app);
+HOST_RESOURCE.init(app);
 
 DB_SERVICE.createAndInitializeTables();
 
