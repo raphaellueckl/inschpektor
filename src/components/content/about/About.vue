@@ -18,12 +18,15 @@
 
     <p>
       <strong>Installed Version:</strong>
-      {{ installedVersion }}
+      {{ inschpektorVersions ? inschpektorVersions.installed ? inschpektorVersions.installed : 'N/A' : 'N/A' }}
     </p>
-    <p v-if="latestInschpektorVersion > installedVersion" class="update-available">
+    <p
+      v-if="inschpektorVersions && inschpektorVersions.newest && inschpektorVersions.installed && inschpektorVersions.newest > inschpektorVersions.installed"
+      class="update-available"
+    >
       <strong>🌟 Update available!</strong>
       Version
-      {{ latestInschpektorVersion }} is ready to download! See here how to
+      {{ inschpektorVersions.newest }} is ready to download! See here how to
       update:
       <a
         href="https://github.com/codepleb/inschpektor/blob/master/readme.md#update"
@@ -81,12 +84,11 @@ export default {
   name: 'About',
   data: () => {
     return {
-      installedVersion: VERSION,
       animated: false
     };
   },
   computed: {
-    ...mapGetters(['latestInschpektorVersion'])
+    ...mapGetters(['inschpektorVersions'])
   },
   methods: {
     animate() {

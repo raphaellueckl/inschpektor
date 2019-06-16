@@ -35,7 +35,7 @@ const state = {
   authenticated: null,
   password: null,
   persistedNeighbors: null,
-  latestInschpektorVersion: null
+  inschpektorVersions: null
 };
 
 const mutations = {
@@ -73,8 +73,8 @@ const mutations = {
   DELETE_STATE(state) {
     Object.entries(state).forEach(([key, value]) => (state[key] = null));
   },
-  SET_INSCHPEKTOR_LATEST_VERSION(state, latestVersion) {
-    state.latestInschpektorVersion = latestVersion;
+  SET_INSCHPEKTOR_LATEST_VERSION(state, versions) {
+    state.inschpektorVersions = versions;
   }
 };
 
@@ -249,12 +249,10 @@ const actions = {
   },
   checkForVersionUpdate({ commit }) {
     axios
-      .get(
-        'https://cors-anywhere.herokuapp.com/http://registry.npmjs.org/-/package/inschpektor/dist-tags'
-      )
+      .get('/api/versions')
       .then(response => {
         if (response && response.data) {
-          commit('SET_INSCHPEKTOR_LATEST_VERSION', response.data.latest);
+          commit('SET_INSCHPEKTOR_LATEST_VERSION', response.data);
         }
       })
       .catch(error =>
@@ -292,7 +290,7 @@ const getters = {
   nodeError: state => state.nodeError,
   authenticated: state => state.authenticated,
   persistedNeighbors: state => state.persistedNeighbors,
-  latestInschpektorVersion: state => state.latestInschpektorVersion
+  inschpektorVersions: state => state.inschpektorVersions
 };
 
 const storeModule = {
