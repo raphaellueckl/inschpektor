@@ -12,7 +12,7 @@ class HostResource {
         return;
       }
 
-      const installedVersion = process.env.npm_package_version;
+      const installedVersion = require('../../package.json').version;
       axios
         .get('http://registry.npmjs.org/-/package/inschpektor/dist-tags')
         .then(response => {
