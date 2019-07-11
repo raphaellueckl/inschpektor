@@ -16,13 +16,16 @@ class DbService {
         'CREATE TABLE IF NOT EXISTS neighbor (' +
           'timestamp DATETIME DEFAULT CURRENT_TIMESTAMP,' +
           'address TEXT,' +
+          'domain TEXT,' +
           'numberOfAllTransactions INTEGER,' +
           'numberOfRandomTransactionRequests INTEGER,' +
           'numberOfNewTransactions INTEGER,' +
           'numberOfInvalidTransactions INTEGER,' +
-          'numberOfSentTransactions INTEGER,' +
           'numberOfStaleTransactions INTEGER,' +
+          'numberOfSentTransactions INTEGER,' +
+          'numberOfDroppedSentPackets INTEGER,' +
           'connectionType TEXT,' +
+          'connected TEXT,' +
           'iriVersion TEXT,' +
           'isActive INTEGER,' +
           'isFriendlyNode INTEGER,' +
@@ -260,13 +263,16 @@ class DbService {
       const stmt = this.db.prepare(
         `INSERT INTO neighbor (
         address,
+        domain,
         numberOfAllTransactions,
         numberOfRandomTransactionRequests,
         numberOfNewTransactions,
         numberOfInvalidTransactions,
-        numberOfSentTransactions,
         numberOfStaleTransactions,
+        numberOfSentTransactions,
+        numberOfDroppedSentPackets,
         connectionType,
+        connected,
         iriVersion,
         isActive,
         isFriendlyNode,
@@ -277,18 +283,21 @@ class DbService {
         ping,
         port,
         protocol
-        ) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)`
+        ) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)`
       );
       richNeighbors.forEach(neighbor => {
         stmt.run(
           neighbor.address,
+          neighbor.domain,
           neighbor.numberOfAllTransactions,
           neighbor.numberOfRandomTransactionRequests,
           neighbor.numberOfNewTransactions,
           neighbor.numberOfInvalidTransactions,
-          neighbor.numberOfSentTransactions,
           neighbor.numberOfStaleTransactions,
+          neighbor.numberOfSentTransactions,
+          neighbor.numberOfDroppedSentPackets,
           neighbor.connectionType,
+          neighbor.connected,
           neighbor.iriVersion,
           neighbor.isActive,
           neighbor.isFriendlyNode,
