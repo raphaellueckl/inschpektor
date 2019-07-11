@@ -34,8 +34,7 @@ class DbService {
           'name TEXT,' +
           'onlineTime INTEGER,' +
           'ping INTEGER,' +
-          'port TEXT,' +
-          'protocol TEXT' +
+          'port TEXT' +
           ')'
       );
 
@@ -281,9 +280,8 @@ class DbService {
         name,
         onlineTime,
         ping,
-        port,
-        protocol
-        ) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)`
+        port
+        ) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)`
       );
       richNeighbors.forEach(neighbor => {
         stmt.run(
@@ -306,8 +304,7 @@ class DbService {
           neighbor.name,
           neighbor.onlineTime,
           neighbor.ping,
-          neighbor.port,
-          neighbor.protocol
+          neighbor.port
         );
       });
       stmt.finalize();

@@ -172,7 +172,7 @@ const actions = {
     axios
       .post('/api/neighbor/name', {
         name: neighbor.name,
-        fullAddress: `${neighbor.protocol}://${neighbor.address}`
+        fullAddress: `tcp://${neighbor.address}`
       })
       .then(response => {})
       .catch(error => console.log('Error when setting nick for neighbor'));
@@ -181,13 +181,13 @@ const actions = {
     axios
       .post('/api/neighbor/port', {
         port: neighbor.port,
-        fullAddress: `${neighbor.protocol}://${neighbor.address}`
+        fullAddress: `tcp://${neighbor.address}`
       })
       .then(response => {})
       .catch(error => console.log('Error when setting port for neighbor'));
   },
   removeNeighbor({ dispatch, commit }, neighbor) {
-    const address = `${neighbor.protocol}://${neighbor.address}`;
+    const address = `tcp://${neighbor.address}`;
     axios
       .delete('/api/neighbor', { data: { address } })
       .then(response => {

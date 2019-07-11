@@ -51,16 +51,6 @@
         <!-- ## -->
       </div>
       <div v-if="!showContent" class="content">
-        <p>
-          <strong>Protocol:</strong>
-          <span>
-            {{
-            neighbor.protocol === null
-            ? 'N/A'
-            : neighbor.protocol.toUpperCase()
-            }}
-          </span>
-        </p>
         <!-- ## Premium neighbor information-->
         <p>
           <strong>Milestone:</strong>
@@ -153,7 +143,7 @@ export default {
       return (
         this.$store.getters.persistedNeighbors &&
         !this.$store.getters.persistedNeighbors.includes(
-          `${this.neighbor.protocol}://${this.neighbor.address}`
+          `tcp://${this.neighbor.address}`
         )
       );
     }

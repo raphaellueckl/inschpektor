@@ -48,11 +48,7 @@ class NeighborResource {
       }
       const neighbors = req.body;
       neighbors.forEach(n =>
-        this.setNeighborAdditionalData(
-          `${n.protocol}://${n.address}`,
-          n.name,
-          n.port
-        )
+        this.setNeighborAdditionalData(`tcp://${n.address}`, n.name, n.port)
       );
 
       res.status(200).send();
