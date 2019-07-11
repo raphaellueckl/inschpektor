@@ -24,7 +24,6 @@ class DbService {
         'numberOfStaleTransactions INTEGER,' +
         'numberOfSentTransactions INTEGER,' +
         'numberOfDroppedSentPackets INTEGER,' +
-        'connectionType TEXT,' +
         'connected INTEGER,' + // Boolean is INTEGER in Sqlite3
           'iriVersion TEXT,' +
           'isActive INTEGER,' +
@@ -270,7 +269,6 @@ class DbService {
         numberOfStaleTransactions,
         numberOfSentTransactions,
         numberOfDroppedSentPackets,
-        connectionType,
         connected,
         iriVersion,
         isActive,
@@ -281,7 +279,7 @@ class DbService {
         onlineTime,
         ping,
         port
-        ) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)`
+        ) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)`
       );
       richNeighbors.forEach(neighbor => {
         stmt.run(
@@ -294,7 +292,6 @@ class DbService {
           neighbor.numberOfStaleTransactions,
           neighbor.numberOfSentTransactions,
           neighbor.numberOfDroppedSentPackets,
-          neighbor.connectionType,
           neighbor.connected,
           neighbor.iriVersion,
           neighbor.isActive,

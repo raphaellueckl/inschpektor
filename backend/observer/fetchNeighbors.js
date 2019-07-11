@@ -68,7 +68,7 @@ const fetchNeighbors = () => {
 
         for (let neighbor of activeNeighbors) {
           const additionalDataOfNeighbor = NODE_STATE.neighborAdditionalData.get(
-            `${neighbor.connectionType}://${neighbor.address}`
+            `tcp://${neighbor.address}`
           );
 
           allRequests.push(
