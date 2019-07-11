@@ -34,7 +34,6 @@ function createResultNeighbor(
         ? oldestEntry.numberOfNewTransactions
         : -1
       : null,
-    protocol: neighbor.connectionType,
     onlineTime: nodeInfo ? nodeInfo.time : null,
     isFriendlyNode:
       neighbor.numberOfInvalidTransactions <
@@ -46,7 +45,7 @@ function createResultNeighbor(
     ...neighbor
   };
   const additionalDataForNeighbor = NODE_STATE.neighborAdditionalData.get(
-    `${resultNeighbor.protocol}://${resultNeighbor.address}`
+    `tcp://${resultNeighbor.address}`
   );
   resultNeighbor.name =
     additionalDataForNeighbor && additionalDataForNeighbor.name
