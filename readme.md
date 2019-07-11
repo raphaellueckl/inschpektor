@@ -5,7 +5,9 @@ This is a manager for your IOTA node with focus on simplicity and user experienc
 ## Contents
 
 [Installation & Update](docs/install+update.md)
+
 [Run](docs/run.md)
+
 [Tips & Help](docs/tips+help.md)
 
 ## Features
