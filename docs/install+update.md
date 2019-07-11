@@ -34,7 +34,7 @@ NEIGHBORING_SOCKET_PORT = 15600
 NEIGHBORING_SOCKET_ADDRESS = 0.0.0.0 # This is necessary
 AUTO_TETHERING_ENABLED = false
 MAX_NEIGHBORS = 10
-REMOTE_LIMIT_API = ""   # If you mess with the stuff here, always check if the calls in inschpektor still work
+REMOTE_LIMIT_API = "" # If you mess with the stuff here, always check if the calls in inschpektor still work
 ZMQ_ENABLED = true
 ZMQ_PORT = 5556
 
