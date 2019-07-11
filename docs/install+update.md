@@ -1,3 +1,9 @@
+# Update and already installed inschpektor
+
+Optional: Backup nicknames you have set for your users in the `Manage` view of inschpektor ('Save Nicknames').
+
+Run `sudo npm i -g inschpektor --unsafe-perm` to update.
+
 # Installation
 
 ## 1. Precondition
