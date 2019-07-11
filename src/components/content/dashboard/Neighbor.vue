@@ -62,6 +62,26 @@
         </p>
         <!-- ## -->
         <p>
+          <strong>Domain:</strong>
+          <span>
+            {{
+            neighbor.domain === null
+            ? 'N/A'
+            : neighbor.domain
+            }}
+          </span>
+        </p>
+        <p>
+          <strong>Connected:</strong>
+          <span>
+            {{
+            neighbor.connected === null
+            ? 'N/A'
+            : neighbor.connected
+            }}
+          </span>
+        </p>
+        <p>
           <strong>All Transactions:</strong>
           <span>
             {{
@@ -118,6 +138,16 @@
             neighbor.numberOfSentTransactions === null
             ? 'N/A'
             : neighbor.numberOfSentTransactions
+            }}
+          </span>
+        </p>
+        <p>
+          <strong>Dropped Sent Packets:</strong>
+          <span>
+            {{
+            neighbor.numberOfDroppedSentPackets === null
+            ? 'N/A'
+            : neighbor.numberOfDroppedSentPackets
             }}
           </span>
         </p>
