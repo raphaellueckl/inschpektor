@@ -22,21 +22,21 @@
                           : ''
                       ]"
                       type="text"
-                      placeholder="E.g. udp://123.32.123.123:14600 or tcp://neighbor-domain.net:15600"
-                    >
+                      placeholder="E.g. neighbor-domain.net:15600"
+                    />
                     <span
                       v-if="this.ipAddress && isCorrectAddress"
                       class="icon is-small is-right"
                       :key="0"
                     >
-                      <font-awesome-icon icon="check"/>
+                      <font-awesome-icon icon="check" />
                     </span>
                     <span
                       v-if="this.ipAddress && !isCorrectAddress"
                       class="icon is-small is-right"
                       :key="1"
                     >
-                      <font-awesome-icon icon="exclamation-triangle"/>
+                      <font-awesome-icon icon="exclamation-triangle" />
                     </span>
                   </div>
                   <p v-if="!isCorrectAddress" class="help is-danger">Wrong node address format!</p>
@@ -52,7 +52,7 @@
                         class="input"
                         type="text"
                         placeholder="Custom name for this neighbor"
-                      >
+                      />
                     </div>
                   </div>
 
@@ -72,12 +72,12 @@
                         ]"
                         type="text"
                         placeholder="E.g. 14267"
-                      >
+                      />
                       <span v-if="portValidation" class="icon is-small is-right" :key="0">
-                        <font-awesome-icon icon="check"/>
+                        <font-awesome-icon icon="check" />
                       </span>
                       <span v-if="portValidation === false" class="icon is-small is-right" :key="1">
-                        <font-awesome-icon icon="exclamation-triangle"/>
+                        <font-awesome-icon icon="exclamation-triangle" />
                       </span>
                     </div>
                     <p v-if="portValidation === false" class="help is-danger">
@@ -88,7 +88,7 @@
 
                   <div class="field" v-if="iriFileLocation">
                     <label class="checkbox">
-                      <input type="checkbox" v-model="writeToIriConfig">
+                      <input type="checkbox" v-model="writeToIriConfig" />
                       Write neighbor to iri config
                     </label>
                   </div>
@@ -142,9 +142,16 @@ export default {
     ...mapGetters(['iriFileLocation']),
     isCorrectAddress: function() {
       if (!this.ipAddress) return true;
-      const startRegex = new RegExp(`^(udp|tcp):\\/\\/`);
-      const endRegex = new RegExp(`:[0-9]{2,5}$`);
-      return startRegex.test(this.ipAddress) && endRegex.test(this.ipAddress);
+      const ipContainsExactlyOneDot = this.ipAddress.split('.').length === 2;
+      const ipContainsExactlyOneColon = this.ipAddress.split(':').length === 2;
+      const ipDoesNotContainSlashes = !this.ipAddress.includes('/');
+      const addressAndPortRegex = new RegExp(`:[0-9]{2,5}$`);
+      return (
+        ipContainsExactlyOneDot &&
+        ipContainsExactlyOneColon &&
+        ipDoesNotContainSlashes &&
+        addressAndPortRegex.test(this.ipAddress)
+      );
     },
     portValidation: function() {
       if (this.port === '') return null;
