@@ -8,7 +8,7 @@
             <div class="media-content">
               <div class="content">
                 <div class="field">
-                  <label class="label">IP-Address*</label>
+                  <label class="label">Domain or IP-Address*</label>
                   <div class="control has-icons-right">
                     <input
                       v-model="ipAddress"
@@ -142,16 +142,36 @@ export default {
     ...mapGetters(['iriFileLocation']),
     isCorrectAddress: function() {
       if (!this.ipAddress) return true;
-      const ipContainsExactlyOneDot = this.ipAddress.split('.').length === 2;
-      const ipContainsExactlyOneColon = this.ipAddress.split(':').length === 2;
-      const ipDoesNotContainSlashes = !this.ipAddress.includes('/');
-      const addressAndPortRegex = new RegExp(`:[0-9]{2,5}$`);
-      return (
-        ipContainsExactlyOneDot &&
-        ipContainsExactlyOneColon &&
-        ipDoesNotContainSlashes &&
-        addressAndPortRegex.test(this.ipAddress)
-      );
+
+      const portRegex = new RegExp(`:[0-9]{2,5}$`);
+      if (/[a-zA-Z]/.test(this.ipAddress)) {
+        const ipContainsExactlyOneDot = this.ipAddress.split('.').length === 2;
+        const ipContainsExactlyOneColon =
+          this.ipAddress.split(':').length === 2;
+        const ipDoesNotContainSlashes = !this.ipAddress.includes('/');
+        const portRegex = new RegExp(`:[0-9]{2,5}$`);
+        return (
+          ipContainsExactlyOneDot &&
+          ipContainsExactlyOneColon &&
+          ipDoesNotContainSlashes &&
+          portRegex.test(this.ipAddress)
+        );
+      } else {
+        const ipContainsThreeDots = this.ipAddress.split('.').length === 4;
+        const ipContainsExactlyOneColon =
+          this.ipAddress.split(':').length === 2;
+        const ipFragmentsNotLongerThanThreeDigits =
+          this.ipAddress
+            .split(':')[0]
+            .split('.')
+            .filter(part => part.length > 3).length === 0;
+        return (
+          ipContainsThreeDots &&
+          ipContainsExactlyOneColon &&
+          ipFragmentsNotLongerThanThreeDigits &&
+          portRegex.test(this.ipAddress)
+        );
+      }
     },
     portValidation: function() {
       if (this.port === '') return null;
