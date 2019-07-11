@@ -11,7 +11,7 @@
 
     <div v-else>
       <h2 class="subtitle">
-        There appears to be problems reaching your node. If you just restarted
+        There seem to be problems reaching your node. If you just restarted
         it, this message will disappear after the node is back up. If the IP
         changed, please update it down below. Otherwise, you have to fix the
         node itself.
@@ -19,7 +19,7 @@
       <h2 class="subtitle">Currently set IP: {{ iriIp }}</h2>
     </div>
 
-    <br>
+    <br />
 
     <nav class="level">
       <div class="level-item has-text-centered">
@@ -33,7 +33,7 @@
                   v-model="isHttps"
                   type="checkbox"
                   class="switch is-rounded is-success"
-                >
+                />
                 <label for="switchRoundedSuccess">https?</label>
               </div>
               <div class="column is-8">
@@ -43,7 +43,7 @@
                   class="input"
                   type="text"
                   placeholder="E.g. 192.168.1.111 or my-domain.com:12345"
-                >
+                />
               </div>
             </div>
           </div>
@@ -62,7 +62,7 @@
               class="input"
               type="password"
               placeholder="Choose wisely..."
-            >
+            />
           </div>
         </div>
       </div>
@@ -78,7 +78,7 @@
               class="input"
               type="text"
               placeholder="E.g. /home/user/iri.txt"
-            >
+            />
           </div>
         </div>
       </div>
@@ -94,7 +94,7 @@
               class="input"
               type="text"
               placeholder="E.g. systemctl restart iota"
-            >
+            />
           </div>
         </div>
       </div>
