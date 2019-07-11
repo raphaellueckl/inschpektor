@@ -14,18 +14,18 @@ class DbService {
     db.serialize(() => {
       db.run(
         'CREATE TABLE IF NOT EXISTS neighbor (' +
-          'timestamp DATETIME DEFAULT CURRENT_TIMESTAMP,' +
-          'address TEXT,' +
-          'domain TEXT,' +
-          'numberOfAllTransactions INTEGER,' +
-          'numberOfRandomTransactionRequests INTEGER,' +
-          'numberOfNewTransactions INTEGER,' +
-          'numberOfInvalidTransactions INTEGER,' +
-          'numberOfStaleTransactions INTEGER,' +
-          'numberOfSentTransactions INTEGER,' +
-          'numberOfDroppedSentPackets INTEGER,' +
-          'connectionType TEXT,' +
-          'connected TEXT,' +
+        'timestamp DATETIME DEFAULT CURRENT_TIMESTAMP,' +
+        'address TEXT,' +
+        'domain TEXT,' +
+        'numberOfAllTransactions INTEGER,' +
+        'numberOfRandomTransactionRequests INTEGER,' +
+        'numberOfNewTransactions INTEGER,' +
+        'numberOfInvalidTransactions INTEGER,' +
+        'numberOfStaleTransactions INTEGER,' +
+        'numberOfSentTransactions INTEGER,' +
+        'numberOfDroppedSentPackets INTEGER,' +
+        'connectionType TEXT,' +
+        'connected INTEGER,' + // Boolean is INTEGER in Sqlite3
           'iriVersion TEXT,' +
           'isActive INTEGER,' +
           'isFriendlyNode INTEGER,' +
