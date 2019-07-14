@@ -8,38 +8,39 @@
             <div class="media-content">
               <div class="content">
                 <div class="field">
-                  <label class="label">Domain or IP-Address*</label>
+                  <label class="label">Domain or IP-Address with TCP port*</label>
                   <div class="control has-icons-right">
                     <input
                       v-model="ipAddress"
                       class="input"
                       v-on:keyup.13="addNeighborAndClearFields"
+                      @change="checkAddressCorrectness"
                       :class="[
                         ipAddress
-                          ? isCorrectAddress
-                            ? 'is-success'
-                            : 'is-danger'
+                          ? this.validationMessage
+                            ? 'is-danger'
+                            : 'is-success'
                           : ''
                       ]"
                       type="text"
                       placeholder="E.g. neighbor-domain.net:15600"
                     />
                     <span
-                      v-if="this.ipAddress && isCorrectAddress"
+                      v-if="this.ipAddress && !this.validationMessage"
                       class="icon is-small is-right"
                       :key="0"
                     >
                       <font-awesome-icon icon="check" />
                     </span>
                     <span
-                      v-if="this.ipAddress && !isCorrectAddress"
+                      v-if="this.ipAddress && this.validationMessage"
                       class="icon is-small is-right"
                       :key="1"
                     >
                       <font-awesome-icon icon="exclamation-triangle" />
                     </span>
                   </div>
-                  <p v-if="!isCorrectAddress" class="help is-danger">Wrong node address format!</p>
+                  <p v-if="this.validationMessage" class="help is-danger">{{this.validationMessage}}</p>
                 </div>
 
                 <div>
@@ -99,7 +100,7 @@
                     <div class="control">
                       <RoundedButton
                         :disabled="
-                          (ipAddress && !isCorrectAddress) ||
+                          !this.ipAddress || !!this.validationMessage ||
                             portValidation === false
                         "
                         :click="addNeighborAndClearFields"
@@ -132,7 +133,8 @@ export default {
       name: '',
       ipAddress: '',
       writeToIriConfig: true,
-      port: '14265'
+      port: '14265',
+      validationMessage: ''
     };
   },
   created() {
@@ -140,39 +142,7 @@ export default {
   },
   computed: {
     ...mapGetters(['iriFileLocation']),
-    isCorrectAddress: function() {
-      if (!this.ipAddress) return true;
 
-      const portRegex = new RegExp(`:[0-9]{2,5}$`);
-      if (/[a-zA-Z]/.test(this.ipAddress)) {
-        const ipContainsExactlyOneDot = this.ipAddress.split('.').length === 2;
-        const ipContainsExactlyOneColon =
-          this.ipAddress.split(':').length === 2;
-        const ipDoesNotContainSlashes = !this.ipAddress.includes('/');
-        const portRegex = new RegExp(`:[0-9]{2,5}$`);
-        return (
-          ipContainsExactlyOneDot &&
-          ipContainsExactlyOneColon &&
-          ipDoesNotContainSlashes &&
-          portRegex.test(this.ipAddress)
-        );
-      } else {
-        const ipContainsThreeDots = this.ipAddress.split('.').length === 4;
-        const ipContainsExactlyOneColon =
-          this.ipAddress.split(':').length === 2;
-        const ipFragmentsNotLongerThanThreeDigits =
-          this.ipAddress
-            .split(':')[0]
-            .split('.')
-            .filter(part => part.length > 3).length === 0;
-        return (
-          ipContainsThreeDots &&
-          ipContainsExactlyOneColon &&
-          ipFragmentsNotLongerThanThreeDigits &&
-          portRegex.test(this.ipAddress)
-        );
-      }
-    },
     portValidation: function() {
       if (this.port === '') return null;
       else if (
@@ -189,7 +159,7 @@ export default {
     addNeighborAndClearFields: function() {
       if (
         this.ipAddress &&
-        this.isCorrectAddress &&
+        !this.validationMessage &&
         (this.portValidation === true || this.portValidation === null)
       ) {
         this.addNeighbor({
@@ -205,6 +175,41 @@ export default {
       this.name = '';
       this.ipAddress = '';
       this.port = '14265';
+    },
+    checkAddressCorrectness: function() {
+      this.validationMessage = '';
+      if (!this.ipAddress) return true;
+
+      const portRegex = new RegExp(`:[0-9]{2,5}$`);
+      if (/[a-zA-Z]/.test(this.ipAddress)) {
+        if (this.ipAddress.split(':').length === 3) {
+          this.validationMessage = 'Do not include the protocol (tcp://)';
+        } else if (this.ipAddress.split('.').length < 2) {
+          this.validationMessage = "Must include extension (e.g. '.com')";
+        } else if (this.ipAddress.includes('/')) {
+          this.validationMessage = 'Slashes (/) not allowed in hostnames';
+        } else if (!new RegExp(`:[0-9]{2,5}$`).test(this.ipAddress)) {
+          this.validationMessage =
+            'Must include port information, e.g. :15600, 2-5 digits';
+        }
+      } else {
+        if (this.ipAddress.split('.').length !== 4) {
+          this.validationMessage = 'An IPv4 address must have 4 dots';
+        } else if (this.ipAddress.split(':').length > 2) {
+          this.validationMessage = 'Do not include the protocol (tcp://)';
+        } else if (
+          this.ipAddress
+            .split(':')[0]
+            .split('.')
+            .filter(fragment => fragment.length > 3).length !== 0
+        ) {
+          this.validationMessage =
+            'IPv4 address fragment cannot exceed 3 digits';
+        } else if (!new RegExp(`:[0-9]{2,5}$`).test(this.ipAddress)) {
+          this.validationMessage =
+            'Must include port information, e.g. :15600, 2-5 digits';
+        }
+      }
     }
   },
   components: {
