@@ -14,7 +14,7 @@
                       v-model="ipAddress"
                       class="input"
                       v-on:keyup.13="addNeighborAndClearFields"
-                      @change="checkAddressCorrectness"
+                      @keyup="checkAddressCorrectness"
                       :class="[
                         ipAddress
                           ? this.validationMessage
