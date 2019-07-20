@@ -14,7 +14,7 @@
     <h2 class="title">
       <span v-if="neighbor.iriVersion">👑</span>
       <span v-if="isUnpersistedNeighbor">👽</span>
-      {{ neighbor.name ? neighbor.name : neighbor.address }}
+      {{ neighbor.name ? neighbor.name : neighbor.domain ? neighbor.domain : neighbor.address }}
     </h2>
 
     <div class="media-content">
@@ -68,6 +68,16 @@
             neighbor.domain === null
             ? 'N/A'
             : neighbor.domain
+            }}
+          </span>
+        </p>
+        <p>
+          <strong>IP:</strong>
+          <span>
+            {{
+            neighbor.address === null
+            ? 'N/A'
+            : neighbor.address
             }}
           </span>
         </p>
