@@ -52,7 +52,7 @@ class DbService {
 
       db.run(
         `CREATE TABLE IF NOT EXISTS neighbor_data (
-        address TEXT PRIMARY KEY,
+        domain TEXT PRIMARY KEY,
         name TEXT,
         port INTEGER
       )`
@@ -81,11 +81,11 @@ class DbService {
         if (rows) {
           rows.forEach(r => {
             this.intitializeNeighborUsernname(
-              r.address,
+              r.domain,
               r.name ? r.name : null
             );
             this.intitializeNeighborIriMainPort(
-              r.address,
+              r.domain,
               r.port ? r.port : null
             );
           });
@@ -105,11 +105,11 @@ class DbService {
     });
   }
 
-  intitializeNeighborUsernname(fullAddress, name) {
+  intitializeNeighborUsernname(domain, name) {
     const currentAdditionalData = NODE_STATE.neighborAdditionalData.get(
-      fullAddress
+      domain
     );
-    NODE_STATE.neighborAdditionalData.set(fullAddress, {
+    NODE_STATE.neighborAdditionalData.set(domain, {
       name,
       port:
         currentAdditionalData && currentAdditionalData.port
@@ -118,11 +118,11 @@ class DbService {
     });
   }
 
-  intitializeNeighborIriMainPort(fullAddress, port) {
+  intitializeNeighborIriMainPort(domain, port) {
     const currentAdditionalData = NODE_STATE.neighborAdditionalData.get(
-      fullAddress
+      domain
     );
-    NODE_STATE.neighborAdditionalData.set(fullAddress, {
+    NODE_STATE.neighborAdditionalData.set(domain, {
       name:
         currentAdditionalData && currentAdditionalData.name
           ? currentAdditionalData.name
@@ -187,25 +187,25 @@ class DbService {
     removeNotificationToken.run(token);
   }
 
-  deleteNeighborHistory(fullAddress) {
-    const removeNeighborEntriesWithAddress = this.db.prepare(
-      `DELETE FROM neighbor where address=?`
+  deleteNeighborHistory(domain) {
+    const removeNeighborEntriesWithDomain = this.db.prepare(
+      `DELETE FROM neighbor where domain=?`
     );
-    removeNeighborEntriesWithAddress.run(fullAddress);
+    removeNeighborEntriesWithDomain.run(domain);
   }
 
-  deleteNeighborData(fullAddress) {
-    const removeNeighborEntriesWithAddress = this.db.prepare(
-      'DELETE FROM neighbor_data where address=?'
+  deleteNeighborData(domain) {
+    const removeNeighborEntriesWithDomain = this.db.prepare(
+      'DELETE FROM neighbor_data where domain=?'
     );
-    removeNeighborEntriesWithAddress.run(fullAddress);
+    removeNeighborEntriesWithDomain.run(domain);
   }
 
-  setNeighborAdditionalData(fullAddress, name, port) {
+  setNeighborAdditionalData(domain, name, port) {
     const stmt = this.db.prepare(
-      'REPLACE INTO neighbor_data (address, name, port) VALUES (?, ?, ?)'
+      'REPLACE INTO neighbor_data (domain, name, port) VALUES (?, ?, ?)'
     );
-    stmt.run(fullAddress, name, port);
+    stmt.run(domain, name, port);
   }
 
   deleteWholeNeighborHistory() {
