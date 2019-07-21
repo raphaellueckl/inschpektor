@@ -1,8 +1,8 @@
 <template>
   <div class="columns">
     <div class="column is-4">
-      <strong class="mobile-only">IP-Address:</strong>
-      {{ neighbor.address }}
+      <strong class="mobile-only">Domain or IP:</strong>
+      {{ neighbor.domain ? neighbor.domain : neighbor.address }}
     </div>
     <div class="column is-one-fifth">
       <strong class="mobile-only">Nickname:</strong>
@@ -12,7 +12,7 @@
         class="input"
         type="text"
         @input="setNeighborName(neighbor)"
-      >
+      />
     </div>
     <div class="column is-2">
       <strong class="mobile-only">Node Port:</strong>
@@ -22,7 +22,7 @@
         class="input"
         type="text"
         @input="setNeighborPort(neighbor)"
-      >
+      />
     </div>
     <div class="column">
       <strong class="mobile-only">Active:</strong>
@@ -39,7 +39,7 @@
         spin="2000"
         modal-text="This action will remove the selected neighbor from your node."
       >
-        <font-awesome-icon icon="trash-alt"/>
+        <font-awesome-icon icon="trash-alt" />
       </RoundedButton>
     </div>
   </div>
