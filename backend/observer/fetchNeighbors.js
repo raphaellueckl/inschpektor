@@ -45,7 +45,7 @@ function createResultNeighbor(
     ...neighbor
   };
   const additionalDataForNeighbor = NODE_STATE.neighborAdditionalData.get(
-    `tcp://${resultNeighbor.address}`
+    resultNeighbor.domain
   );
   resultNeighbor.name =
     additionalDataForNeighbor && additionalDataForNeighbor.name
@@ -68,7 +68,7 @@ const fetchNeighbors = () => {
 
         for (let neighbor of activeNeighbors) {
           const additionalDataOfNeighbor = NODE_STATE.neighborAdditionalData.get(
-            `tcp://${neighbor.address}`
+            neighbor.domain
           );
 
           allRequests.push(

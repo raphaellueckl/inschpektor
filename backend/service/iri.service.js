@@ -34,7 +34,7 @@ class IriService {
     };
   }
 
-  writeNeighborToIriConfig(fullAddress) {
+  writeNeighborToIriConfig(domain) {
     if (fs.existsSync(NODE_STATE.iriFileLocation)) {
       fs.readFile(
         NODE_STATE.iriFileLocation,
@@ -62,7 +62,7 @@ class IriService {
           });
 
           if (indexOfNeighborsLine === -1) {
-            const newNeighborLine = `\n${neighborsKeywordMax}${fullAddress}\n`;
+            const newNeighborLine = `\n${neighborsKeywordMax}${domain}\n`;
             iriConfigContent += newNeighborLine;
             fs.writeFile(NODE_STATE.iriFileLocation, iriConfigContent, err => {
               if (err)
@@ -72,8 +72,8 @@ class IriService {
                 );
             });
           } else {
-            if (!currentlyPersistedNeighborsLine.includes(fullAddress)) {
-              currentlyPersistedNeighborsLine += ` ${fullAddress}`;
+            if (!currentlyPersistedNeighborsLine.includes(domain)) {
+              currentlyPersistedNeighborsLine += ` ${domain}`;
               allLines[
                 indexOfNeighborsLine
               ] = `${neighborsKeywordMax}${currentlyPersistedNeighborsLine}`;
@@ -98,20 +98,20 @@ class IriService {
     }
   }
 
-  removeNeighborFromIriConfig(fullAddress) {
+  removeNeighborFromIriConfig(domain) {
     if (fs.existsSync(NODE_STATE.iriFileLocation)) {
       fs.readFile(NODE_STATE.iriFileLocation, 'utf-8', (err, data) => {
         if (err) throw err;
-        if (data.includes(fullAddress)) {
-          let withRemovedNeighbor = data.replace(`${fullAddress}`, '');
-          while (withRemovedNeighbor.indexOf('  ') !== -1) {
-            withRemovedNeighbor = withRemovedNeighbor.replace('  ', ' ');
+        if (data.includes(domain)) {
+          let iriConfigWithoutNeighbor = data.replace(`${domain}`, '');
+          while (iriConfigWithoutNeighbor.indexOf('  ') !== -1) {
+            iriConfigWithoutNeighbor = iriConfigWithoutNeighbor.replace('  ', ' ');
           }
-          while (withRemovedNeighbor.indexOf(' \n') !== -1) {
-            withRemovedNeighbor = withRemovedNeighbor.replace(' \n', '\n');
+          while (iriConfigWithoutNeighbor.indexOf(' \n') !== -1) {
+            iriConfigWithoutNeighbor = iriConfigWithoutNeighbor.replace(' \n', '\n');
           }
 
-          fs.writeFile(NODE_STATE.iriFileLocation, withRemovedNeighbor, err => {
+          fs.writeFile(NODE_STATE.iriFileLocation, iriConfigWithoutNeighbor, err => {
             if (err)
               console.error(
                 'Failed to remove neighbor from iri. Permission error or wrong path.',
@@ -121,7 +121,7 @@ class IriService {
         }
       });
     } else {
-      console.error('Iri config file not found.');
+      console.error('Iri config file not set.');
     }
   }
 
