@@ -68,22 +68,27 @@ class NeighborResource {
         return;
       }
       const name = req.body.name ? req.body.name : null;
-      const port = req.body.port ? req.body.port : null;
-      const domain = req.body.domain;
+      const iriPort = req.body.port ? req.body.port : null;
+      const domainWithConnectionPort = req.body.domain;
       const writeToIriConfig = req.body.writeToIriConfig;
+      const fullAddress = `tcp://${domainWithConnectionPort}`;
 
       const addNeighborRequest = IRI_SERVICE.createIriRequest('addNeighbors');
-      addNeighborRequest.data.uris = [domain];
+      addNeighborRequest.data.uris = [fullAddress];
 
       axios(addNeighborRequest)
         .then(response => {
           // Remove old entries to not confuse outdated data with new one, if neighbor was already added in the past.
-          DB_SERVICE.deleteNeighborHistory(domain);
+          DB_SERVICE.deleteNeighborHistory(domainWithConnectionPort);
 
-          this.setNeighborAdditionalData(domain, name, port);
+          this.setNeighborAdditionalData(
+            domainWithConnectionPort,
+            name,
+            iriPort
+          );
 
           if (writeToIriConfig)
-            IRI_SERVICE.writeNeighborToIriConfig(domain);
+            IRI_SERVICE.writeNeighborToIriConfig(fullAddress);
 
           res.status(200).send();
         })
