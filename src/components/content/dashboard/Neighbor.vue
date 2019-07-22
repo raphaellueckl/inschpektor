@@ -183,7 +183,7 @@ export default {
       return (
         this.$store.getters.persistedNeighbors &&
         !this.$store.getters.persistedNeighbors.includes(
-          `tcp://${this.neighbor.address}`
+          `tcp://${this.neighbor.domain}:${this.neighbor.address.split(':')[1]}`
         )
       );
     }
