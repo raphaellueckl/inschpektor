@@ -20,10 +20,9 @@ class NeighborResource {
         res.status(401).send();
         return;
       }
-      const name = req.body.name;
-      const domain = req.body.domain;
+      const { domainWithConnectionPort, name } = req.body;
 
-      this.setNeighborName(domain, name);
+      this.setNeighborName(domainWithConnectionPort, name);
 
       res.status(200).send();
     });
@@ -33,10 +32,9 @@ class NeighborResource {
         res.status(401).send();
         return;
       }
-      const port = req.body.port;
-      const domain = req.body.domain;
+      const { domainWithConnectionPort, iriPort } = req.body;
 
-      this.setNeighborPort(domain, port);
+      this.setNeighborPort(domainWithConnectionPort, iriPort);
 
       res.status(200).send();
     });
@@ -48,7 +46,11 @@ class NeighborResource {
       }
       const neighbors = req.body;
       neighbors.forEach(n =>
-        this.setNeighborAdditionalData(n.domain, n.name, n.port)
+        this.setNeighborAdditionalData(
+          `${n.domain}:${n.address.split(':')[1]}`,
+          n.name,
+          n.port
+        )
       );
 
       res.status(200).send();
@@ -103,19 +105,20 @@ class NeighborResource {
         res.status(401).send();
         return;
       }
-      const domain = req.body.domain;
+      const { domainWithConnectionPort } = req.body;
+      const fullAddress = `tcp://${domainWithConnectionPort}`;
       const removeNeighborRequest = IRI_SERVICE.createIriRequest(
         'removeNeighbors'
       );
-      removeNeighborRequest.data.uris = [domain];
+      removeNeighborRequest.data.uris = [fullAddress];
 
       axios(removeNeighborRequest)
         .then(response => {
-          DB_SERVICE.deleteNeighborHistory(domain);
+          // DB_SERVICE.deleteNeighborHistory(domainWithConnectionPort);
 
-          this.removeNeighborFromUserNameTable(domain);
+          this.removeNeighborFromUserNameTable(domainWithConnectionPort);
 
-          IRI_SERVICE.removeNeighborFromIriConfig(domain);
+          // IRI_SERVICE.removeNeighborFromIriConfig(fullAddress);
 
           res.status(200).send();
         })
@@ -126,59 +129,77 @@ class NeighborResource {
     });
   }
 
-  removeNeighborFromUserNameTable(domain) {
-    NODE_STATE.neighborAdditionalData.delete(domain);
+  removeNeighborFromUserNameTable(domainWithConnectionPort) {
+    NODE_STATE.neighborAdditionalData.delete(domainWithConnectionPort);
 
-    DB_SERVICE.deleteNeighborData(domain);
+    DB_SERVICE.deleteNeighborData(domainWithConnectionPort);
   }
 
-  setNeighborAdditionalData(domain, name, port) {
+  setNeighborAdditionalData(domainWithConnectionPort, name, iriPort) {
     const currentAdditionalDataForNeighbor = NODE_STATE.neighborAdditionalData.get(
-      domain
+      domainWithConnectionPort
     );
     const oldName =
       currentAdditionalDataForNeighbor && currentAdditionalDataForNeighbor.name
         ? currentAdditionalDataForNeighbor.name
         : null;
-    const oldPort =
+    const oldIriPort =
       currentAdditionalDataForNeighbor && currentAdditionalDataForNeighbor.port
         ? currentAdditionalDataForNeighbor.port
         : null;
 
-    NODE_STATE.neighborAdditionalData.set(domain, {
+    NODE_STATE.neighborAdditionalData.set(domainWithConnectionPort, {
       name: name ? name : oldName,
-      port: port ? port : oldPort
+      port: iriPort ? iriPort : oldIriPort
     });
 
-    DB_SERVICE.setNeighborAdditionalData(domain, name, port);
+    DB_SERVICE.setNeighborAdditionalData(
+      domainWithConnectionPort,
+      name,
+      iriPort
+    );
   }
 
-  setNeighborName(domain, name) {
+  setNeighborName(domainWithConnectionPort, name) {
     const currentAdditionalDataForNeighbor = NODE_STATE.neighborAdditionalData.get(
-      domain
+      domainWithConnectionPort
     );
-    const oldPort =
+    const oldIriPort =
       currentAdditionalDataForNeighbor && currentAdditionalDataForNeighbor.port
         ? currentAdditionalDataForNeighbor.port
         : null;
 
-    NODE_STATE.neighborAdditionalData.set(domain, { name, port: oldPort });
+    NODE_STATE.neighborAdditionalData.set(domainWithConnectionPort, {
+      name,
+      port: oldIriPort
+    });
 
-    DB_SERVICE.setNeighborAdditionalData(domain, name, oldPort);
+    DB_SERVICE.setNeighborAdditionalData(
+      domainWithConnectionPort,
+      name,
+      oldIriPort
+    );
   }
 
-  setNeighborPort(domain, port) {
+  setNeighborPort(domainWithConnectionPort, iriPort) {
     const currentAdditionalDataForNeighbor = NODE_STATE.neighborAdditionalData.get(
-      domain
+      domainWithConnectionPort
     );
     const oldName =
       currentAdditionalDataForNeighbor && currentAdditionalDataForNeighbor.name
         ? currentAdditionalDataForNeighbor.name
         : null;
 
-    NODE_STATE.neighborAdditionalData.set(domain, { name: oldName, port });
+    NODE_STATE.neighborAdditionalData.set(domainWithConnectionPort, {
+      name: oldName,
+      port: iriPort
+    });
 
-    DB_SERVICE.setNeighborAdditionalData(domain, oldName, port);
+    DB_SERVICE.setNeighborAdditionalData(
+      domainWithConnectionPort,
+      oldName,
+      iriPort
+    );
   }
 }
 

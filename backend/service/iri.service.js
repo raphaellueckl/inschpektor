@@ -131,7 +131,9 @@ class IriService {
         }
       });
     } else {
-      console.error('Iri config file not set.');
+      console.log(
+        'Iri config file not set. Cannot remove neighbor from config file.'
+      );
     }
   }
 
