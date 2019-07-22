@@ -19,7 +19,7 @@ If you are not on a debian system, check this link and install nodejs for your s
 - Install `make`
 - Install `build-essential`
 
-All of the things in this list are unconfirmed. I do not know if those are all the packages you need on other systems and I also do not know if they all are needed.
+All of the things in this list are unconfirmed. I do not know if those are all the packages you need on other systems and I also do not know if they all are needed. I needed to get those on my Lubuntu OS.
 
 ## 2. Prepare iri configuration
 
