@@ -59,15 +59,16 @@ Also keep in mind that I run channels where I post updates:
 - Twitter: https://twitter.com/codepleb4
 - Telegram Broadcast: https://t.me/inschpektor
 
-### Features/Improves on the roadmap
+### Improvements on the roadmap
 
 - Go further down the PWA road and make the app more "native like"
 - Make everything more stable
 - Overhaul this overly fancy UI :)
 
-### Known Bugs
+### Known Issues
 
-- If you have a premium neighbor which uses a port other than the standard 14265, you won't get the additional info from his node and he won't show up as premium in your overview. It's more like a "not fully complete" feature instead of a bug though.
+- Vague responses: You do an action, then a spinner appears, but the action is not yet fulfilled, or changes you do are shortly dropped and reappear later. That is a hug flaw in UX that I will pay attention to soon.
+- A lot fo database operations currently do not come with error handling. If you ever see a 'Could not proxy...' error, that is because of this fact.
 
 ---
 
