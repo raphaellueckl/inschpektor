@@ -80,10 +80,8 @@ class DbService {
         }
         if (rows) {
           rows.forEach(r => {
-            this.intitializeNeighborUsernname(
-              r.domain,
-              r.name ? r.name : null
-            );
+            // TODO Rename column from domain to domainWithConnectionPort, since that is the correct naming
+            this.intitializeNeighborUsernname(r.domain, r.name ? r.name : null);
             this.intitializeNeighborIriMainPort(
               r.domain,
               r.port ? r.port : null
@@ -105,11 +103,11 @@ class DbService {
     });
   }
 
-  intitializeNeighborUsernname(domain, name) {
+  intitializeNeighborUsernname(domainWithConnectionPort, name) {
     const currentAdditionalData = NODE_STATE.neighborAdditionalData.get(
-      domain
+      domainWithConnectionPort
     );
-    NODE_STATE.neighborAdditionalData.set(domain, {
+    NODE_STATE.neighborAdditionalData.set(domainWithConnectionPort, {
       name,
       port:
         currentAdditionalData && currentAdditionalData.port
@@ -118,11 +116,11 @@ class DbService {
     });
   }
 
-  intitializeNeighborIriMainPort(domain, port) {
+  intitializeNeighborIriMainPort(domainWithConnectionPort, port) {
     const currentAdditionalData = NODE_STATE.neighborAdditionalData.get(
-      domain
+      domainWithConnectionPort
     );
-    NODE_STATE.neighborAdditionalData.set(domain, {
+    NODE_STATE.neighborAdditionalData.set(domainWithConnectionPort, {
       name:
         currentAdditionalData && currentAdditionalData.name
           ? currentAdditionalData.name
@@ -187,25 +185,28 @@ class DbService {
     removeNotificationToken.run(token);
   }
 
-  deleteNeighborHistory(domain) {
+  deleteNeighborHistory(domainWithConnectionPort) {
     const removeNeighborEntriesWithDomain = this.db.prepare(
-      `DELETE FROM neighbor where domain=?`
+      'DELETE FROM neighbor WHERE domain = $domain AND address LIKE $port'
     );
-    removeNeighborEntriesWithDomain.run(domain);
+    removeNeighborEntriesWithDomain.run({
+      $domain: domainWithConnectionPort.split(':')[0],
+      $port: `%:${domainWithConnectionPort.split(':')[1]}`
+    });
   }
 
-  deleteNeighborData(domain) {
-    const removeNeighborEntriesWithDomain = this.db.prepare(
-      'DELETE FROM neighbor_data where domain=?'
+  deleteNeighborData(domainWithConnectionPort) {
+    const removeNeighborDataEntriesWithDomain = this.db.prepare(
+      'DELETE FROM neighbor_data WHERE domain = ?'
     );
-    removeNeighborEntriesWithDomain.run(domain);
+    removeNeighborDataEntriesWithDomain.run(domainWithConnectionPort);
   }
 
-  setNeighborAdditionalData(domain, name, port) {
+  setNeighborAdditionalData(domainWithConnectionPort, name, iriPort) {
     const stmt = this.db.prepare(
       'REPLACE INTO neighbor_data (domain, name, port) VALUES (?, ?, ?)'
     );
-    stmt.run(domain, name, port);
+    stmt.run(domainWithConnectionPort, name, iriPort);
   }
 
   deleteWholeNeighborHistory() {
