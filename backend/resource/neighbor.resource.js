@@ -114,11 +114,11 @@ class NeighborResource {
 
       axios(removeNeighborRequest)
         .then(response => {
-          // DB_SERVICE.deleteNeighborHistory(domainWithConnectionPort);
+          DB_SERVICE.deleteNeighborHistory(domainWithConnectionPort);
 
           this.removeNeighborFromUserNameTable(domainWithConnectionPort);
 
-          // IRI_SERVICE.removeNeighborFromIriConfig(fullAddress);
+          IRI_SERVICE.removeNeighborFromIriConfig(fullAddress);
 
           res.status(200).send();
         })
