@@ -52,7 +52,7 @@ class DbService {
 
       db.run(
         `CREATE TABLE IF NOT EXISTS neighbor_data (
-        domain TEXT PRIMARY KEY,
+        domainWithConnectionPort TEXT PRIMARY KEY,
         name TEXT,
         port INTEGER
       )`
@@ -80,8 +80,10 @@ class DbService {
         }
         if (rows) {
           rows.forEach(r => {
-            // TODO Rename column from domain to domainWithConnectionPort, since that is the correct naming
-            this.intitializeNeighborUsernname(r.domain, r.name ? r.name : null);
+            this.intitializeNeighborUsernname(
+              r.domainWithConnectionPort,
+              r.name ? r.name : null
+            );
             this.intitializeNeighborIriMainPort(
               r.domain,
               r.port ? r.port : null
@@ -197,14 +199,14 @@ class DbService {
 
   deleteNeighborData(domainWithConnectionPort) {
     const removeNeighborDataEntriesWithDomain = this.db.prepare(
-      'DELETE FROM neighbor_data WHERE domain = ?'
+      'DELETE FROM neighbor_data WHERE domainWithConnectionPort = ?'
     );
     removeNeighborDataEntriesWithDomain.run(domainWithConnectionPort);
   }
 
   setNeighborAdditionalData(domainWithConnectionPort, name, iriPort) {
     const stmt = this.db.prepare(
-      'REPLACE INTO neighbor_data (domain, name, port) VALUES (?, ?, ?)'
+      'REPLACE INTO neighbor_data (domainWithConnectionPort, name, port) VALUES (?, ?, ?)'
     );
     stmt.run(domainWithConnectionPort, name, iriPort);
   }
