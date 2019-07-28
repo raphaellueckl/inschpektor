@@ -109,8 +109,7 @@ class NodeResource {
         res.status(401).send();
         return;
       }
-      const persistedNeighbors = await IRI_SERVICE.readPersistedNeighbors();
-      NODE_STATE.persistedNeighbors = persistedNeighbors;
+      NODE_STATE.persistedNeighbors = await IRI_SERVICE.readPersistedNeighbors();
       res.send(NODE_STATE.persistedNeighbors);
     });
 
