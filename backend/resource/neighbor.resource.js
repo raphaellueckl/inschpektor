@@ -10,10 +10,6 @@ const DB_SERVICE = require('../service/db.service');
 const GLOBALS = require('../state/globals');
 
 class NeighborResource {
-  constructor() {
-    NODE_STATE.persistedNeighbors = undefined;
-  }
-
   init(app) {
     app.post(`${GLOBALS.BASE_URL}/neighbor/name`, (req, res) => {
       if (!AUTH_SERVICE.isUserAuthenticated(NODE_STATE.loginToken, req)) {
