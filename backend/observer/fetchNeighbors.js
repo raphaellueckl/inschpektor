@@ -146,7 +146,6 @@ const fetchNeighbors = () => {
 
         Promise.all(allRequests)
           .then(evaluatedNeighbors => {
-            console.log('n', NODE_STATE.persistedNeighbors);
             // Sort Priority: Persisted neighbors, premium neighbors, neighbor address
             evaluatedNeighbors.sort((a, b) => {
               if (
