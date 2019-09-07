@@ -146,23 +146,30 @@ const fetchNeighbors = () => {
 
         Promise.all(allRequests)
           .then(evaluatedNeighbors => {
+            console.log('n', NODE_STATE.persistedNeighbors);
             // Sort Priority: Persisted neighbors, premium neighbors, neighbor address
             evaluatedNeighbors.sort((a, b) => {
               if (
-                NODE_STATE.persistedNeighbors &&
-                !!(
-                  (NODE_STATE.persistedNeighbors.includes(a.address) !== null) ^
-                  NODE_STATE.persistedNeighbors.includes(b.address)
-                )
+                // Persisted neighbors priority
+                (NODE_STATE.persistedNeighbors &&
+                  NODE_STATE.persistedNeighbors.includes(
+                    `tcp://${a.domain}:${a.address.split(':')[1]}`
+                  )) ^
+                (NODE_STATE.persistedNeighbors &&
+                  NODE_STATE.persistedNeighbors.includes(
+                    `tcp://${b.domain}:${b.address.split(':')[1]}`
+                  ))
               ) {
-                return NODE_STATE.persistedNeighbors.includes(a.address)
+                return NODE_STATE.persistedNeighbors.includes(
+                  `tcp://${a.domain}:${a.address.split(':')[1]}`
+                )
                   ? -1
                   : 1;
               }
-              if (!!((a.iriVersion !== null) ^ (b.iriVersion !== null))) {
+              if (!!a.iriVersion ^ !!b.iriVersion) {
                 return a.iriVersion ? -1 : 1;
               }
-              return a.address.localeCompare(b.address);
+              return a.domain.localeCompare(b.domain);
             });
 
             NODE_STATE.currentNeighbors = evaluatedNeighbors;
