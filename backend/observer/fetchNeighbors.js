@@ -169,7 +169,7 @@ const fetchNeighbors = () => {
               if (!!a.iriVersion ^ !!b.iriVersion) {
                 return a.iriVersion ? -1 : 1;
               }
-              return a.domain.localeCompare(b.domain);
+              return a.domain ? a.domain.localeCompare(b.domain) : 1;
             });
 
             NODE_STATE.currentNeighbors = evaluatedNeighbors;
