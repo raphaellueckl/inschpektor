@@ -21,6 +21,8 @@ const FETCHER_JOB = require('./fetcher.job');
 
 const app = express();
 app.set('port', process.env.PORT || 8732);
+app.set('listen_address', process.env.ADDRESS || 'localhost');
+
 app.use(express.json());
 if (process.env.NODE_ENV === 'dev') {
   console.log('Environment: DEV');
@@ -37,8 +39,12 @@ HOST_RESOURCE.init(app);
 
 DB_SERVICE.createAndInitializeTables();
 
-app.listen(app.get('port'), () => {
-  console.log(`Find the server at: http://localhost:${app.get('port')}/`);
+app.listen(app.get('port'), app.get('listen_address'), () => {
+  console.log(
+    `Find the server at: http://${app.get('listen_address')}:${app.get(
+      'port'
+    )}/`
+  );
 });
 
 FETCHER_JOB();
