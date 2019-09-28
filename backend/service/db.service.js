@@ -9,7 +9,7 @@ class DbService {
     this.db = new sqlite3.Database(__dirname + '/../db');
   }
 
-  createAndInitializeTables() {
+  createAndInitializeTables(initHostData) {
     const db = this.db;
     db.serialize(() => {
       db.run(
@@ -91,6 +91,7 @@ class DbService {
           });
         }
       });
+
       db.all('select * from notification', [], (err, rows) => {
         if (err) {
           console.log('select * from notification failed', err.message);
@@ -102,6 +103,31 @@ class DbService {
           });
         }
       });
+
+      if (initHostData) {
+        const hashedPassword = AUTH_SERVICE.hashPassword(initHostData.PASSWORD);
+        const initHostStatement = this.db.prepare(
+          'REPLACE INTO host_node (id, protocol, ip, port, hashed_pw, iri_path, login_token, restart_node_command) VALUES(?, ?, ?, ?, ?, ?, ?, ?)'
+        );
+        initHostStatement.run(
+          0,
+          initHostData.IRI_PROTOCOL,
+          initHostData.IRI_ADDRESS,
+          initHostData.IRI_PORT,
+          hashedPassword,
+          initHostData.IRI_CONFIG_PATH,
+          NODE_STATE.loginToken,
+          initHostData.RESTART_IRI_COMMAND
+        );
+        initHostStatement.finalize();
+
+        NODE_STATE.protocol = initHostData.IRI_PROTOCOL;
+        NODE_STATE.iriIp = initHostData.IRI_ADDRESS;
+        NODE_STATE.iriPort = initHostData.IRI_PORT;
+        NODE_STATE.hashedPw = hashedPassword;
+        NODE_STATE.iriFileLocation = initHostData.IRI_CONFIG_PATH;
+        NODE_STATE.restartNodeCommand = initHostData.RESTART_IRI_COMMAND;
+      }
     });
   }
 

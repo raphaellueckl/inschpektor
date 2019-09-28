@@ -20,8 +20,9 @@ const HOST_RESOURCE = require('./resource/host.resource');
 const FETCHER_JOB = require('./fetcher.job');
 
 const app = express();
-app.set('port', process.env.PORT || 8732);
+
 app.set('listen_address', process.env.ADDRESS || 'localhost');
+app.set('port', process.env.PORT || 8732);
 
 app.use(express.json());
 if (process.env.NODE_ENV === 'dev') {
@@ -37,7 +38,25 @@ NEIGHBOR_RESOURCE.init(app);
 NODE_RESOURCE.init(app);
 HOST_RESOURCE.init(app);
 
-DB_SERVICE.createAndInitializeTables();
+let initHostData = undefined;
+if (
+  process.env.IRI_CONFIG_PATH &&
+  process.env.IRI_PORT &&
+  process.env.PASSWORD &&
+  process.env.RESTART_IRI_COMMAND &&
+  process.env.IRI_PROTOCOL
+) {
+  initHostData = {
+    IRI_PROTOCOL: process.env.IRI_PROTOCOL,
+    IRI_ADDRESS: process.env.IRI_ADDRESS,
+    IRI_PORT: process.env.IRI_PORT,
+    PASSWORD: process.env.PASSWORD,
+    IRI_CONFIG_PATH: process.env.IRI_CONFIG_PATH,
+    RESTART_IRI_COMMAND: process.env.RESTART_IRI_COMMAND
+  };
+}
+
+DB_SERVICE.createAndInitializeTables(initHostData);
 
 app.listen(app.get('port'), app.get('listen_address'), () => {
   console.log(
