@@ -1,5 +1,3 @@
-const bcrypt = require('bcrypt');
-
 const NODE_STATE = require('../state/node.state');
 const DB_SERVICE = require('../service/db.service');
 const AUTH_SERVICE = require('../service/auth.service');
@@ -20,7 +18,10 @@ class AuthResource {
       } else if (
         deliveredPasswordOrToken &&
         NODE_STATE.hashedPw &&
-        bcrypt.compareSync(deliveredPasswordOrToken, NODE_STATE.hashedPw)
+        AUTH_SERVICE.isPasswordCorrect(
+          deliveredPasswordOrToken,
+          NODE_STATE.hashedPw
+        )
       ) {
         NODE_STATE.loginToken = new Date()
           .toString()
