@@ -1,5 +1,4 @@
 const exec = require('child_process').exec;
-const bcrypt = require('bcrypt');
 const axios = require('axios');
 
 const IRI_SERVICE = require('../service/iri.service');
@@ -7,8 +6,6 @@ const DB_SERVICE = require('../service/db.service');
 const AUTH_SERVICE = require('../service/auth.service');
 const NODE_STATE = require('../state/node.state');
 const GLOBALS = require('../state/globals');
-
-const SALT = 11;
 
 class NodeResource {
   init(app) {
@@ -47,9 +44,12 @@ class NodeResource {
         return;
       }
       if (!NODE_STATE.hashedPw && password)
-        NODE_STATE.hashedPw = bcrypt.hashSync(password, SALT);
+        NODE_STATE.hashedPw = AUTH_SERVICE.hashPassword(password);
 
-      if (password && bcrypt.compareSync(password, NODE_STATE.hashedPw)) {
+      if (
+        password &&
+        AUTH_SERVICE.isPasswordCorrect(password, NODE_STATE.hashedPw)
+      ) {
         NODE_STATE.protocol = protocol;
         NODE_STATE.iriIp = newIriIp;
         NODE_STATE.iriPort = port;
