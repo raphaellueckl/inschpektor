@@ -40,11 +40,12 @@ HOST_RESOURCE.init(app);
 
 let initHostData = undefined;
 if (
-  process.env.IRI_CONFIG_PATH &&
+  process.env.IRI_PROTOCOL &&
+  process.env.IRI_ADDRESS &&
   process.env.IRI_PORT &&
   process.env.PASSWORD &&
-  process.env.RESTART_IRI_COMMAND &&
-  process.env.IRI_PROTOCOL
+  process.env.IRI_CONFIG_PATH &&
+  process.env.RESTART_IRI_COMMAND
 ) {
   initHostData = {
     IRI_PROTOCOL: process.env.IRI_PROTOCOL,
