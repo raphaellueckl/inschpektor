@@ -22,7 +22,3 @@ NOTE: You have to pass all arguments for this approach to work. If you leave one
 If you run it locally:
 
 `IRI_PROTOCOL=http IRI_ADDRESS=my-domain-or-ip.com IRI_PORT=14265 PASSWORD=my-top-secret-password RESTART_IRI_COMMAND="systemctl restart iota" npm start`
-
-If you run it using the `inschpektor` command:
-
-`IRI_PROTOCOL=http IRI_ADDRESS=my-domain-or-ip.com IRI_PORT=14265 PASSWORD=my-top-secret-password RESTART_IRI_COMMAND="systemctl restart iota" inschpektor`
