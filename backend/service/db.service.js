@@ -2,6 +2,7 @@ require('console-stamp')(console, {
   pattern: 'dd/mm/yyyy HH:MM:ss.l'
 });
 const NODE_STATE = require('../state/node.state');
+const AUTH_SERVICE = require('./auth.service');
 
 class DbService {
   constructor() {
