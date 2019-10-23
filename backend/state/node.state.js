@@ -19,6 +19,8 @@ class NodeState {
     this.iriFileLocation = undefined;
 
     this.currentNeighbors = undefined;
+
+    this.systemInfo = [];
   }
 }
 
