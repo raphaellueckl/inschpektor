@@ -55,133 +55,128 @@ function createResultNeighbor(
   return resultNeighbor;
 }
 
-const fetchNeighbors = () => {
+const fetchNeighbors = async () => {
   if (NODE_STATE.iriIp) {
     const resultNeighbors = [];
-    axios(IRI_SERVICE.createIriRequest('getNeighbors'))
-      .then(async response => {
-        const activeNeighbors = response.data.neighbors;
 
-        const rows = await DB_SERVICE.getAllNeighborEntries();
+    const {
+      data: { neighbors }
+    } = await axios(IRI_SERVICE.createIriRequest('getNeighbors'));
+    const activeNeighbors = neighbors;
 
-        const allRequests = [];
+    const rows = await DB_SERVICE.getAllNeighborEntries();
 
-        for (let neighbor of activeNeighbors) {
-          const additionalDataOfNeighbor = NODE_STATE.neighborAdditionalData.get(
-            `${neighbor.domain}:${neighbor.address.split(':')[1]}`
+    const allRequests = [];
+
+    for (let neighbor of activeNeighbors) {
+      const additionalDataOfNeighbor = NODE_STATE.neighborAdditionalData.get(
+        `${neighbor.domain}:${neighbor.address.split(':')[1]}`
+      );
+
+      allRequests.push(
+        new Promise(async resolve => {
+          let startDate = new Date();
+          const oldestEntry = rows.find(
+            row => neighbor.address === row.address
           );
 
-          allRequests.push(
-            new Promise((resolve, reject) => {
-              let startDate = new Date();
-              const oldestEntry = rows.find(
-                row => neighbor.address === row.address
-              );
+          try {
+            const { data } = await axios(
+              IRI_SERVICE.createIriRequestForNeighborNode(
+                'http',
+                'getNodeInfo',
+                neighbor,
+                additionalDataOfNeighbor ? additionalDataOfNeighbor.port : null
+              )
+            );
+            let ping = new Date() - startDate;
+            let nodeInfo = data;
 
-              axios(
+            const resultNeighbor = createResultNeighbor(
+              neighbor,
+              oldestEntry,
+              additionalDataOfNeighbor,
+              nodeInfo,
+              ping
+            );
+
+            resultNeighbors.push(resultNeighbor);
+            resolve(resultNeighbor);
+          } catch (e) {
+            try {
+              const { data } = await axios(
                 IRI_SERVICE.createIriRequestForNeighborNode(
-                  'http',
+                  'https',
                   'getNodeInfo',
                   neighbor,
                   additionalDataOfNeighbor
                     ? additionalDataOfNeighbor.port
                     : null
                 )
-              )
-                .then(nodeInfoResponse => {
-                  let ping = new Date() - startDate;
-                  let nodeInfo = nodeInfoResponse.data;
+              );
+              let ping = new Date() - startDate;
+              let nodeInfo = nodeInfoResponse.data;
 
-                  const resultNeighbor = createResultNeighbor(
-                    neighbor,
-                    oldestEntry,
-                    additionalDataOfNeighbor,
-                    nodeInfo,
-                    ping
-                  );
+              const resultNeighbor = createResultNeighbor(
+                neighbor,
+                oldestEntry,
+                additionalDataOfNeighbor,
+                nodeInfo,
+                ping
+              );
 
-                  resultNeighbors.push(resultNeighbor);
-                  resolve(resultNeighbor);
-                })
-                .catch(error => {
-                  axios(
-                    IRI_SERVICE.createIriRequestForNeighborNode(
-                      'https',
-                      'getNodeInfo',
-                      neighbor,
-                      additionalDataOfNeighbor
-                        ? additionalDataOfNeighbor.port
-                        : null
-                    )
-                  )
-                    .then(nodeInfoResponse => {
-                      let ping = new Date() - startDate;
-                      let nodeInfo = nodeInfoResponse.data;
+              resultNeighbors.push(resultNeighbor);
+              resolve(resultNeighbor);
+            } catch (error) {
+              const resultNeighbor = createResultNeighbor(
+                neighbor,
+                oldestEntry,
+                additionalDataOfNeighbor
+              );
 
-                      const resultNeighbor = createResultNeighbor(
-                        neighbor,
-                        oldestEntry,
-                        additionalDataOfNeighbor,
-                        nodeInfo,
-                        ping
-                      );
-
-                      resultNeighbors.push(resultNeighbor);
-                      resolve(resultNeighbor);
-                    })
-                    .catch(error => {
-                      const resultNeighbor = createResultNeighbor(
-                        neighbor,
-                        oldestEntry,
-                        additionalDataOfNeighbor
-                      );
-
-                      resultNeighbors.push(resultNeighbor);
-                      resolve(resultNeighbor);
-                    });
-                });
-            })
-          );
-        }
-
-        Promise.all(allRequests)
-          .then(evaluatedNeighbors => {
-            // Sort Priority: Persisted neighbors, premium neighbors, neighbor address
-            evaluatedNeighbors.sort((a, b) => {
-              if (
-                // Persisted neighbors priority
-                (NODE_STATE.persistedNeighbors &&
-                  NODE_STATE.persistedNeighbors.includes(
-                    `tcp://${a.domain}:${a.address.split(':')[1]}`
-                  )) ^
-                (NODE_STATE.persistedNeighbors &&
-                  NODE_STATE.persistedNeighbors.includes(
-                    `tcp://${b.domain}:${b.address.split(':')[1]}`
-                  ))
-              ) {
-                return NODE_STATE.persistedNeighbors.includes(
-                  `tcp://${a.domain}:${a.address.split(':')[1]}`
-                )
-                  ? -1
-                  : 1;
-              }
-              if (!!a.iriVersion ^ !!b.iriVersion) {
-                return a.iriVersion ? -1 : 1;
-              }
-              return a.domain ? a.domain.localeCompare(b.domain) : 1;
-            });
-
-            NODE_STATE.currentNeighbors = evaluatedNeighbors;
-
-            DB_SERVICE.addNeighborStates(evaluatedNeighbors);
-
-            DB_SERVICE.deleteOutdatedNeighborEntries();
-          })
-          .catch(e => console.log(e.message));
-      })
-      .catch(error =>
-        console.log('Failed to fetch neighbors of own node.', error.message)
+              resultNeighbors.push(resultNeighbor);
+              resolve(resultNeighbor);
+            }
+          }
+        })
       );
+    }
+
+    try {
+      const evaluatedNeighbors = await Promise.all(allRequests);
+      // Sort Priority: Persisted neighbors, premium neighbors, neighbor address
+      evaluatedNeighbors.sort((a, b) => {
+        if (
+          // Persisted neighbors priority
+          (NODE_STATE.persistedNeighbors &&
+            NODE_STATE.persistedNeighbors.includes(
+              `tcp://${a.domain}:${a.address.split(':')[1]}`
+            )) ^
+          (NODE_STATE.persistedNeighbors &&
+            NODE_STATE.persistedNeighbors.includes(
+              `tcp://${b.domain}:${b.address.split(':')[1]}`
+            ))
+        ) {
+          return NODE_STATE.persistedNeighbors.includes(
+            `tcp://${a.domain}:${a.address.split(':')[1]}`
+          )
+            ? -1
+            : 1;
+        }
+        if (!!a.iriVersion ^ !!b.iriVersion) {
+          return a.iriVersion ? -1 : 1;
+        }
+        return a.domain ? a.domain.localeCompare(b.domain) : 1;
+      });
+
+      NODE_STATE.currentNeighbors = evaluatedNeighbors;
+
+      DB_SERVICE.addNeighborStates(evaluatedNeighbors);
+
+      DB_SERVICE.deleteOutdatedNeighborEntries();
+    } catch (e) {
+      console.log(e.message);
+    }
   }
 };
 
