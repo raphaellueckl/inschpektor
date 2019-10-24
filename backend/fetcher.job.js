@@ -8,8 +8,8 @@ const assertNeighborsHealthy = require('./observer/assertNeighborsHealthy');
 
 const theFetcher = async () => {
   while (true) {
-    // fetchNeighbors();
-    // fetchNodeInfo();
+    fetchNeighbors();
+    fetchNodeInfo();
     fetchSystemInfo();
 
     assertNodeInSync();
@@ -18,7 +18,7 @@ const theFetcher = async () => {
     assertPremiumNeighborsSynced();
 
     let timekeeper = new Promise((resolve, reject) => {
-      setTimeout(() => resolve(), 5000);
+      setTimeout(() => resolve(), 1000);
     });
 
     await timekeeper;
