@@ -10,10 +10,8 @@ import axios from 'axios';
 axios.defaults.headers.common['Authorization'] = localStorage.getItem('token');
 
 axios.interceptors.response.use(
-  function(response) {
-    return response;
-  },
-  function(error) {
+  response => response,
+  error => {
     if (401 === error.response.status) {
       state.authenticated = false;
     } else {
@@ -35,7 +33,8 @@ const state = {
   authenticated: null,
   password: null,
   persistedNeighbors: null,
-  inschpektorVersions: null
+  inschpektorVersions: null,
+  systemInfo: null
 };
 
 const mutations = {
@@ -57,6 +56,9 @@ const mutations = {
   },
   SET_NEIGHBORS(state, neighbors) {
     state.neighbors = neighbors;
+  },
+  SET_SYSTEM_INFO(state, systemInfo) {
+    state.systemInfo = systemInfo;
   },
   SET_ERROR(state, nodeError) {
     state.nodeError = nodeError;
@@ -120,6 +122,15 @@ const actions = {
       })
       .catch(error => {
         commit('SET_ERROR', error.response.data);
+      });
+  },
+  fetchSystemInfo({ commit }) {
+    axios('/api/system-info')
+      .then(response => {
+        commit('SET_SYSTEM_INFO', response.data);
+      })
+      .catch(error => {
+        console.log('Error fetching system info.');
       });
   },
   setHostNodeIp({ dispatch, commit }, nodeSubmission) {
@@ -227,6 +238,7 @@ const actions = {
   loadPeriodically({ dispatch }) {
     dispatch('fetchNeighbors');
     dispatch('fetchNodeInfo');
+    dispatch('fetchSystemInfo');
   },
   saveDatabase({ commit }) {
     const neighborsToBackup = JSON.stringify(state.neighbors);

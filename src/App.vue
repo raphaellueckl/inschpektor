@@ -30,7 +30,7 @@ export default {
 
     setInterval(() => {
       this.$store.dispatch('loadPeriodically');
-    }, 10000);
+    }, 4000);
   },
   computed: {
     ...mapGetters(['nodeError'])
