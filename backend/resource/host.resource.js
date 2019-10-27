@@ -30,6 +30,14 @@ class HostResource {
           res.json({ installed: installedVersion });
         });
     });
+
+    app.get(`${GLOBALS.BASE_URL}/system-info`, (req, res) => {
+      if (!AUTH_SERVICE.isUserAuthenticated(NODE_STATE.loginToken, req)) {
+        res.status(401).send();
+        return;
+      }
+      res.json(NODE_STATE.systemInfo || {});
+    });
   }
 }
 
