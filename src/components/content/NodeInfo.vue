@@ -53,34 +53,53 @@
                 <div>
                   <strong>CPU Usage:</strong>
                 </div>
-                <trend-chart
-                  class="chart"
-                  :datasets="systemInfo_cpu"
-                  :grid="grid_"
-                  :labels="labels_"
-                  :min="min"
-                  :max="max"
-                ></trend-chart>
+                <div>
+                  <trend-chart
+                    class="chart"
+                    :datasets="systemInfo_cpu"
+                    :grid="grid_"
+                    :labels="labels_"
+                    :min="min"
+                    :max="max"
+                  ></trend-chart>
+                </div>
 
                 <div>
-                  <strong>All Processes:</strong>
+                  <strong>Running Processes:</strong>
                 </div>
-                <trend-chart
-                  class="chart"
-                  :datasets="systemInfo_runningProcesses"
-                  :grid="grid_"
-                  :labels="labels_"
-                ></trend-chart>
+                <div>
+                  <trend-chart
+                    class="chart"
+                    :datasets="systemInfo_runningProcesses"
+                    :grid="grid_"
+                    :labels="labels_"
+                  ></trend-chart>
+                </div>
 
                 <div>
                   <strong>Disk I/O:</strong>
                 </div>
-                <trend-chart
-                  class="chart"
-                  :datasets="systemInfo_diskIO"
-                  :grid="grid_"
-                  :labels="labels_"
-                ></trend-chart>
+                <div>
+                  <trend-chart
+                    class="chart"
+                    :datasets="systemInfo_diskIO"
+                    :grid="grid_"
+                    :labels="labels_"
+                  ></trend-chart>
+                </div>
+
+                <div>
+                  <strong>Network I/O:</strong>
+                </div>
+                <div>
+                  <trend-chart
+                    class="chart"
+                    :datasets="systemInfo_networkIO"
+                    :grid="grid_"
+                    :labels="labels_"
+                  ></trend-chart>
+                </div>
+                {{systemInfo_networkIO}}
               </div>
             </div>
           </article>
@@ -115,9 +134,8 @@ export default {
       'hostNode',
       'systemInfo_cpu',
       'systemInfo_runningProcesses',
-      'systemInfo_diskIO'
-      // 'systemInfo_networkIO_upload',
-      // 'systemInfo_networkIO_download'
+      'systemInfo_diskIO',
+      'systemInfo_networkIO'
     ])
   },
   created() {

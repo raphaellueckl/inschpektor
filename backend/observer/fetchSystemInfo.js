@@ -6,15 +6,17 @@ const fetchSystemInfo = async () => {
   const { currentload } = await si.currentLoad();
   const { running } = await si.processes();
   const { tIO_sec } = await si.disksIO();
-  const { rx_sec, tx_sec } = await si.networkInterfaces();
+  const network = await si.networkStats();
+  const receiving = (network[0].rx_sec / 1024).toFixed(2);
+  const sending = (network[0].tx_sec / 1024).toFixed(2);
 
   const combinedData = {
     cpuLoad: currentload,
     runningProcesses: running,
     diskIO: tIO_sec,
     networkIO: {
-      upload: (rx_sec / 1024 / 1024).toFixed(2), // Mbit/s
-      download: (tx_sec / 1024 / 1024).toFixed(2) // Mbit/s
+      upload: receiving,
+      download: sending
     }
   };
   NODE_STATE.systemInfo.unshift(combinedData);
