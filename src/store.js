@@ -35,7 +35,7 @@ const state = {
   persistedNeighbors: null,
   inschpektorVersions: null,
   systemInfo_cpu: [],
-  systemInfo_allProcesses: [],
+  systemInfo_runningProcesses: [],
   systemInfo_diskIO: [],
   systemInfo_networkIO_upload: [],
   systemInfo_networkIO_download: []
@@ -76,13 +76,13 @@ const mutations = {
       }
     ];
 
-    state.systemInfo_allProcesses = [
+    state.systemInfo_runningProcesses = [
       {
         data:
           systemInfo.length >= 100
-            ? systemInfo.map(info => info.allProcesses)
+            ? systemInfo.map(info => info.runningProcesses)
             : systemInfo
-                .map(info => Number(info.allProcesses))
+                .map(info => Number(info.runningProcesses))
                 .concat(new Array(100 - systemInfo.length).fill(0))
                 .reverse(),
         smooth: true,
@@ -347,7 +347,7 @@ const getters = {
   persistedNeighbors: state => state.persistedNeighbors,
   inschpektorVersions: state => state.inschpektorVersions,
   systemInfo_cpu: state => state.systemInfo_cpu,
-  systemInfo_allProcesses: state => state.systemInfo_allProcesses,
+  systemInfo_runningProcesses: state => state.systemInfo_runningProcesses,
   systemInfo_diskIO: state => state.systemInfo_diskIO,
   systemInfo_networkIO_upload: state => state.systemInfo_networkIO_upload,
   systemInfo_networkIO_download: state => state.systemInfo_networkIO_download
