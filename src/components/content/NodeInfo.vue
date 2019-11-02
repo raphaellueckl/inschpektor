@@ -33,7 +33,7 @@
                   {{ nodeInfo.jreVersion }}
                 </p>
 
-                <br>
+                <br />
                 <p class="subtitle">IRI:</p>
                 <p>
                   <strong>IRI Version:</strong>
@@ -49,6 +49,18 @@
                   nodeInfo.time === null ? null : nodeInfo.time | timespan
                   }}
                 </p>
+
+                <div>
+                  <strong>CPU Usage:</strong>
+                </div>
+                <trend-chart
+                  :datasets="systemInfo_cpu"
+                  :grid="grid_"
+                  :labels="labels_"
+                  :min="min"
+                  :max="max"
+                  style="max-width:400px;"
+                ></trend-chart>
               </div>
             </div>
           </article>
@@ -64,8 +76,36 @@ import moment from 'moment';
 
 export default {
   name: 'NodeInfo',
+  data: () => {
+    return {
+      min: 0,
+      max: 100,
+      grid_: {
+        verticalLines: false,
+        horizontalLines: true
+      },
+      datasets_: [
+        {
+          data: [10, 50, 20, 100, 40, 60, 80],
+          smooth: true,
+          fill: true
+        }
+      ],
+      labels_: {
+        yLabels: 5
+      }
+    };
+  },
   computed: {
-    ...mapGetters(['nodeInfo', 'hostNode'])
+    ...mapGetters([
+      'nodeInfo',
+      'hostNode',
+      'systemInfo_cpu'
+      // 'systemInfo_allProcesses',
+      // 'systemInfo_diskIO',
+      // 'systemInfo_networkIO_upload',
+      // 'systemInfo_networkIO_download'
+    ])
   },
   created() {
     this.$store.dispatch('fetchIriDetails');

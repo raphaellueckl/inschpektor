@@ -34,7 +34,11 @@ const state = {
   password: null,
   persistedNeighbors: null,
   inschpektorVersions: null,
-  systemInfo: null
+  systemInfo_cpu: [],
+  systemInfo_allProcesses: [],
+  systemInfo_diskIO: [],
+  systemInfo_networkIO_upload: [],
+  systemInfo_networkIO_download: []
 };
 
 const mutations = {
@@ -58,7 +62,28 @@ const mutations = {
     state.neighbors = neighbors;
   },
   SET_SYSTEM_INFO(state, systemInfo) {
-    state.systemInfo = systemInfo;
+    state.systemInfo_cpu = [
+      {
+        data:
+          systemInfo.length >= 100
+            ? systemInfo.map(info => info.cpuLoad)
+            : systemInfo
+                .map(info => Number(info.cpuLoad))
+                .concat(new Array(100 - systemInfo.length).fill(0))
+                .reverse(),
+        smooth: true,
+        fill: true
+      }
+    ];
+
+    state.systemInfo_allProcesses = systemInfo.map(info => info.allProcesses);
+    state.systemInfo_diskIO = systemInfo.map(info => info.diskIO);
+    state.systemInfo_networkIO_upload = systemInfo
+      .map(info => info.networkIO)
+      .map(io => io.upload);
+    state.systemInfo_networkIO_download = systemInfo
+      .map(info => info.networkIO)
+      .map(io => io.download);
   },
   SET_ERROR(state, nodeError) {
     state.nodeError = nodeError;
@@ -307,7 +332,12 @@ const getters = {
   nodeError: state => state.nodeError,
   authenticated: state => state.authenticated,
   persistedNeighbors: state => state.persistedNeighbors,
-  inschpektorVersions: state => state.inschpektorVersions
+  inschpektorVersions: state => state.inschpektorVersions,
+  systemInfo_cpu: state => state.systemInfo_cpu,
+  systemInfo_allProcesses: state => state.systemInfo_allProcesses,
+  systemInfo_diskIO: state => state.systemInfo_diskIO,
+  systemInfo_networkIO_upload: state => state.systemInfo_networkIO_upload,
+  systemInfo_networkIO_download: state => state.systemInfo_networkIO_download
 };
 
 const storeModule = {
