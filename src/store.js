@@ -90,7 +90,20 @@ const mutations = {
       }
     ];
 
-    state.systemInfo_diskIO = systemInfo.map(info => info.diskIO);
+    state.systemInfo_diskIO = [
+      {
+        data:
+          systemInfo.length >= 100
+            ? systemInfo.map(info => info.diskIO)
+            : systemInfo
+                .map(info => Number(info.diskIO))
+                .concat(new Array(100 - systemInfo.length).fill(0))
+                .reverse(),
+        smooth: true,
+        fill: true
+      }
+    ];
+
     state.systemInfo_networkIO_upload = systemInfo
       .map(info => info.networkIO)
       .map(io => io.upload);
