@@ -76,7 +76,20 @@ const mutations = {
       }
     ];
 
-    state.systemInfo_allProcesses = systemInfo.map(info => info.allProcesses);
+    state.systemInfo_allProcesses = [
+      {
+        data:
+          systemInfo.length >= 100
+            ? systemInfo.map(info => info.allProcesses)
+            : systemInfo
+                .map(info => Number(info.allProcesses))
+                .concat(new Array(100 - systemInfo.length).fill(0))
+                .reverse(),
+        smooth: true,
+        fill: true
+      }
+    ];
+
     state.systemInfo_diskIO = systemInfo.map(info => info.diskIO);
     state.systemInfo_networkIO_upload = systemInfo
       .map(info => info.networkIO)

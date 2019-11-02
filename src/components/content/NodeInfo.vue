@@ -61,6 +61,16 @@
                   :min="min"
                   :max="max"
                 ></trend-chart>
+
+                <div>
+                  <strong>All Processes:</strong>
+                </div>
+                <trend-chart
+                  class="chart"
+                  :datasets="systemInfo_allProcesses"
+                  :grid="grid_"
+                  :labels="labels_"
+                ></trend-chart>
               </div>
             </div>
           </article>
@@ -84,13 +94,6 @@ export default {
         verticalLines: false,
         horizontalLines: true
       },
-      datasets_: [
-        {
-          data: [10, 50, 20, 100, 40, 60, 80],
-          smooth: true,
-          fill: true
-        }
-      ],
       labels_: {
         yLabels: 5
       }
@@ -100,8 +103,8 @@ export default {
     ...mapGetters([
       'nodeInfo',
       'hostNode',
-      'systemInfo_cpu'
-      // 'systemInfo_allProcesses',
+      'systemInfo_cpu',
+      'systemInfo_allProcesses'
       // 'systemInfo_diskIO',
       // 'systemInfo_networkIO_upload',
       // 'systemInfo_networkIO_download'
@@ -128,6 +131,6 @@ progress.progress.is-success {
 }
 
 .chart {
-  max-width: 400px;
+  width: 400px;
 }
 </style>
