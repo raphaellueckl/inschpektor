@@ -4,13 +4,13 @@ const NODE_STATE = require('../state/node.state');
 
 const fetchSystemInfo = async () => {
   const { currentload } = await si.currentLoad();
-  const { all } = await si.processes();
+  const { running } = await si.processes();
   const { tIO_sec } = await si.disksIO();
   const { rx_sec, tx_sec } = await si.networkInterfaces();
 
   const combinedData = {
     cpuLoad: currentload,
-    allProcesses: all,
+    runningProcesses: running,
     diskIO: tIO_sec,
     networkIO: {
       upload: (rx_sec / 1024 / 1024).toFixed(2), // Mbit/s

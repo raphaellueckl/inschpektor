@@ -67,7 +67,7 @@
                 </div>
                 <trend-chart
                   class="chart"
-                  :datasets="systemInfo_allProcesses"
+                  :datasets="systemInfo_runningProcesses"
                   :grid="grid_"
                   :labels="labels_"
                 ></trend-chart>
@@ -104,7 +104,7 @@ export default {
       'nodeInfo',
       'hostNode',
       'systemInfo_cpu',
-      'systemInfo_allProcesses'
+      'systemInfo_runningProcesses'
       // 'systemInfo_diskIO',
       // 'systemInfo_networkIO_upload',
       // 'systemInfo_networkIO_download'
