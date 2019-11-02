@@ -37,8 +37,7 @@ const state = {
   systemInfo_cpu: [],
   systemInfo_runningProcesses: [],
   systemInfo_diskIO: [],
-  systemInfo_networkIO_upload: [],
-  systemInfo_networkIO_download: []
+  systemInfo_networkIO: []
 };
 
 const mutations = {
@@ -104,12 +103,30 @@ const mutations = {
       }
     ];
 
-    state.systemInfo_networkIO_upload = systemInfo
-      .map(info => info.networkIO)
-      .map(io => io.upload);
-    state.systemInfo_networkIO_download = systemInfo
-      .map(info => info.networkIO)
-      .map(io => io.download);
+    state.systemInfo_networkIO = [
+      {
+        data:
+          systemInfo.length >= 100
+            ? systemInfo.map(info => Number(info.networkIO.upload))
+            : systemInfo
+                .map(info => info.networkIO.upload)
+                .concat(new Array(100 - systemInfo.length).fill(0))
+                .reverse(),
+        smooth: true,
+        fill: true
+      },
+      {
+        data:
+          systemInfo.length >= 100
+            ? systemInfo.map(info => Number(info.networkIO.download))
+            : systemInfo
+                .map(info => Number(info.networkIO.download))
+                .concat(new Array(100 - systemInfo.length).fill(0))
+                .reverse(),
+        smooth: true,
+        fill: true
+      }
+    ];
   },
   SET_ERROR(state, nodeError) {
     state.nodeError = nodeError;
@@ -362,8 +379,7 @@ const getters = {
   systemInfo_cpu: state => state.systemInfo_cpu,
   systemInfo_runningProcesses: state => state.systemInfo_runningProcesses,
   systemInfo_diskIO: state => state.systemInfo_diskIO,
-  systemInfo_networkIO_upload: state => state.systemInfo_networkIO_upload,
-  systemInfo_networkIO_download: state => state.systemInfo_networkIO_download
+  systemInfo_networkIO: state => state.systemInfo_networkIO
 };
 
 const storeModule = {
