@@ -71,6 +71,16 @@
                   :grid="grid_"
                   :labels="labels_"
                 ></trend-chart>
+
+                <div>
+                  <strong>Disk I/O:</strong>
+                </div>
+                <trend-chart
+                  class="chart"
+                  :datasets="systemInfo_diskIO"
+                  :grid="grid_"
+                  :labels="labels_"
+                ></trend-chart>
               </div>
             </div>
           </article>
@@ -104,8 +114,8 @@ export default {
       'nodeInfo',
       'hostNode',
       'systemInfo_cpu',
-      'systemInfo_runningProcesses'
-      // 'systemInfo_diskIO',
+      'systemInfo_runningProcesses',
+      'systemInfo_diskIO'
       // 'systemInfo_networkIO_upload',
       // 'systemInfo_networkIO_download'
     ])
