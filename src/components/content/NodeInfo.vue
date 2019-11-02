@@ -54,12 +54,12 @@
                   <strong>CPU Usage:</strong>
                 </div>
                 <trend-chart
+                  class="chart"
                   :datasets="systemInfo_cpu"
                   :grid="grid_"
                   :labels="labels_"
                   :min="min"
                   :max="max"
-                  style="max-width:400px;"
                 ></trend-chart>
               </div>
             </div>
@@ -125,5 +125,9 @@ progress.progress.is-success {
   max-width: 300px;
   display: inline-block;
   margin-bottom: 0px;
+}
+
+.chart {
+  max-width: 400px;
 }
 </style>
