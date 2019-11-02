@@ -36,7 +36,7 @@ class HostResource {
         res.status(401).send();
         return;
       }
-      res.json(NODE_STATE.systemInfo || {});
+      res.json(NODE_STATE.systemInfo || []);
     });
   }
 }

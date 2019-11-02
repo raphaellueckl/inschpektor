@@ -54,6 +54,7 @@
     "systeminformation": "^4.14.16",
     "vue": "2.6.10",
     "vue-router": "3.0.7",
+    "vue-trend-chart": "^0.14.6",
     "vuex": "3.1.1"
   },
   "devDependencies": {
