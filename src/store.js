@@ -107,7 +107,7 @@ const mutations = {
       {
         data:
           systemInfo.length >= 100
-            ? systemInfo.map(info => Number(info.networkIO.upload))
+            ? systemInfo.map(info => info.networkIO.upload)
             : systemInfo
                 .map(info => info.networkIO.upload)
                 .concat(new Array(100 - systemInfo.length).fill(0))
@@ -118,9 +118,9 @@ const mutations = {
       {
         data:
           systemInfo.length >= 100
-            ? systemInfo.map(info => Number(info.networkIO.download))
+            ? systemInfo.map(info => info.networkIO.download)
             : systemInfo
-                .map(info => Number(info.networkIO.download))
+                .map(info => info.networkIO.download)
                 .concat(new Array(100 - systemInfo.length).fill(0))
                 .reverse(),
         smooth: true,

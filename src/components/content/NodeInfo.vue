@@ -1,6 +1,11 @@
 <template>
   <div class="tile is-ancestor">
-    <div class="tile is-vertical">
+    <div></div>
+    <div>
+      <trend-chart class="chart" :datasets="systemInfo_networkIO" :grid="grid_" :labels="labels_"></trend-chart>
+    </div>
+  </div>
+  <!-- <div class="tile is-vertical">
       <div class="tile">
         <div class="tile is-parent is-vertical">
           <article class="tile is-child notification">
@@ -51,7 +56,7 @@
                 </p>
 
                 <div>
-                  <strong>CPU Usage:</strong>
+                  <strong>CPU Usage (%):</strong>
                 </div>
                 <div>
                   <trend-chart
@@ -65,7 +70,7 @@
                 </div>
 
                 <div>
-                  <strong>Running Processes:</strong>
+                  <strong>Running Processes (#):</strong>
                 </div>
                 <div>
                   <trend-chart
@@ -77,7 +82,7 @@
                 </div>
 
                 <div>
-                  <strong>Disk I/O:</strong>
+                  <strong>Disk I/O (KB/s):</strong>
                 </div>
                 <div>
                   <trend-chart
@@ -89,7 +94,7 @@
                 </div>
 
                 <div>
-                  <strong>Network I/O:</strong>
+                  <strong>Network I/O (MB/s):</strong>
                 </div>
                 <div>
                   <trend-chart
@@ -99,14 +104,13 @@
                     :labels="labels_"
                   ></trend-chart>
                 </div>
-                {{systemInfo_networkIO}}
               </div>
             </div>
           </article>
         </div>
       </div>
     </div>
-  </div>
+  </div>-->
 </template>
 
 <script>
@@ -124,7 +128,7 @@ export default {
         horizontalLines: true
       },
       labels_: {
-        yLabels: 5
+        yLabels: 2
       }
     };
   },
