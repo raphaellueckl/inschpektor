@@ -76,7 +76,7 @@
               </div>
 
               <div>
-                <strong>Disk I/O (KB/s):</strong>
+                <strong>Disk I/O (MB/s):</strong>
               </div>
               <div>
                 <trend-chart
