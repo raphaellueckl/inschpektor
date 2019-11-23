@@ -213,7 +213,6 @@ const actions = {
   fetchSystemInfo({ commit }) {
     axios('/api/system-info')
       .then(response => {
-        console.log('hi');
         commit('SET_SYSTEM_INFO', response.data);
       })
       .catch(error => {
