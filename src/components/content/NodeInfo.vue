@@ -73,6 +73,7 @@
                   :grid="grid_"
                   :labels="labels_"
                   :min="0"
+                  :max="300"
                 ></trend-chart>
               </div>
 
@@ -86,6 +87,7 @@
                   :grid="grid_"
                   :labels="labels_"
                   :min="min"
+                  :max="100"
                 ></trend-chart>
               </div>
 
