@@ -17,7 +17,7 @@ const fetchSystemInfo = async () => {
     const combinedData = {
       cpuLoad: Number(currentload.toFixed(1)), // CPU load in %
       runningProcesses: running, // Number of running processes
-      diskIO: Number((tx_sec / 1024 / 1024).toFixed(2)), // Combined disk IO in MB/s per second
+      diskIO: Number((tx_sec / 1024 / 1024).toFixed(1)), // Combined disk IO in MB/s per second
       networkIO: {
         upload: Number((network[0].tx_sec / 1024 / 1024).toFixed(1)), // Network upload in mbps (byte)
         download: Number((network[0].rx_sec / 1024 / 1024).toFixed(1)) // Network download in mbps (byte)

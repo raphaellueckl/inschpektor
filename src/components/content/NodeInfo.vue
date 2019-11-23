@@ -50,7 +50,7 @@
               </p>
 
               <div v-if="systemInfo_cpu">
-                <strong>CPU Usage: {{this.systemInfo_cpu[0].data[0]}} %</strong>
+                <strong>CPU Usage: {{this.currentCpuUsage}} %</strong>
               </div>
               <div v-if="systemInfo_cpu">
                 <trend-chart
@@ -64,7 +64,7 @@
               </div>
 
               <div v-if="systemInfo_networkIO">
-                <strong>Network I/O - Upload: {{this.systemInfo_networkIO[0].data[0]}} MB/s - Download: {{this.systemInfo_networkIO[1].data[0]}} MB/s</strong>
+                <strong>Network I/O - Upload: {{this.currentUpload}} MB/s - Download: {{this.currentDownload}} MB/s</strong>
               </div>
               <div v-if="systemInfo_networkIO">
                 <trend-chart
@@ -73,12 +73,12 @@
                   :grid="grid_"
                   :labels="labels_"
                   :min="0"
-                  :max="300"
+                  :max="10"
                 ></trend-chart>
               </div>
 
               <div v-if="systemInfo_diskIO">
-                <strong>Disk I/O: {{this.systemInfo_diskIO[0].data[0]}} MB/s</strong>
+                <strong>Disk I/O: {{this.currentDiskIO}} MB/s</strong>
               </div>
               <div v-if="systemInfo_diskIO">
                 <trend-chart
@@ -87,12 +87,12 @@
                   :grid="grid_"
                   :labels="labels_"
                   :min="min"
-                  :max="100"
+                  :max="10"
                 ></trend-chart>
               </div>
 
               <div v-if="systemInfo_runningProcesses">
-                <strong>Running Processes: {{this.systemInfo_runningProcesses[0].data[0]}}</strong>
+                <strong>Running Processes: {{this.currentRunningProcess}}</strong>
               </div>
               <div v-if="systemInfo_runningProcesses">
                 <trend-chart
@@ -137,7 +137,12 @@ export default {
       'systemInfo_cpu',
       'systemInfo_runningProcesses',
       'systemInfo_diskIO',
-      'systemInfo_networkIO'
+      'systemInfo_networkIO',
+      'currentCpuUsage',
+      'currentUpload',
+      'currentDownload',
+      'currentDiskIO',
+      'currentRunningProcess'
     ])
   },
   created() {

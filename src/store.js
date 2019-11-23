@@ -37,7 +37,12 @@ const state = {
   systemInfo_cpu: [],
   systemInfo_runningProcesses: [],
   systemInfo_diskIO: [],
-  systemInfo_networkIO: []
+  systemInfo_networkIO: [],
+  currentCpuUsage: 0,
+  currentUpload: 0,
+  currentDownload: 0,
+  currentDiskIO: 0,
+  currentRunningProcess: 0
 };
 
 const mutations = {
@@ -66,74 +71,80 @@ const mutations = {
       state.systemInfo_runningProcesses = null;
       state.systemInfo_diskIO = null;
       state.systemInfo_networkIO = null;
-    } else {
-      state.systemInfo_cpu = [
-        {
-          data:
-            systemInfo.length >= 100
-              ? systemInfo.map(info => info.cpuLoad).reverse()
-              : systemInfo
-                  .map(info => Number(info.cpuLoad))
-                  .concat(new Array(100 - systemInfo.length).fill(0))
-                  .reverse(),
-          smooth: true,
-          fill: true
-        }
-      ];
-
-      state.systemInfo_runningProcesses = [
-        {
-          data:
-            systemInfo.length >= 100
-              ? systemInfo.map(info => info.runningProcesses).reverse()
-              : systemInfo
-                  .map(info => Number(info.runningProcesses))
-                  .concat(new Array(100 - systemInfo.length).fill(0))
-                  .reverse(),
-          smooth: true,
-          fill: true
-        }
-      ];
-
-      state.systemInfo_diskIO = [
-        {
-          data:
-            systemInfo.length >= 100
-              ? systemInfo.map(info => info.diskIO).reverse()
-              : systemInfo
-                  .map(info => Number(info.diskIO))
-                  .concat(new Array(100 - systemInfo.length).fill(0))
-                  .reverse(),
-          smooth: true,
-          fill: true
-        }
-      ];
-
-      state.systemInfo_networkIO = [
-        {
-          data:
-            systemInfo.length >= 100
-              ? systemInfo.map(info => info.networkIO.upload).reverse()
-              : systemInfo
-                  .map(info => info.networkIO.upload)
-                  .concat(new Array(100 - systemInfo.length).fill(0))
-                  .reverse(),
-          smooth: true,
-          fill: true
-        },
-        {
-          data:
-            systemInfo.length >= 100
-              ? systemInfo.map(info => info.networkIO.download).reverse()
-              : systemInfo
-                  .map(info => info.networkIO.download)
-                  .concat(new Array(100 - systemInfo.length).fill(0))
-                  .reverse(),
-          smooth: true,
-          fill: true
-        }
-      ];
+      return;
     }
+
+    state.currentCpuUsage = systemInfo[0].cpuLoad;
+    state.systemInfo_cpu = [
+      {
+        data:
+          systemInfo.length >= 100
+            ? systemInfo.map(info => info.cpuLoad).reverse()
+            : systemInfo
+                .map(info => Number(info.cpuLoad))
+                .concat(new Array(100 - systemInfo.length).fill(0))
+                .reverse(),
+        smooth: true,
+        fill: true
+      }
+    ];
+
+    state.currentUpload = systemInfo[0].networkIO.upload;
+    state.currentDownload = systemInfo[0].networkIO.download;
+    state.systemInfo_networkIO = [
+      {
+        data:
+          systemInfo.length >= 100
+            ? systemInfo.map(info => info.networkIO.upload).reverse()
+            : systemInfo
+                .map(info => info.networkIO.upload)
+                .concat(new Array(100 - systemInfo.length).fill(0))
+                .reverse(),
+        smooth: true,
+        fill: true
+      },
+      {
+        data:
+          systemInfo.length >= 100
+            ? systemInfo.map(info => info.networkIO.download).reverse()
+            : systemInfo
+                .map(info => info.networkIO.download)
+                .concat(new Array(100 - systemInfo.length).fill(0))
+                .reverse(),
+        smooth: true,
+        fill: true
+      }
+    ];
+
+    state.currentDiskIO = systemInfo[0].diskIO;
+    state.systemInfo_diskIO = [
+      {
+        data:
+          systemInfo.length >= 100
+            ? systemInfo.map(info => info.diskIO).reverse()
+            : systemInfo
+                .map(info => Number(info.diskIO))
+                .concat(new Array(100 - systemInfo.length).fill(0))
+                .reverse(),
+        smooth: true,
+        fill: true
+      }
+    ];
+
+    state.currentRunningProcess = systemInfo[0].runningProcesses;
+    state.systemInfo_runningProcesses = [
+      {
+        data:
+          systemInfo.length >= 100
+            ? systemInfo.map(info => info.runningProcesses).reverse()
+            : systemInfo
+                .map(info => Number(info.runningProcesses))
+                .concat(new Array(100 - systemInfo.length).fill(0))
+                .reverse(),
+        smooth: true,
+        fill: true
+      }
+    ];
   },
   SET_ERROR(state, nodeError) {
     state.nodeError = nodeError;
@@ -202,6 +213,7 @@ const actions = {
   fetchSystemInfo({ commit }) {
     axios('/api/system-info')
       .then(response => {
+        console.log('hi');
         commit('SET_SYSTEM_INFO', response.data);
       })
       .catch(error => {
@@ -386,7 +398,12 @@ const getters = {
   systemInfo_cpu: state => state.systemInfo_cpu,
   systemInfo_runningProcesses: state => state.systemInfo_runningProcesses,
   systemInfo_diskIO: state => state.systemInfo_diskIO,
-  systemInfo_networkIO: state => state.systemInfo_networkIO
+  systemInfo_networkIO: state => state.systemInfo_networkIO,
+  currentCpuUsage: state => state.currentCpuUsage,
+  currentUpload: state => state.currentUpload,
+  currentDownload: state => state.currentDownload,
+  currentDiskIO: state => state.currentDiskIO,
+  currentRunningProcess: state => state.currentRunningProcess
 };
 
 const storeModule = {
