@@ -6,14 +6,14 @@
           <p class="title">{{ hostNode ? hostNode : 'N/A' }}</p>
           <div class="media-content">
             <div class="content" v-if="nodeInfo">
-              <p class="subtitle">Host-Server:</p>
+              <p class="subtitle">IRI:</p>
+              <p>
+                <strong>IRI Version:</strong>
+                {{ nodeInfo.appVersion }}
+              </p>
               <p>
                 <strong>Ping:</strong>
                 {{ nodeInfo.ping === null ? null : nodeInfo.ping }} ms
-              </p>
-              <p>
-                <strong>Cores:</strong>
-                {{ nodeInfo.jreAvailableProcessors }}
               </p>
               <strong>RAM Usage:</strong>
               <span>
@@ -28,17 +28,6 @@
                 ></progress>
               </div>
               <p>
-                <strong>Java Version:</strong>
-                {{ nodeInfo.jreVersion }}
-              </p>
-
-              <br />
-              <p class="subtitle">IRI:</p>
-              <p>
-                <strong>IRI Version:</strong>
-                {{ nodeInfo.appVersion }}
-              </p>
-              <p>
                 <strong>Neighbors:</strong>
                 {{ nodeInfo.neighbors }}
               </p>
@@ -47,6 +36,18 @@
                 {{
                 nodeInfo.time === null ? null : nodeInfo.time | timespan
                 }}
+              </p>
+
+              <br />
+
+              <p class="subtitle">Host-Server:</p>
+              <p>
+                <strong>Cores:</strong>
+                {{ nodeInfo.jreAvailableProcessors }}
+              </p>
+              <p>
+                <strong>Java Version:</strong>
+                {{ nodeInfo.jreVersion }}
               </p>
 
               <div v-if="systemInfo_cpu">
@@ -64,7 +65,18 @@
               </div>
 
               <div v-if="systemInfo_networkIO">
-                <strong>Network I/O - Upload: {{this.currentUpload}} MB/s - Download: {{this.currentDownload}} MB/s</strong>
+                <strong>
+                  Network I/O -
+                  <span class="current-upload">Upload</span>
+                  :
+                  {{this.currentUpload}} MB/s
+                  -
+                  <span
+                    class="current-download"
+                  >Download</span>
+                  :
+                  {{this.currentDownload}} MB/s
+                </strong>
               </div>
               <div v-if="systemInfo_networkIO">
                 <trend-chart
@@ -184,5 +196,17 @@ progress.progress.is-success {
 
 .multi g:nth-of-type(4) path:last-of-type {
   stroke: #ffd943;
+}
+
+.current-upload {
+  border: solid #51e183;
+  border-radius: 5px;
+  background-color: #51e183;
+}
+
+.current-download {
+  border: solid #ffe88a;
+  border-radius: 5px;
+  background-color: #ffe88a;
 }
 </style>
