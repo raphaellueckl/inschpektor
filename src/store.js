@@ -61,72 +61,79 @@ const mutations = {
     state.neighbors = neighbors;
   },
   SET_SYSTEM_INFO(state, systemInfo) {
-    state.systemInfo_cpu = [
-      {
-        data:
-          systemInfo.length >= 100
-            ? systemInfo.map(info => info.cpuLoad)
-            : systemInfo
-                .map(info => Number(info.cpuLoad))
-                .concat(new Array(100 - systemInfo.length).fill(0))
-                .reverse(),
-        smooth: true,
-        fill: true
-      }
-    ];
+    if (!systemInfo.length) {
+      state.systemInfo_cpu = null;
+      state.systemInfo_runningProcesses = null;
+      state.systemInfo_diskIO = null;
+      state.systemInfo_networkIO = null;
+    } else {
+      state.systemInfo_cpu = [
+        {
+          data:
+            systemInfo.length >= 100
+              ? systemInfo.map(info => info.cpuLoad).reverse()
+              : systemInfo
+                  .map(info => Number(info.cpuLoad))
+                  .concat(new Array(100 - systemInfo.length).fill(0))
+                  .reverse(),
+          smooth: true,
+          fill: true
+        }
+      ];
 
-    state.systemInfo_runningProcesses = [
-      {
-        data:
-          systemInfo.length >= 100
-            ? systemInfo.map(info => info.runningProcesses)
-            : systemInfo
-                .map(info => Number(info.runningProcesses))
-                .concat(new Array(100 - systemInfo.length).fill(0))
-                .reverse(),
-        smooth: true,
-        fill: true
-      }
-    ];
+      state.systemInfo_runningProcesses = [
+        {
+          data:
+            systemInfo.length >= 100
+              ? systemInfo.map(info => info.runningProcesses).reverse()
+              : systemInfo
+                  .map(info => Number(info.runningProcesses))
+                  .concat(new Array(100 - systemInfo.length).fill(0))
+                  .reverse(),
+          smooth: true,
+          fill: true
+        }
+      ];
 
-    state.systemInfo_diskIO = [
-      {
-        data:
-          systemInfo.length >= 100
-            ? systemInfo.map(info => info.diskIO)
-            : systemInfo
-                .map(info => Number(info.diskIO))
-                .concat(new Array(100 - systemInfo.length).fill(0))
-                .reverse(),
-        smooth: true,
-        fill: true
-      }
-    ];
+      state.systemInfo_diskIO = [
+        {
+          data:
+            systemInfo.length >= 100
+              ? systemInfo.map(info => info.diskIO).reverse()
+              : systemInfo
+                  .map(info => Number(info.diskIO))
+                  .concat(new Array(100 - systemInfo.length).fill(0))
+                  .reverse(),
+          smooth: true,
+          fill: true
+        }
+      ];
 
-    state.systemInfo_networkIO = [
-      {
-        data:
-          systemInfo.length >= 100
-            ? systemInfo.map(info => info.networkIO.upload)
-            : systemInfo
-                .map(info => info.networkIO.upload)
-                .concat(new Array(100 - systemInfo.length).fill(0))
-                .reverse(),
-        smooth: true,
-        fill: true
-      },
-      {
-        data:
-          systemInfo.length >= 100
-            ? systemInfo.map(info => info.networkIO.download)
-            : systemInfo
-                .map(info => info.networkIO.download)
-                .concat(new Array(100 - systemInfo.length).fill(0))
-                .reverse(),
-        smooth: true,
-        fill: true
-      }
-    ];
+      state.systemInfo_networkIO = [
+        {
+          data:
+            systemInfo.length >= 100
+              ? systemInfo.map(info => info.networkIO.upload).reverse()
+              : systemInfo
+                  .map(info => info.networkIO.upload)
+                  .concat(new Array(100 - systemInfo.length).fill(0))
+                  .reverse(),
+          smooth: true,
+          fill: true
+        },
+        {
+          data:
+            systemInfo.length >= 100
+              ? systemInfo.map(info => info.networkIO.download).reverse()
+              : systemInfo
+                  .map(info => info.networkIO.download)
+                  .concat(new Array(100 - systemInfo.length).fill(0))
+                  .reverse(),
+          smooth: true,
+          fill: true
+        }
+      ];
+    }
   },
   SET_ERROR(state, nodeError) {
     state.nodeError = nodeError;

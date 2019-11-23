@@ -49,10 +49,10 @@
                 }}
               </p>
 
-              <div>
-                <strong>CPU Usage (%):</strong>
+              <div v-if="systemInfo_cpu">
+                <strong>CPU Usage: {{this.systemInfo_cpu[0].data[0]}} %</strong>
               </div>
-              <div>
+              <div v-if="systemInfo_cpu">
                 <trend-chart
                   class="chart"
                   :datasets="systemInfo_cpu"
@@ -63,39 +63,42 @@
                 ></trend-chart>
               </div>
 
-              <div>
-                <strong>Running Processes (#):</strong>
+              <div v-if="systemInfo_networkIO">
+                <strong>Network I/O - Upload: {{this.systemInfo_networkIO[0].data[0]}} MB/s - Download: {{this.systemInfo_networkIO[1].data[0]}} MB/s</strong>
               </div>
-              <div>
+              <div v-if="systemInfo_networkIO">
                 <trend-chart
-                  class="chart"
-                  :datasets="systemInfo_runningProcesses"
+                  class="chart multi"
+                  :datasets="systemInfo_networkIO"
                   :grid="grid_"
                   :labels="labels_"
+                  :min="0"
                 ></trend-chart>
               </div>
 
-              <div>
-                <strong>Disk I/O (MB/s):</strong>
+              <div v-if="systemInfo_diskIO">
+                <strong>Disk I/O: {{this.systemInfo_diskIO[0].data[0]}} MB/s</strong>
               </div>
-              <div>
+              <div v-if="systemInfo_diskIO">
                 <trend-chart
                   class="chart"
                   :datasets="systemInfo_diskIO"
                   :grid="grid_"
                   :labels="labels_"
+                  :min="min"
                 ></trend-chart>
               </div>
 
-              <div>
-                <strong>Network I/O (MB/s):</strong>
+              <div v-if="systemInfo_runningProcesses">
+                <strong>Running Processes: {{this.systemInfo_runningProcesses[0].data[0]}}</strong>
               </div>
-              <div>
+              <div v-if="systemInfo_runningProcesses">
                 <trend-chart
                   class="chart"
-                  :datasets="systemInfo_networkIO"
+                  :datasets="systemInfo_runningProcesses"
                   :grid="grid_"
                   :labels="labels_"
+                  :min="min"
                 ></trend-chart>
               </div>
             </div>
@@ -148,7 +151,7 @@ export default {
 };
 </script>
 
-<style scoped>
+<style>
 progress.progress.is-success {
   max-width: 300px;
   display: inline-block;
@@ -156,6 +159,23 @@ progress.progress.is-success {
 }
 
 .chart {
-  width: 400px;
+  max-width: 400px;
+}
+
+.fill {
+  fill: #51e183;
+}
+
+.stroke {
+  stroke: #348c53;
+}
+
+.multi g:nth-of-type(4) path:first-of-type {
+  fill: #ffe88a;
+  opacity: 0.5;
+}
+
+.multi g:nth-of-type(4) path:last-of-type {
+  stroke: #ffd943;
 }
 </style>

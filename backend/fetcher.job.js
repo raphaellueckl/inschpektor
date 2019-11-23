@@ -18,7 +18,7 @@ const theFetcher = async () => {
     assertPremiumNeighborsSynced();
 
     let timekeeper = new Promise((resolve, reject) => {
-      setTimeout(() => resolve(), 5000);
+      setTimeout(() => resolve(), 4500);
     });
 
     await timekeeper;
