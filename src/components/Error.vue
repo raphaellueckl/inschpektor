@@ -11,12 +11,12 @@
 
     <div v-else>
       <h2 class="subtitle">
-        There seem to be problems reaching your node. If you just restarted
-        it, this message will disappear after the node is back up. If the IP
+        There seem to be problems reaching your IOTA node. If you just restarted
+        it, this message will disappear after the node is back up. If the IP of your node
         changed, please update it down below. Otherwise, you have to fix the
         node itself.
       </h2>
-      <h2 class="subtitle">Currently set IP: {{ iriIp }}</h2>
+      <h2 class="subtitle">Currently set node IP: {{ iriIp }}</h2>
     </div>
 
     <br />
@@ -25,7 +25,7 @@
       <div class="level-item has-text-centered">
         <div class="columns">
           <div class="column">
-            <label class="label">Host-Node IP / Domain (Port only if non-default):</label>
+            <label class="label">IOTA-Node IP / Domain (Port only if non-default):</label>
             <div class="columns">
               <div class="column is-4">
                 <input
