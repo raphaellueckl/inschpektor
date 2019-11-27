@@ -63,12 +63,11 @@ Also keep in mind that I run channels where I post updates:
 
 - Go further down the PWA road and make the app more "native like"
 - Make everything more stable
-- Overhaul this overly fancy UI :)
 
 ### Known Issues
 
-- Vague responses: You do an action, then a spinner appears, but the action is not yet fulfilled, or changes you do are shortly dropped and reappear later. That is a hug flaw in UX that I will pay attention to soon.
-- A lot fo database operations currently do not come with error handling. If you ever see a 'Could not proxy...' error, that is because of this fact.
+- Vague responses: You do an action, then a spinner appears, but the action is not yet fulfilled, or changes you do are shortly dropped and reappear later. That is a huge flaw in UX that I will pay attention to soon.
+- A lot fo database operations currently do not come with error handling. If you ever see a 'Could not proxy...' error, that is because of this fact and only a restart of inschpektor can fix this problem.
 
 ---
 
@@ -90,4 +89,10 @@ npm run serve
 
 ```
 npm run build
+```
+
+#### Runs production
+
+```
+npm start
 ```
