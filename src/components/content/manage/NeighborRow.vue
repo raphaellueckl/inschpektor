@@ -20,7 +20,7 @@
         v-model="neighbor.port"
         placeholder="Enter port..."
         class="input"
-        type="text"
+        type="number"
         @input="setNeighborPort(neighbor)"
       />
     </div>
