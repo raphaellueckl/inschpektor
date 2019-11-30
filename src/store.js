@@ -20,6 +20,8 @@ axios.interceptors.response.use(
   }
 );
 
+let timer = undefined;
+
 const state = {
   hostNode: null,
   iriFileLocation: null,
@@ -42,7 +44,8 @@ const state = {
   currentUpload: 0,
   currentDownload: 0,
   currentDiskIO: 0,
-  currentRunningProcess: 0
+  currentRunningProcess: 0,
+  userIsTyping: false
 };
 
 const mutations = {
@@ -63,7 +66,9 @@ const mutations = {
     state.restartNodeCommandAvailable = iriDetails.restartNodeCommandAvailable;
   },
   SET_NEIGHBORS(state, neighbors) {
-    state.neighbors = neighbors;
+    if (!state.userIsTyping) {
+      state.neighbors = neighbors;
+    }
   },
   SET_SYSTEM_INFO(state, systemInfo) {
     if (!systemInfo.length) {
@@ -163,6 +168,13 @@ const mutations = {
   },
   SET_INSCHPEKTOR_LATEST_VERSION(state, versions) {
     state.inschpektorVersions = versions;
+  },
+  USER_IS_TYPING(state) {
+    state.userIsTyping = true;
+    clearTimeout(timer);
+    timer = setTimeout(() => {
+      state.userIsTyping = false;
+    }, 4000);
   }
 };
 
@@ -266,6 +278,7 @@ const actions = {
       .catch(error => console.log('Error adding neighbor'));
   },
   setNeighborName({ commit }, neighbor) {
+    commit('USER_IS_TYPING');
     axios
       .post('/api/neighbor/name', {
         name: neighbor.name,
@@ -277,6 +290,7 @@ const actions = {
       .catch(error => console.log('Error when setting nick for neighbor'));
   },
   setNeighborPort({ commit }, neighbor) {
+    commit('USER_IS_TYPING');
     axios
       .post('/api/neighbor/port', {
         iriPort: neighbor.port,
@@ -402,7 +416,8 @@ const getters = {
   currentUpload: state => state.currentUpload,
   currentDownload: state => state.currentDownload,
   currentDiskIO: state => state.currentDiskIO,
-  currentRunningProcess: state => state.currentRunningProcess
+  currentRunningProcess: state => state.currentRunningProcess,
+  userIsTyping: state => state.userIsTyping
 };
 
 const storeModule = {
