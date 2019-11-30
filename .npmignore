@@ -1,3 +1,8 @@
 backend/db
 src
 .git
+docs
+public
+.prettierrc
+postcss.config.js
+vue.config.js
