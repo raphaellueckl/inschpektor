@@ -174,7 +174,7 @@ const mutations = {
     clearTimeout(timer);
     timer = setTimeout(() => {
       state.userIsTyping = false;
-    }, 4000);
+    }, 15000);
   }
 };
 
