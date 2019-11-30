@@ -6,10 +6,10 @@
         <img
           src="@/assets/logo_300.png"
           style="width:150px; height:150px;"
-          :class="{'animate': animated}"
+          :class="{ animate: animated }"
           @click="animate"
           @animationend="animated = false"
-        >
+        />
       </div>
       <div class="logo-item">
         <span>inschpektor</span>
@@ -18,10 +18,21 @@
 
     <p>
       <strong>Installed Version:</strong>
-      {{ inschpektorVersions ? inschpektorVersions.installed ? inschpektorVersions.installed : 'N/A' : 'N/A' }}
+      {{
+        inschpektorVersions
+          ? inschpektorVersions.installed
+            ? inschpektorVersions.installed
+            : 'N/A'
+          : 'N/A'
+      }}
     </p>
     <p
-      v-if="inschpektorVersions && inschpektorVersions.newest && inschpektorVersions.installed && inschpektorVersions.newest > inschpektorVersions.installed"
+      v-if="
+        inschpektorVersions &&
+          inschpektorVersions.newest &&
+          inschpektorVersions.installed &&
+          inschpektorVersions.newest > inschpektorVersions.installed
+      "
       class="update-available"
     >
       <strong>🌟 Update available!</strong>
@@ -31,22 +42,23 @@
       <a
         href="https://github.com/codepleb/inschpektor/blob/master/readme.md#update"
         target="_blank"
-      >Update manual</a>
+        >Update manual</a
+      >
       🌟
     </p>
-    <br>
+    <br />
     <p>
       This is an open source app, that can be found @
-      <a
-        href="https://github.com/codepleb/inschpektor"
-      >Github</a>.
+      <a href="https://github.com/codepleb/inschpektor">Github</a>.
     </p>
     <p>The application is based on Nodejs and Vuejs.</p>
-    <br>
-    <p>If you would like to contribute: I'd love to get your pullrequests. :)</p>
+    <br />
+    <p>
+      If you would like to contribute: I'd love to get your pullrequests. :)
+    </p>
     <p>Hit me up on telegram: @codepleb</p>
-    <br>
-    <br>
+    <br />
+    <br />
     <h3 class="title is-3">Donations</h3>
     <p>
       If you like this app and you want to support me, use the following IOTA
@@ -57,22 +69,20 @@
       address="IZ99FQWJUQJCDLBSUOEDZIVROSARFYLXJWPZNAXQPCCGAHCUWKRE9RNHMGNHZTAIZHPUDV9HMSPNJLYSXPNEPTRHUW"
     />
 
-    <h5 class="title is-5">Other Coins</h5>
-    <p>
-      <strong>BTC:</strong> 32o6kbgZqJ9nhT2aRsfEGcMtpThJ2za89T
-    </p>
-    <p>
-      <strong>LTC:</strong> LgfSNjqVpXFj9xN8ZWPR9qTZQJpcRRNXRZ
-    </p>
-    <p>
-      <strong>XMR:</strong> 4GdoN7NCTi8a5gZug7PrwZNKjvHFmKeV11L6pNJPgj5QNEHsN6eeX3DaAQFwZ1ufD4LYCZKArktt113W7QjWvQ7CWAjwVCr95LATLKqtxr
-    </p>
-    <p>
-      <strong>XLM:</strong> GA5XIGA5C7QTPTWXQHY6MCJRMTRZDOSHR6EFIBNDQTCQHG262N4GGKTM
-    </p>
-    <p>
-      <strong>XRP:</strong> rLHzPsX6oXkzU2qL12kHCH8G8cnZv1rBJh
-    </p>
+    <section>
+      <h5 class="title is-5">Other Coins</h5>
+      <p><strong>BTC:</strong> 32o6kbgZqJ9nhT2aRsfEGcMtpThJ2za89T</p>
+      <p><strong>LTC:</strong> LgfSNjqVpXFj9xN8ZWPR9qTZQJpcRRNXRZ</p>
+      <p>
+        <strong>XMR:</strong>
+        4GdoN7NCTi8a5gZug7PrwZNKjvHFmKeV11L6pNJPgj5QNEHsN6eeX3DaAQFwZ1ufD4LYCZKArktt113W7QjWvQ7CWAjwVCr95LATLKqtxr
+      </p>
+      <p>
+        <strong>XLM:</strong>
+        GA5XIGA5C7QTPTWXQHY6MCJRMTRZDOSHR6EFIBNDQTCQHG262N4GGKTM
+      </p>
+      <p><strong>XRP:</strong> rLHzPsX6oXkzU2qL12kHCH8G8cnZv1rBJh</p>
+    </section>
   </div>
 </template>
 
@@ -116,6 +126,10 @@ export default {
 
 .logo-item:last-child {
   margin-bottom: 20px;
+}
+
+section {
+  margin-top: 30px;
 }
 
 .animate {
