@@ -109,8 +109,15 @@ class NodeResource {
         res.status(401).send();
         return;
       }
-      NODE_STATE.persistedNeighbors = await IRI_SERVICE.readPersistedNeighbors();
-      res.send(NODE_STATE.persistedNeighbors);
+      try {
+        NODE_STATE.persistedNeighbors = await IRI_SERVICE.readPersistedNeighbors();
+        res.send(NODE_STATE.persistedNeighbors);
+      } catch (e) {
+        console.log(
+          'Failed to fetch persisted neighbors. The path is probably wrong or not set.'
+        );
+        res.status(404).send();
+      }
     });
 
     app.post(`${GLOBALS.BASE_URL}/restart-node`, async (req, res) => {
