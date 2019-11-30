@@ -5,19 +5,21 @@ const assertNodeInSync = require('./observer/assertNodeInSync');
 const assertPremiumNeighborsSynced = require('./observer/assertPremiumNeighborsSynced');
 const assertNeighborsActive = require('./observer/assertNeighborsActive');
 const assertNeighborsHealthy = require('./observer/assertNeighborsHealthy');
+const NODE_STATE = require('./state/node.state');
 
 const theFetcher = async () => {
   while (true) {
-    fetchNeighbors();
-    fetchNodeInfo();
-    fetchSystemInfo();
+    if (NODE_STATE.iriIp) {
+      fetchNeighbors();
+      fetchNodeInfo();
+      fetchSystemInfo();
 
-    assertNodeInSync();
-    assertNeighborsActive();
-    assertNeighborsHealthy();
-    assertPremiumNeighborsSynced();
-
-    let timekeeper = new Promise((resolve, reject) => {
+      assertNodeInSync();
+      assertNeighborsActive();
+      assertNeighborsHealthy();
+      assertPremiumNeighborsSynced();
+    }
+    let timekeeper = new Promise(resolve => {
       setTimeout(() => resolve(), 4500);
     });
 
