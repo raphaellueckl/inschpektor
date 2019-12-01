@@ -18,7 +18,7 @@ class NeighborResource {
       }
       const { domainWithConnectionPort, name } = req.body;
 
-      this.setNeighborName(domainWithConnectionPort, name);
+      this._setNeighborName(domainWithConnectionPort, name);
 
       res.status(200).send();
     });
@@ -30,7 +30,7 @@ class NeighborResource {
       }
       const { domainWithConnectionPort, iriPort } = req.body;
 
-      this.setNeighborPort(domainWithConnectionPort, iriPort);
+      this._setNeighborPort(domainWithConnectionPort, iriPort);
 
       res.status(200).send();
     });
@@ -42,7 +42,7 @@ class NeighborResource {
       }
       const neighbors = req.body;
       neighbors.forEach(n =>
-        this.setNeighborAdditionalData(
+        this._setNeighborAdditionalData(
           `${n.domain}:${n.address.split(':')[1]}`,
           n.name,
           n.port
@@ -79,7 +79,7 @@ class NeighborResource {
           // Remove old entries to not confuse outdated data with new one, if neighbor was already added in the past.
           DB_SERVICE.deleteNeighborHistory(domainWithConnectionPort);
 
-          this.setNeighborAdditionalData(
+          this._setNeighborAdditionalData(
             domainWithConnectionPort,
             name,
             iriPort
@@ -112,7 +112,7 @@ class NeighborResource {
         .then(response => {
           DB_SERVICE.deleteNeighborHistory(domainWithConnectionPort);
 
-          this.removeNeighborFromUserNameTable(domainWithConnectionPort);
+          this._removeNeighborFromUserNameTable(domainWithConnectionPort);
 
           IRI_SERVICE.removeNeighborFromIriConfig(fullAddress);
 
@@ -125,13 +125,13 @@ class NeighborResource {
     });
   }
 
-  removeNeighborFromUserNameTable(domainWithConnectionPort) {
+  _removeNeighborFromUserNameTable(domainWithConnectionPort) {
     NODE_STATE.neighborAdditionalData.delete(domainWithConnectionPort);
 
     DB_SERVICE.deleteNeighborData(domainWithConnectionPort);
   }
 
-  setNeighborAdditionalData(domainWithConnectionPort, name, iriPort) {
+  _setNeighborAdditionalData(domainWithConnectionPort, name, iriPort) {
     const currentAdditionalDataForNeighbor = NODE_STATE.neighborAdditionalData.get(
       domainWithConnectionPort
     );
@@ -156,7 +156,7 @@ class NeighborResource {
     );
   }
 
-  setNeighborName(domainWithConnectionPort, name) {
+  _setNeighborName(domainWithConnectionPort, name) {
     const currentAdditionalDataForNeighbor = NODE_STATE.neighborAdditionalData.get(
       domainWithConnectionPort
     );
@@ -177,7 +177,7 @@ class NeighborResource {
     );
   }
 
-  setNeighborPort(domainWithConnectionPort, iriPort) {
+  _setNeighborPort(domainWithConnectionPort, iriPort) {
     const currentAdditionalDataForNeighbor = NODE_STATE.neighborAdditionalData.get(
       domainWithConnectionPort
     );
