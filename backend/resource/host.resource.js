@@ -25,7 +25,8 @@ class HostResource {
         })
         .catch(error => {
           console.log(
-            'Could not receive information about latest inschpektor version.'
+            'Could not receive information about latest inschpektor version.',
+            error.message
           );
           res.json({ installed: installedVersion });
         });
