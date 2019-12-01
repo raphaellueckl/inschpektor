@@ -23,6 +23,7 @@ class NodeResource {
           res.json(NODE_STATE.currentOwnNodeInfo);
         })
         .catch(error => {
+          console.log('Could not fetch node info.', error.message);
           if (!NODE_STATE.iriIp) {
             res.status(500).send('NODE_NOT_SET');
           } else {
@@ -32,14 +33,17 @@ class NodeResource {
     });
 
     app.post(`${GLOBALS.BASE_URL}/host-node-ip`, (req, res) => {
-      const protocol = req.body.protocol;
-      const newIriIp = req.body.nodeIp;
-      const port = req.body.port;
-      const password = req.body.password;
-      const iriFileLocation = req.body.iriPath;
-      NODE_STATE.restartNodeCommand = req.body.restartNodeCommand;
+      const {
+        protocol,
+        nodeIp,
+        port,
+        password,
+        iriPath,
+        restartNodeCommand
+      } = req.body;
+      NODE_STATE.restartNodeCommand = restartNodeCommand;
 
-      if (!newIriIp || !port) {
+      if (!nodeIp || !port) {
         res.status(404).send();
         return;
       }
@@ -51,9 +55,9 @@ class NodeResource {
         AUTH_SERVICE.isPasswordCorrect(password, NODE_STATE.hashedPw)
       ) {
         NODE_STATE.protocol = protocol;
-        NODE_STATE.iriIp = newIriIp;
+        NODE_STATE.iriIp = nodeIp;
         NODE_STATE.iriPort = port;
-        NODE_STATE.iriFileLocation = iriFileLocation;
+        NODE_STATE.iriFileLocation = iriPath;
         NODE_STATE.loginToken = new Date()
           .toString()
           .split('')
@@ -74,7 +78,7 @@ class NodeResource {
         });
       } else if (!password) {
         NODE_STATE.protocol = protocol;
-        NODE_STATE.iriIp = newIriIp;
+        NODE_STATE.iriIp = nodeIp;
         NODE_STATE.iriPort = port;
 
         DB_SERVICE.changeHostAddress(
