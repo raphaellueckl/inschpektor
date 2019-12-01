@@ -179,7 +179,7 @@ const mutations = {
 };
 
 const actions = {
-  login({ commit }, passwordOrToken) {
+  login({ commit, dispatch }, passwordOrToken) {
     if (!passwordOrToken) passwordOrToken = localStorage.getItem('token');
     if (!passwordOrToken) return;
     return axios
@@ -187,6 +187,7 @@ const actions = {
       .then(response => {
         commit('SET_TOKEN', response.data.token);
         commit('USER_AUTHENTICATED', true);
+        dispatch('checkForVersionUpdate');
       })
       .catch(error => {
         commit('USER_AUTHENTICATED', false);
