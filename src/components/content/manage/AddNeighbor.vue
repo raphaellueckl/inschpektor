@@ -8,7 +8,7 @@
             <div class="media-content">
               <div class="content">
                 <div class="field">
-                  <label class="label">Domain or IP-Address with TCP port*</label>
+                  <label class="label">Domain or IP-Address with peering port*</label>
                   <div class="control has-icons-right">
                     <input
                       v-model="ipAddress"
@@ -58,7 +58,7 @@
                   </div>
 
                   <div class="field">
-                    <label class="label">Node Port</label>
+                    <label class="label">IRI Api Port</label>
                     <div class="control has-icons-right">
                       <input
                         v-model="port"
@@ -82,7 +82,7 @@
                       </span>
                     </div>
                     <p v-if="portValidation === false" class="help is-danger">
-                      Wrong format! Just write a plain number between 0 and
+                      Wrong format! Just write a plain number between 1 and
                       65535
                     </p>
                   </div>
@@ -142,12 +142,11 @@ export default {
   },
   computed: {
     ...mapGetters(['iriFileLocation']),
-
     portValidation: function() {
       if (this.port === '') return null;
       else if (
         !isNaN(this.port) &&
-        parseInt(this.port, 10) >= 0 &&
+        parseInt(this.port, 10) >= 1 &&
         parseInt(this.port, 10) <= 65535
       )
         return true;
@@ -182,7 +181,7 @@ export default {
 
       const portRegex = new RegExp(`:[0-9]{2,5}$`);
       if (/[a-zA-Z]/.test(this.ipAddress)) {
-        if (this.ipAddress.split(':').length === 3) {
+        if (this.ipAddress.split(':').length >= 3) {
           this.validationMessage = 'Do not include the protocol (tcp://)';
         } else if (this.ipAddress.split('.').length < 2) {
           this.validationMessage = "Must include extension (e.g. '.com')";
@@ -191,6 +190,12 @@ export default {
         } else if (!new RegExp(`:[0-9]{2,5}$`).test(this.ipAddress)) {
           this.validationMessage =
             'Must include port information, e.g. :15600, 2-5 digits';
+        } else if (
+          this.ipAddress.split(':')[1].startsWith('0') ||
+          Number(this.ipAddress.split(':')[1]) > 65535 ||
+          Number(this.ipAddress.split(':')[1]) < 1
+        ) {
+          this.validationMessage = 'The port is out of range (1 - 65535)';
         }
       } else {
         if (this.ipAddress.split('.').length !== 4) {
@@ -208,6 +213,12 @@ export default {
         } else if (!new RegExp(`:[0-9]{2,5}$`).test(this.ipAddress)) {
           this.validationMessage =
             'Must include port information, e.g. :15600, 2-5 digits';
+        } else if (
+          this.ipAddress.split(':')[1].startsWith('0') ||
+          Number(this.ipAddress.split(':')[1]) > 65535 ||
+          Number(this.ipAddress.split(':')[1]) < 1
+        ) {
+          this.validationMessage = 'The port is out of range (1 - 65535)';
         }
       }
     }
