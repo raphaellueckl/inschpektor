@@ -118,7 +118,8 @@ class NodeResource {
         res.send(NODE_STATE.persistedNeighbors);
       } catch (e) {
         console.log(
-          'Failed to fetch persisted neighbors. The path is probably wrong or not set.'
+          'Failed to fetch persisted neighbors. The path is probably wrong or not set.',
+          e.message
         );
         res.status(404).send();
       }
@@ -145,10 +146,14 @@ class NodeResource {
         res.status(401).send();
         return;
       }
-      await DB_SERVICE.dropAllTables();
-      NODE_STATE.initialize();
-      DB_SERVICE.createAndInitializeTables();
-      res.status(200).send();
+      try {
+        await DB_SERVICE.dropAllTables();
+        NODE_STATE.initialize();
+        DB_SERVICE.createAndInitializeTables();
+        res.status(200).send();
+      } catch (e) {
+        console.log('Error while dropping and reinitializing DB.', e.message);
+      }
     });
   }
 }
