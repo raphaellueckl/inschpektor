@@ -81,11 +81,11 @@ class DbService {
         }
         if (rows) {
           rows.forEach(r => {
-            this.intitializeNeighborUsernname(
+            this._intitializeNeighborUsernname(
               r.domainWithConnectionPort,
               r.name ? r.name : null
             );
-            this.intitializeNeighborIriMainPort(
+            this._intitializeNeighborIriMainPort(
               r.domain,
               r.port ? r.port : null
             );
@@ -129,32 +129,6 @@ class DbService {
         NODE_STATE.iriFileLocation = initHostData.IRI_CONFIG_PATH;
         NODE_STATE.restartNodeCommand = initHostData.RESTART_IRI_COMMAND;
       }
-    });
-  }
-
-  intitializeNeighborUsernname(domainWithConnectionPort, name) {
-    const currentAdditionalData = NODE_STATE.neighborAdditionalData.get(
-      domainWithConnectionPort
-    );
-    NODE_STATE.neighborAdditionalData.set(domainWithConnectionPort, {
-      name,
-      port:
-        currentAdditionalData && currentAdditionalData.port
-          ? currentAdditionalData.port
-          : null
-    });
-  }
-
-  intitializeNeighborIriMainPort(domainWithConnectionPort, port) {
-    const currentAdditionalData = NODE_STATE.neighborAdditionalData.get(
-      domainWithConnectionPort
-    );
-    NODE_STATE.neighborAdditionalData.set(domainWithConnectionPort, {
-      name:
-        currentAdditionalData && currentAdditionalData.name
-          ? currentAdditionalData.name
-          : null,
-      port
     });
   }
 
@@ -342,6 +316,32 @@ class DbService {
     this.db.run(
       `DELETE FROM neighbor WHERE timestamp <= datetime('now', '-30 minutes')`
     );
+  }
+
+  _intitializeNeighborUsernname(domainWithConnectionPort, name) {
+    const currentAdditionalData = NODE_STATE.neighborAdditionalData.get(
+      domainWithConnectionPort
+    );
+    NODE_STATE.neighborAdditionalData.set(domainWithConnectionPort, {
+      name,
+      port:
+        currentAdditionalData && currentAdditionalData.port
+          ? currentAdditionalData.port
+          : null
+    });
+  }
+
+  _intitializeNeighborIriMainPort(domainWithConnectionPort, port) {
+    const currentAdditionalData = NODE_STATE.neighborAdditionalData.get(
+      domainWithConnectionPort
+    );
+    NODE_STATE.neighborAdditionalData.set(domainWithConnectionPort, {
+      name:
+        currentAdditionalData && currentAdditionalData.name
+          ? currentAdditionalData.name
+          : null,
+      port
+    });
   }
 }
 
