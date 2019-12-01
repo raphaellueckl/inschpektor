@@ -59,54 +59,32 @@ const fetchNeighbors = async () => {
   if (NODE_STATE.iriIp) {
     const resultNeighbors = [];
 
-    const {
-      data: { neighbors }
-    } = await axios(IRI_SERVICE.createIriRequest('getNeighbors'));
-    const activeNeighbors = neighbors;
+    try {
+      const {
+        data: { neighbors }
+      } = await axios(IRI_SERVICE.createIriRequest('getNeighbors'));
+      const activeNeighbors = neighbors;
 
-    const rows = await DB_SERVICE.getAllNeighborEntries();
+      const rows = await DB_SERVICE.getAllNeighborEntries();
 
-    const allRequests = [];
+      const allRequests = [];
 
-    for (let neighbor of activeNeighbors) {
-      const additionalDataOfNeighbor = NODE_STATE.neighborAdditionalData.get(
-        `${neighbor.domain}:${neighbor.address.split(':')[1]}`
-      );
+      for (let neighbor of activeNeighbors) {
+        const additionalDataOfNeighbor = NODE_STATE.neighborAdditionalData.get(
+          `${neighbor.domain}:${neighbor.address.split(':')[1]}`
+        );
 
-      allRequests.push(
-        new Promise(async resolve => {
-          let startDate = new Date();
-          const oldestEntry = rows.find(
-            row => neighbor.address === row.address
-          );
-
-          try {
-            const { data } = await axios(
-              IRI_SERVICE.createIriRequestForNeighborNode(
-                'http',
-                'getNodeInfo',
-                neighbor,
-                additionalDataOfNeighbor ? additionalDataOfNeighbor.port : null
-              )
-            );
-            let ping = new Date() - startDate;
-            let nodeInfo = data;
-
-            const resultNeighbor = createResultNeighbor(
-              neighbor,
-              oldestEntry,
-              additionalDataOfNeighbor,
-              nodeInfo,
-              ping
+        allRequests.push(
+          new Promise(async resolve => {
+            let startDate = new Date();
+            const oldestEntry = rows.find(
+              row => neighbor.address === row.address
             );
 
-            resultNeighbors.push(resultNeighbor);
-            resolve(resultNeighbor);
-          } catch (e) {
             try {
               const { data } = await axios(
                 IRI_SERVICE.createIriRequestForNeighborNode(
-                  'https',
+                  'http',
                   'getNodeInfo',
                   neighbor,
                   additionalDataOfNeighbor
@@ -115,7 +93,7 @@ const fetchNeighbors = async () => {
                 )
               );
               let ping = new Date() - startDate;
-              let nodeInfo = nodeInfoResponse.data;
+              let nodeInfo = data;
 
               const resultNeighbor = createResultNeighbor(
                 neighbor,
@@ -127,55 +105,86 @@ const fetchNeighbors = async () => {
 
               resultNeighbors.push(resultNeighbor);
               resolve(resultNeighbor);
-            } catch (error) {
-              const resultNeighbor = createResultNeighbor(
-                neighbor,
-                oldestEntry,
-                additionalDataOfNeighbor
-              );
+            } catch (e) {
+              try {
+                const { data } = await axios(
+                  IRI_SERVICE.createIriRequestForNeighborNode(
+                    'https',
+                    'getNodeInfo',
+                    neighbor,
+                    additionalDataOfNeighbor
+                      ? additionalDataOfNeighbor.port
+                      : null
+                  )
+                );
+                let ping = new Date() - startDate;
+                let nodeInfo = nodeInfoResponse.data;
 
-              resultNeighbors.push(resultNeighbor);
-              resolve(resultNeighbor);
+                const resultNeighbor = createResultNeighbor(
+                  neighbor,
+                  oldestEntry,
+                  additionalDataOfNeighbor,
+                  nodeInfo,
+                  ping
+                );
+
+                resultNeighbors.push(resultNeighbor);
+                resolve(resultNeighbor);
+              } catch (error) {
+                const resultNeighbor = createResultNeighbor(
+                  neighbor,
+                  oldestEntry,
+                  additionalDataOfNeighbor
+                );
+
+                resultNeighbors.push(resultNeighbor);
+                resolve(resultNeighbor);
+              }
             }
-          }
-        })
-      );
-    }
+          })
+        );
+      }
 
-    try {
-      const evaluatedNeighbors = await Promise.all(allRequests);
-      // Sort Priority: Persisted neighbors, premium neighbors, neighbor address
-      evaluatedNeighbors.sort((a, b) => {
-        if (
-          // Persisted neighbors priority
-          (NODE_STATE.persistedNeighbors &&
-            NODE_STATE.persistedNeighbors.includes(
+      try {
+        const evaluatedNeighbors = await Promise.all(allRequests);
+        // Sort Priority: Persisted neighbors, premium neighbors, neighbor address
+        evaluatedNeighbors.sort((a, b) => {
+          if (
+            // Persisted neighbors priority
+            (NODE_STATE.persistedNeighbors &&
+              NODE_STATE.persistedNeighbors.includes(
+                `tcp://${a.domain}:${a.address.split(':')[1]}`
+              )) ^
+            (NODE_STATE.persistedNeighbors &&
+              NODE_STATE.persistedNeighbors.includes(
+                `tcp://${b.domain}:${b.address.split(':')[1]}`
+              ))
+          ) {
+            return NODE_STATE.persistedNeighbors.includes(
               `tcp://${a.domain}:${a.address.split(':')[1]}`
-            )) ^
-          (NODE_STATE.persistedNeighbors &&
-            NODE_STATE.persistedNeighbors.includes(
-              `tcp://${b.domain}:${b.address.split(':')[1]}`
-            ))
-        ) {
-          return NODE_STATE.persistedNeighbors.includes(
-            `tcp://${a.domain}:${a.address.split(':')[1]}`
-          )
-            ? -1
-            : 1;
-        }
-        if (!!a.iriVersion ^ !!b.iriVersion) {
-          return a.iriVersion ? -1 : 1;
-        }
-        return a.domain ? a.domain.localeCompare(b.domain) : 1;
-      });
+            )
+              ? -1
+              : 1;
+          }
+          if (!!a.iriVersion ^ !!b.iriVersion) {
+            return a.iriVersion ? -1 : 1;
+          }
+          return a.domain ? a.domain.localeCompare(b.domain) : 1;
+        });
 
-      NODE_STATE.currentNeighbors = evaluatedNeighbors;
+        NODE_STATE.currentNeighbors = evaluatedNeighbors;
 
-      DB_SERVICE.addNeighborStates(evaluatedNeighbors);
+        DB_SERVICE.addNeighborStates(evaluatedNeighbors);
 
-      DB_SERVICE.deleteOutdatedNeighborEntries();
-    } catch (e) {
-      console.log(e.message);
+        DB_SERVICE.deleteOutdatedNeighborEntries();
+      } catch (e) {
+        console.log(
+          'Error upon sorting and persisting fetched neighbors.',
+          e.message
+        );
+      }
+    } catch (err) {
+      console.log('Error upon fetching neighbors.', err.message);
     }
   }
 };
