@@ -34,7 +34,7 @@ class AuthResource {
           token: NODE_STATE.loginToken
         });
       } else {
-        res.status(404).send();
+        res.status(400).send();
       }
     });
 
