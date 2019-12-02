@@ -183,7 +183,10 @@ export default {
       if (/[a-zA-Z]/.test(this.ipAddress)) {
         if (this.ipAddress.split(':').length >= 3) {
           this.validationMessage = 'Do not include the protocol (tcp://)';
-        } else if (this.ipAddress.split('.').length < 2) {
+        } else if (
+          this.ipAddress.split('.').length < 2 ||
+          this.ipAddress.split('.')[1].length < 2
+        ) {
           this.validationMessage = "Must include extension (e.g. '.com')";
         } else if (this.ipAddress.includes('/')) {
           this.validationMessage = 'Slashes (/) not allowed in hostnames';
