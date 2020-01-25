@@ -43,7 +43,16 @@
                   class="input"
                   type="text"
                   placeholder="E.g. 192.168.1.111 or my-domain.com:12345"
+                  @keyup="checkAddressCorrectness"
+                  :class="[
+                    portValidation === true
+                      ? 'is-success'
+                      : portValidation === false
+                      ? 'is-danger'
+                      : ''
+                  ]"
                 />
+                <p v-if="this.validationMessage" class="help is-danger">{{this.validationMessage}}</p>
               </div>
             </div>
           </div>
@@ -154,7 +163,8 @@ export default {
       password: undefined,
       iriFileLocation: undefined,
       restartNodeCommand: undefined,
-      submitted: false
+      submitted: false,
+      validationMessage: ''
     };
   },
   methods: {
@@ -174,6 +184,51 @@ export default {
           iriFileLocation: this.iriFileLocation,
           restartNodeCommand: this.restartNodeCommand
         });
+      }
+    },
+    checkAddressCorrectness: function() {
+      this.validationMessage = '';
+      if (!this.nodeIp) return true;
+
+      const portRegex = new RegExp(`:[0-9]{2,5}$`);
+      if (/[a-zA-Z]/.test(this.nodeIp)) {
+        if (this.nodeIp.split(':').length >= 3) {
+          this.validationMessage = 'Do not include the protocol (http://)';
+        } else if (
+          this.nodeIp.split('.').length < 2 ||
+          this.nodeIp.split('.')[1].length < 2
+        ) {
+          this.validationMessage = "Must include extension (e.g. '.com')";
+        } else if (this.nodeIp.includes('/')) {
+          this.validationMessage = 'Slashes (/) not allowed in hostnames';
+        }
+      } else {
+        if (this.nodeIp.split('.').length !== 4) {
+          this.validationMessage = 'An IP address must have 4 dots';
+        } else if (this.nodeIp.split(':').length > 2) {
+          this.validationMessage = 'Do not include the protocol (http://)';
+        } else if (
+          this.nodeIp
+            .split(':')[0]
+            .split('.')
+            .filter(fragment => fragment.length > 3).length !== 0
+        ) {
+          this.validationMessage =
+            'IPv4 address fragment cannot exceed 3 digits';
+        }
+      }
+
+      if (this.nodeIp.includes(':')) {
+        if (!new RegExp(`:[0-9]{2,5}$`).test(this.nodeIp)) {
+          this.validationMessage =
+            'Must include port information, e.g. :15600, 2-5 digits';
+        } else if (
+          this.nodeIp.split(':')[1].startsWith('0') ||
+          Number(this.nodeIp.split(':')[1]) > 65535 ||
+          Number(this.nodeIp.split(':')[1]) < 1
+        ) {
+          this.validationMessage = 'The port is out of range (1 - 65535)';
+        }
       }
     }
   },
