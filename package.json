@@ -47,7 +47,7 @@
     "console-stamp": "0.2.9",
     "express": "4.17.1",
     "firebase": "6.3.0",
-    "moment": "2.24.0",
+    "moment": "2.29.4",
     "qrcode.vue": "1.6.2",
     "register-service-worker": "1.6.2",
     "sqlite3": "4.0.9",
