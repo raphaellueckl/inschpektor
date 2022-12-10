@@ -45,7 +45,7 @@
     "bulma-switch": "2.0.0",
     "connect-history-api-fallback": "1.6.0",
     "console-stamp": "0.2.9",
-    "express": "4.17.1",
+    "express": "4.17.3",
     "firebase": "6.3.0",
     "moment": "2.24.0",
     "qrcode.vue": "1.6.2",
